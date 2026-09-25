@@ -1,0 +1,7 @@
+item,qty,spec,supplier,unit_cost_usd,make_buy,notes
+"Material feasibility matrix (plastics, aluminum, steel, glass, lithium cells, e-waste)",,,,,,
+Process recipe templates per material,,,,,,
+"Micro-factory economics model (per kg, per shift)",,,,,,
+Safety and environmental rules,,,,,,
+Material passport data schema (JSON),,,,,,
+"Links to machine repos (WasteWise Scan, CellCheck, shredder, foundry)",,,,,,

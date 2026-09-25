@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ReflowEconomy material passport",
+  "type": "object",
+  "required": [
+    "batch_id",
+    "material",
+    "mass_kg",
+    "origin",
+    "processed_by",
+    "date"
+  ],
+  "properties": {
+    "batch_id": {
+      "type": "string"
+    },
+    "material": {
+      "type": "string",
+      "description": "e.g. PET, HDPE, AL-6063, glass-clear"
+    },
+    "grade": {
+      "type": "string"
+    },
+    "mass_kg": {
+      "type": "number",
+      "minimum": 0
+    },
+    "origin": {
+      "type": "object",
+      "properties": {
+        "country": {
+          "type": "string"
+        },
+        "collection_point": {
+          "type": "string"
+        }
+      }
+    },
+    "identification": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": [
+            "visual",
+            "wastewise-ml",
+            "wastewise-scan-nir",
+            "lab"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "contamination_pct": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "processed_by": {
+      "type": "string"
+    },
+    "process": {
+      "type": "string",
+      "description": "e.g. shred-wash, remelt-cast"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    }
+  }
+}
