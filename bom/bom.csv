@@ -1,7 +1,14 @@
 item,qty,spec,supplier,unit_cost_usd,make_buy,notes
-"Material feasibility matrix (plastics, aluminum, steel, glass, lithium cells, e-waste)",,,,,,
-Process recipe templates per material,,,,,,
-"Micro-factory economics model (per kg, per shift)",,,,,,
-Safety and environmental rules,,,,,,
-Material passport data schema (JSON),,,,,,
-"Links to machine repos (WasteWise Scan, CellCheck, shredder, foundry)",,,,,,
+1 Intake scale and sorting table,1,"300 kg platform scale (1 x 1 m), 2.0 x 0.9 m steel sorting table, four color-coded bins (PET, HDPE, PP, metals) and bulk bags",Local scale dealer and fabricator,750.00,buy,Indicative price; opens the passport batch record
+2 Washing tanks and sediment trap,1,"Two 400 to 500 L polyethylene tanks, 0.75 kW transfer pump, settling trap, hoses and brushes",Local hardware and plumbing supplier,800.00,buy,Indicative price; float-sink separation of PP and HDPE from PET
+3 Shredder,1,"Open-design shredder (Precious Plastic class or the portfolio's planned shredder), 2.2 kW gearmotor, interlocked hopper, emergency stop, about 11 kg/h needed",Local fabricator or open-hardware workspace,3500.00,make,Indicative price; throughput unverified
+4 Drying rack and fan,1,"Steel rack with mesh trays, 0.4 kW fan",Local fabricator,400.00,make,Indicative price
+5 Extruder,1,"Open-design extruder for beams and profiles, about 3.5 kW, HDPE and PP only",Local fabricator or open-hardware workspace,4000.00,make,Indicative price
+6 Sheet press,1,"1 x 1 m heated sheet press, about 5 kW, with cooling press or clamps",Local fabricator or open-hardware workspace,6000.00,make,Indicative price; the largest single cost
+7 Fume extraction hood and filter,1,"Hood over the hot zone (about 2.0 x 3.5 m), duct through the wall, 1.1 kW fan, particulate and activated carbon filter",Local HVAC supplier,2500.00,buy,Indicative price; hood not yet sized (R11)
+8 Product store racking,2,"Steel pallet racking bay, 1.5 x 1.0 x 2.0 m, three levels",Local supplier,200.00,buy,Indicative price per bay
+9 Passport and quality desk,1,"Desk, thermal label printer, 30 kg bench scale, plastic moisture meter, used laptop or phone",Local suppliers,900.00,buy,Indicative price; issues passports for every outgoing lot
+10 Safety and PPE station,1,"PPE cabinet (respirators, face shields, heat and puncture-resistant gloves, hearing protection, safety boots for four workers), eyewash, first aid kit, two fire extinguishers, sharps container",Local safety supplier,1500.00,buy,Indicative price; PPE replacement is an operating cost
+11 Electrical board,1,"Distribution board with 30 mA RCDs, circuit breakers, emergency stop circuit and energy meter, about 13 kW connected load",Licensed electrician,1200.00,buy,Indicative price including installation; supply type is an open question
+12 Export and residue cage,1,"Lockable welded-mesh cage about 2.1 x 1.4 x 1.8 m, fire-safe steel container with dry sand for lithium cells, bale bags",Local fabricator,900.00,make,Indicative price
+13 Building shell,1,"Two used 40 ft shipping containers side by side (about 12.2 x 4.9 m) or a rented shed of about 60 m², concrete floor",Local container dealer or landlord,8000.00,buy,"Site-dependent indicative price; excluded from the $22,850 equipment total"
