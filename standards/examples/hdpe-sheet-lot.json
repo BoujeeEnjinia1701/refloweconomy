@@ -1,0 +1,22 @@
+{
+  "schema_version": "0.2",
+  "batch_id": "RFE-DEMO-S-0001",
+  "product_form": "sheet",
+  "parent_batch_ids": ["RFE-DEMO-I-0001", "RFE-DEMO-I-0002"],
+  "material": "HDPE",
+  "grade": "natural and mixed color, rigid packaging; 1000 x 1000 x 12 mm",
+  "mass_kg": 11.2,
+  "origin": {"country": "XX", "collection_point": "Market cooperative A; school collection point B"},
+  "identification": {"method": "wastewise-ml", "confidence": 0.93},
+  "contamination_pct": 1.5,
+  "processed_by": "Demo micro-factory",
+  "process": "wash, shred, float-sink, dry, sheet-press",
+  "recycled_content": {
+    "post_consumer_pct": 100,
+    "pre_consumer_pct": 0,
+    "basis": "mass",
+    "standard": "ISO 14021",
+    "statement": "Contains 100 % post-consumer recycled HDPE by mass (self-declared, ISO 14021). In-house trim reused in the same process is not counted as pre-consumer material."
+  },
+  "date": "2026-09-25"
+}

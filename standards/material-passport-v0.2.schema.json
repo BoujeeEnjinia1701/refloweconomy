@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/BoujeeEnjinia1701/refloweconomy/standards/material-passport-v0.2.schema.json",
+  "title": "ReflowEconomy material passport",
+  "description": "Schema v0.2 (2026-09-25, RFE-DDR-001 item 4). Adds schema_version, product_form, parent_batch_ids and an ISO 14021 aligned recycled content statement to v0.1. All v0.1 fields keep their meaning. One record per lot: an intake batch record opens at the scale; a passport is issued with every product lot, flake bag, export lot and residue lot that leaves.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "batch_id",
+    "product_form",
+    "material",
+    "mass_kg",
+    "origin",
+    "processed_by",
+    "date"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "0.2",
+      "description": "Version of this schema the record follows"
+    },
+    "batch_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique ID of this lot, printed on its label"
+    },
+    "product_form": {
+      "type": "string",
+      "enum": [
+        "intake-batch",
+        "flake",
+        "sheet",
+        "beam",
+        "profile",
+        "bale",
+        "export-lot",
+        "residue-lot"
+      ],
+      "description": "What the lot physically is. intake-batch is the record opened at the scale"
+    },
+    "parent_batch_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "batch_id values of the intake batches (or intermediate lots) this lot was made from, so a buyer can trace it back to collection points"
+    },
+    "material": {
+      "type": "string",
+      "description": "e.g. PET, HDPE, PP, AL-6063, steel, PCB, glass-clear"
+    },
+    "grade": {
+      "type": "string"
+    },
+    "mass_kg": {
+      "type": "number",
+      "minimum": 0
+    },
+    "origin": {
+      "type": "object",
+      "properties": {
+        "country": {
+          "type": "string"
+        },
+        "collection_point": {
+          "type": "string"
+        }
+      }
+    },
+    "identification": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": [
+            "visual",
+            "wastewise-ml",
+            "wastewise-scan-nir",
+            "lab"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "contamination_pct": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "processed_by": {
+      "type": "string"
+    },
+    "process": {
+      "type": "string",
+      "description": "e.g. shred-wash, sheet-press, remelt-cast"
+    },
+    "recycled_content": {
+      "type": "object",
+      "description": "Recycled content statement aligned with ISO 14021 (self-declared environmental claims). Percentages are by mass of the lot. Rework, regrind or scrap reclaimed within the same process that generated it (for example sheet trim re-shredded in house) is not counted as pre-consumer material. This is a self-declared claim, not a third-party certification.",
+      "required": [
+        "post_consumer_pct",
+        "pre_consumer_pct",
+        "basis",
+        "statement"
+      ],
+      "properties": {
+        "post_consumer_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "pre_consumer_pct": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "basis": {
+          "type": "string",
+          "const": "mass"
+        },
+        "standard": {
+          "type": "string",
+          "const": "ISO 14021"
+        },
+        "statement": {
+          "type": "string",
+          "description": "Human-readable claim printed on the label, e.g. 'Contains 100 % post-consumer recycled HDPE by mass (self-declared, ISO 14021)'"
+        }
+      }
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "product_form": {
+            "not": {
+              "const": "intake-batch"
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "parent_batch_ids"
+        ],
+        "properties": {
+          "parent_batch_ids": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "product_form": {
+            "enum": [
+              "flake",
+              "sheet",
+              "beam",
+              "profile"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "recycled_content"
+        ]
+      }
+    }
+  ]
+}

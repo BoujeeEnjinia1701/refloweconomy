@@ -1,0 +1,13 @@
+{
+  "schema_version": "0.2",
+  "batch_id": "RFE-DEMO-I-0001",
+  "product_form": "intake-batch",
+  "material": "mixed",
+  "grade": "picker-sorted post-consumer, source-separated",
+  "mass_kg": 42.5,
+  "origin": {"country": "XX", "collection_point": "Market cooperative A"},
+  "identification": {"method": "visual"},
+  "processed_by": "Demo micro-factory",
+  "process": "weigh-in",
+  "date": "2026-09-25"
+}

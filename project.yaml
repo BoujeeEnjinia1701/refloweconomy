@@ -2,12 +2,30 @@
 name: ReflowEconomy
 slug: refloweconomy
 area: Circular Materials
-trl: 2                   # Technology Readiness Level, see .kit/STANDARDS.md section 9
-trl_target: 3
+trl: 3                   # Technology Readiness Level, see .kit/STANDARDS.md section 9
+trl_target: 3            # TRL 4 is on hold by Amish's instruction (2026-09-25)
 trl_evidence:
   - docs/01-problem.md
   - docs/02-concept.md
   - docs/03-requirements.md
+  - docs/decisions/0001-trl2-review-decisions.md
+  - docs/04-calcs/01-sizing.md
+  - docs/04-calcs/sizing.py
+  - docs/04-calcs/results.csv
+  - docs/playbook/economics_model.py
+  - docs/playbook/economics_inputs.csv
+  - docs/playbook/recipes/README.md
+  - standards/material-passport-v0.2.schema.json
+  - cad/src/model.py
+  - cad/step/refloweconomy-layout.step
+  - cad/step/refloweconomy-shell.step
+  - cad/step/refloweconomy-equipment.step
+  - cad/stl/refloweconomy-layout.stl
+  - cad/src/sheets.py
+  - cad/drawings/RFE-DWG-001.svg
+  - cad/drawings/RFE-DWG-001.pdf
+  - bom/bom.csv
+  - bom/bom-notes.md
 shortlisted: false
 pitch: >-
   Open playbook for local micro-factories that recover and remanufacture materials safely at small scale: a feasibility matrix by material, process recipes, a micro-factory economics model, safety rules, and a material passport data standard so buyers can trust recycled feedstock. Machines live in their own repos. The guiding principle is to recover and remanufacture locally and export only what needs industrial refining.

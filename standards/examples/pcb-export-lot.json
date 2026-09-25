@@ -1,0 +1,14 @@
+{
+  "schema_version": "0.2",
+  "batch_id": "RFE-DEMO-X-0001",
+  "product_form": "export-lot",
+  "parent_batch_ids": ["RFE-DEMO-I-0001"],
+  "material": "PCB",
+  "grade": "mixed low-grade boards, dismantled by hand; no cells attached",
+  "mass_kg": 6.8,
+  "origin": {"country": "XX", "collection_point": "Market cooperative A"},
+  "identification": {"method": "visual"},
+  "processed_by": "Demo micro-factory",
+  "process": "dismantle, sort, pack for licensed refiner",
+  "date": "2026-09-25"
+}
