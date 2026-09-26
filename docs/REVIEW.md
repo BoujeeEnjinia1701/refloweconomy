@@ -165,3 +165,8 @@ No safety rule was relaxed. The larger fan keeps face velocity as filters load; 
 ### Recommended next step
 
 TRL 4 is on hold by Amish's instruction. Within TRL 3, close R1 and R4 in the playbook and choose the first co-design partner when Amish is ready.
+
+## Session 2026-09-26: sources strengthened
+
+- "By country or region" (README), India row: the row had no citation. It now states only what the primary source supports: the Solid Waste Management Rules, 2016 (Ministry of Environment, Forest and Climate Change, S.O. 1357(E)) direct local bodies to recognize organizations of waste pickers, issue identity cards and integrate them into door-to-door collection (Rule 15). The uncited claim that a large informal workforce already sorts PET, HDPE and PP by hand was removed.
+- No weak sources were flagged elsewhere; the "What sparked the idea" source (Brooks, Wang and Jambeck, *Science Advances*, 2018) is peer-reviewed and unchanged. `docs/01-problem.md` did not carry the India claim, so no controlled document changed. No budget change (playbook repo, no hardware budget).

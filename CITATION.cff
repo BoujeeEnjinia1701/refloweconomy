@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use or build on this design, please cite it as below."
+type: software
+title: "ReflowEconomy"
+abstract: "Open playbook for local micro-factories that recover and remanufacture materials safely at small scale: a feasibility matrix by material, process recipes, a micro-factory economics model, safety rules, and a material passport data standard so buyers can trust recycled feedstock. Machines live in their own repos. The guiding principle is to recover and remanufacture locally and export only what needs industrial refining."
+authors:
+  - given-names: Amish
+    family-names: Chadha
+    affiliation: Design Molecule
+repository-code: "https://github.com/BoujeeEnjinia1701/refloweconomy"
+url: "https://designmolecule.com"
+license:
+  - CERN-OHL-S-2.0
+  - MIT
+keywords:
+  - open-hardware
+  - circular-materials

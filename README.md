@@ -42,7 +42,7 @@ Where value is recovered, it is often recovered at a cost to health. The world g
 | Brazil | The National Solid Waste Policy (Law 12.305 of 2010) directs municipalities to prioritize selective collection with waste-picker cooperatives and to fund them ([Lei 12.305/2010](https://www.planalto.gov.br/ccivil_03/_ato2007-2010/2010/lei/l12305.htm)); a cooperative that also processes keeps more of the value |
 | East Asia and Pacific | Higher-income OECD countries have exported plastic waste to lower-income countries in this region for decades ([Brooks, Wang and Jambeck, *Science Advances*, 2018](https://doi.org/10.1126/sciadv.aat0131)); local processing of their own waste is the alternative to importing others' |
 | West Africa (for example Ghana) | Informal e-waste recovery by open burning and acid leaching harms workers and children ([WHO, 2021](https://www.who.int/publications/i/item/9789240023901)); the playbook's rule is to dismantle and sort locally and export boards and cells to licensed refiners |
-| India | A large informal workforce already sorts PET, HDPE and PP by hand; cooperatives could add washing, flaking and pressing on a single-phase supply |
+| India | The Solid Waste Management Rules, 2016 direct local bodies to recognize organizations of waste pickers, issue identity cards and integrate them into door-to-door collection ([MoEFCC, SWM Rules 2016, Rule 15](https://cdnbbsr.s3waas.gov.in/s30f46c64b74a6c964c674853a89796c8e/uploads/2024/07/20240710555191345.pdf)); organized groups of waste pickers could add washing, flaking and pressing on a single-phase supply |
 | European Union | Digital product passports under the Ecodesign for Sustainable Products Regulation ([EU 2024/1781](https://eur-lex.europa.eu/eli/reg/2024/1781/oj)) will raise the bar for traceable recycled content; a simple open passport helps small recyclers and repair workshops keep up |
 
 ## What sparked the idea
@@ -100,6 +100,12 @@ A micro-factory has moving machinery (shredder), hot surfaces (extruder and pres
 ## Documentation
 
 Controlled documents follow the portfolio [documentation standard](.kit/STANDARDS.md). Each carries a document ID (RFE-PRC-001 for the precis), a version and a revision history. Branded PDFs are built with `python .kit/render.py` and attached to GitHub Releases when a document is tagged, for example `RFE-PRC-001/v1.0`.
+
+## Credits
+
+Designed by Amish Chadha. See [CONTRIBUTORS.md](CONTRIBUTORS.md) for roles. To cite this design, use [CITATION.cff](CITATION.cff) (GitHub shows it as "Cite this repository").
+
+AI assistance (Claude) was used to accelerate concept renders, prototype documentation and first-pass sizing calculations. Design direction and all decisions are Amish Chadha's, recorded in this repository's decision records (`docs/decisions/`).
 
 ## Licenses
 
