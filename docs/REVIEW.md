@@ -170,3 +170,10 @@ TRL 4 is on hold by Amish's instruction. Within TRL 3, close R1 and R4 in the pl
 
 - "By country or region" (README), India row: the row had no citation. It now states only what the primary source supports: the Solid Waste Management Rules, 2016 (Ministry of Environment, Forest and Climate Change, S.O. 1357(E)) direct local bodies to recognize organizations of waste pickers, issue identity cards and integrate them into door-to-door collection (Rule 15). The uncited claim that a large informal workforce already sorts PET, HDPE and PP by hand was removed.
 - No weak sources were flagged elsewhere; the "What sparked the idea" source (Brooks, Wang and Jambeck, *Science Advances*, 2018) is peer-reviewed and unchanged. `docs/01-problem.md` did not carry the India claim, so no controlled document changed. No budget change (playbook repo, no hardware budget).
+
+## Session 2026-09-26: photoreal renders
+
+Amish asked on 2026-09-26 for photoreal renders across the portfolio, starting with the software and playbook repos (Group C). This repo has no new product model: the existing concept scene from `cad/src/concept_media.py` was rendered with Blender Cycles (`.kit/scene_export.py`, `.kit/photoreal.py`) on Amish's Mac and captioned with the project, repository and viewing direction.
+
+- New: `media/render-hero.png`. The README now leads with `media/render-hero.png`.
+- Geometry, BOM, calculations and drawings are unchanged. `trl` stays 3; TRL 4 remains on hold.

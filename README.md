@@ -6,7 +6,7 @@
 
 Open playbook for local micro-factories that recover and remanufacture materials safely at small scale: a feasibility matrix by material, process recipes, a micro-factory economics model, safety rules, and a material passport data standard so buyers can trust recycled feedstock. Machines live in their own repos. The guiding principle is to recover and remanufacture locally and export only what needs industrial refining.
 
-![ReflowEconomy reference micro-factory](media/hero.png)
+![ReflowEconomy: local micro-factory for recovered plastics, photoreal render](media/render-hero.png)
 
 [Interactive 3D model](media/viewer.html) · [Floor plan GA (PDF)](cad/drawings/RFE-DWG-001.pdf) · [Calculation note](docs/04-calcs/01-sizing.md) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Material flow](media/flow.png) · [Review note](docs/REVIEW.md)
 
