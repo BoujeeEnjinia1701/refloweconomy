@@ -1,4 +1,4 @@
-"""ReflowEconomy general arrangement drawing RFE-DWG-001 (Rev P1): micro-factory floor plan.
+"""ReflowEconomy general arrangement drawing RFE-DWG-001 (Rev P2): micro-factory floor plan.
 
 Run from the repo root:  python cad/src/sheets.py
 Builds cad/drawings/RFE-DWG-001.svg, .pdf and .png from the parametric model in
@@ -66,9 +66,10 @@ no_front = Compound(children=[s for k, items in parts.items() for n, s, _ in ite
 elev = project(no_front, "front", (cx, cy - D, cz), (0, 0, 1), (cx, cy, cz))
 
 s = Sheet(project="ReflowEconomy", title="Reference micro-factory, floor plan GA", dwg_no="RFE-DWG-001",
-          rev="P1", author="Amish Chadha", date="2026-09-25", scale=K, concept=True,
+          rev="P2", author="Amish Chadha", date="2026-09-25", scale=K, concept=True,
           material="Layout only; equipment envelopes. See bom/bom.csv and RFE-CAL-001",
-          revisions=[("P1", "Preliminary GA from the TRL 3 model (RFE-CAL-001)", "2026-09-25", "AC")])
+          revisions=[("P1", "Preliminary GA from the TRL 3 model (RFE-CAL-001)", "2026-09-25", "AC"),
+                     ("P2", "Notes: 1.5 kW fan, 38 A demand, shed preferred (RFE-DDR-002)", "2026-09-25", "AC")])
 
 # placement: plan at top left, elevation below, both at 1:50
 PX, PY = 20.0, 24.0
@@ -127,7 +128,7 @@ dim_v(sx(0) - 5, sy(P["FL_Y"]), sy(0), f"{P['FL_Y']:.0f}")
 a0, a1 = P["AISLE_Y0"], P["AISLE_Y0"] + P["AISLE_W"]
 dim_v(sx(P["FL_X"]) + 4, sy(a1), sy(a0), f"{P['AISLE_W']:.0f} AISLE")
 line(sx(P["WALL_T"]), sy(P["SEAM_Y"]), sx(P["FL_X"] - P["WALL_T"]), sy(P["SEAM_Y"]), 0.18, MUTED, "3 1 0.6 1")
-s._layers.append(_t(sx(600), sy(P["SEAM_Y"]) - 0.8, "container seam (side walls removed)", 1.9, 400, MUTED))
+s._layers.append(_t(sx(600), sy(P["SEAM_Y"]) - 0.8, "container seam (container option only)", 1.9, 400, MUTED))
 # hot zone boundary
 hx0, hx1 = P["HOT_X"]
 s._layers.append(f'<rect x="{sx(hx0):.2f}" y="{sy(P["FL_Y"] - P["WALL_T"]):.2f}" width="{(hx1 - hx0) * K:.2f}" '
@@ -160,23 +161,23 @@ s.add_notes("Zones (numbers match bom/bom.csv)", [
     "4  Drying rack (7.2 m2 trays) and fan",
     "5  Extruder with barrel enclosure (hood B)",
     "6  Sheet press and cooling press (booth A)",
-    "7  Hoods, 250 mm duct, fan and filter outside",
+    "7  Hoods, 250 mm duct, 1.5 kW fan, filter outside",
     "8  Racking: bay 1 products, bay 2 flake",
     "9  Passport and quality desk",
     "10 PPE cabinet, eyewash, extinguishers",
     "11 Electrical board, 230 V 40 A, interlock",
     "12 Export and residue cage by export door",
-    "13 Two 40 ft containers, 12 192 x 4 876",
+    "13 Shed preferred, or two 40 ft boxes 12 192 x 4 876",
 ], x=276, y=34, width=146)
 s.add_notes("Key data (RFE-CAL-001)", [
     "59.4 m2 footprint; clear aisle 1.52 m (1.20 m painted)",
     "Hot zone 1.0 m from stock; exits at both ends",
     "100 kg input/shift: 32.3 kg products, 19.3 kg flake",
-    "Max demand 8.35 kW (36 A) with heater interlock",
+    "Max demand 8.75 kW (38 A) with heater interlock",
     "Hoods 0.5 m/s face: 0.57 m3/s at about 815 Pa",
     "Shredder LEX 79 dB(A) enclosed (sound power assumed)",
     "Not met: R1, R4, R8. At risk: R6, R12",
-    "Side wall removal needs a structural engineer",
+    "Container side walls: structural engineer only",
     "PRELIMINARY, NOT FOR FABRICATION",
 ], x=276, y=113, width=146)
 s.save(ROOT / "cad/drawings/RFE-DWG-001")

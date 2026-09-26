@@ -155,12 +155,12 @@ if __name__ == "__main__":
     os.chdir(ROOT)
     render_all(
         parts, project="ReflowEconomy", title="Reference micro-factory layout", dwg_no="RFE-DWG-010",
-        key_figures=["Footprint 12.19 x 4.88 m (two 40 ft containers), 59.4 m2",
+        key_figures=["Footprint 12.19 x 4.88 m, 59.4 m2 (shed or two 40 ft boxes)",
                      "Plastics line: PET flake; HDPE, PP sheets and beams",
                      "100 kg input per shift: 51.6 kg kept local (est.)",
                      "10 kg exported for refining; 28.4 kg to disposal (est.)",
-                     "0.83 kWh/kg of output; 8.35 kW max demand, 230 V",
-                     "Equipment $24,050 indicative, excl. site",
+                     "0.83 kWh/kg of output; 8.75 kW max demand, 230 V",
+                     "Equipment $24,200 indicative, excl. site",
                      "Passport v0.2 on every lot that leaves (RFE-CAL-001)"],
         cut=False, date="2026-09-25")
     # Re-render the exploded view on a wider canvas so the legend clears the long floor plan

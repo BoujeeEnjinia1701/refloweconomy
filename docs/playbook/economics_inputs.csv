@@ -21,7 +21,7 @@ tariff,0.15,USD/kWh,Electricity tariff
 consumables,10.00,USD/shift,"Wear parts, PPE replacement, detergent, labels"
 filters,3.00,USD/shift,Fume filter replacement (prefilter and carbon)
 rent,0.00,USD/shift,Rent or site cost per shift (0 = result before rent)
-capex,24050,USD,Equipment cost for bom/bom.csv items 1 to 12
+capex,24200,USD,Equipment cost for bom/bom.csv items 1 to 12
 years,5,years,Period over which the equipment cost is recovered
 shifts_per_year,250,shifts/year,Operating shifts per year
 capacity_kg,100,kg/shift,Most input the line can handle in one shift (RFE-CAL-001 time budget)

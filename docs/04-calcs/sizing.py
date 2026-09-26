@@ -60,6 +60,24 @@ say(f"  Kept local as products or clean flake: {local:.1f} kg = {local / A['inpu
 say(f"  Exported for refining: {c['metals'] + c['ewaste']:.1f} kg; to licensed disposal {disposal:.1f} kg = {disposal:.1f} % (R8 target 20 %)")
 say(f"  Mass closes: {local + c['metals'] + c['ewaste'] + c['paper'] + disposal:.2f} kg")
 
+# intake quality rule (RFE-DDR-001 item 8, decided by Amish 2026-09-25 in RFE-DDR-002): R8 keeps counting process losses;
+# the site refuses or charges for loads whose sampled residue is above a threshold.
+# For a load with residue r (%), the other streams scale in proportion, so process losses
+# scale with (100 - r) / (100 - r_ref).
+R8_LIMIT = 20.0
+loss_per_nonres = losses / (A["input"] - c["residue"])
+
+
+def disposal_at(r):
+    return r + loss_per_nonres * (A["input"] - r)
+
+
+r_max = (R8_LIMIT - loss_per_nonres * A["input"]) / (1 - loss_per_nonres)
+r_rule = math.floor(r_max)
+local_at_rule = local * (A["input"] - r_rule) / (A["input"] - c["residue"])
+say(f"  Intake quality rule: disposal is 20 % or less when sampled residue is {r_max:.1f} % or less; rule threshold {r_rule:.0f} %")
+say(f"  At the {r_rule:.0f} % threshold: disposal {disposal_at(r_rule):.1f} %, kept local {local_at_rule:.1f} %; the reference mix ({c['residue']:.0f} % residue) would be refused or charged")
+
 # ---------------------------------------------------------------- B throughput and time budget
 B = {
     "block_a": 4.0, "block_b": 4.0,        # h: A = sort, wash, shred, extrude; B = press
@@ -137,7 +155,7 @@ F = {
     "prefilter_pa": 250.0, "carbon_pa": 200.0,   # final (dirty) pressure drops
     "stack_vp": 1.0,
     "eta": 0.55 * 0.85,                    # fan times motor efficiency
-    "fan_rated_kw": 1.1,
+    "fan_rated_kw": 1.5,                  # RFE-DDR-001 item 10, decided by Amish 2026-09-25 (RFE-DDR-002); was 1.1 kW
 }
 a_open = MP["HOOD_A_OPEN"][0] * MP["HOOD_A_OPEN"][1] + MP["HOOD_B_OPEN"][0] * MP["HOOD_B_OPEN"][1]
 Q = F["v_face"] * a_open * (1 + F["leak"])
@@ -297,7 +315,7 @@ R = [
     ("R5", "60 m2 or less, aisles 1.0 m or more, separate hot zone", f"{area_ext:.1f} m2; aisle {aisle / 1000:.2f} m; hot zone {hot_clear / 1000:.2f} m from stock", "Met"),
     ("R6", "100 kg or more mixed input per 8 h shift", f"Shredder {shred_h:.2f} h of {B['block_a']:.0f} h at an assumed {B['shred_rate']:.0f} kg/h; press {press_capacity:.2f} sheets of capacity for {B['sheets']}", "At risk"),
     ("R7", "50 % or more of input kept local as products or clean flake", f"{local:.1f} %", "Met"),
-    ("R8", "Residue to licensed disposal 20 % or less", f"{disposal:.1f} % ({c['residue']:.0f} % sorting residue + {losses:.1f} % process losses)", "Not met"),
+    ("R8", "Residue to licensed disposal 20 % or less, process losses counted", f"{disposal:.1f} % at the reference mix ({c['residue']:.0f} % sorting residue + {losses:.1f} % process losses); {disposal_at(r_rule):.1f} % for a load at the R16 threshold", "Not met"),
     ("R9", "1.0 kWh/kg of output or less", f"{e_total / output:.2f} kWh/kg", "Met"),
     ("R10", "Equipment items 1 to 12 $25,000 or less", f"${equip:,.0f}", "Met"),
     ("R11", "0.5 m/s face velocity on every melt process; no PVC, PS or unknown; air below OELs",
@@ -307,6 +325,8 @@ R = [
     ("R13", "Valid passport for every outgoing lot", f"{sum(v2)} of {len(ex)} examples valid against schema v0.2", "Met" if pp_ok else "Not met"),
     ("R14", "Passport lists parent batch IDs and schema version", "v0.2 requires schema_version and parent_batch_ids for every non-intake lot", "Met" if pp_ok else "Not met"),
     ("R15", "Passport filled in 2 min or less", "Needs a form and a timed trial", "Not verifiable at TRL 3"),
+    ("R16", "Intake quality rule with a residue threshold that keeps R8 within 20 %",
+     f"Threshold {r_rule:.0f} % residue by sampled mass (limit {r_max:.1f} %); loads above it refused or charged", "Met"),
 ]
 with (ROOT / "docs/04-calcs/results.csv").open("w", newline="") as f:
     w = csv.writer(f)

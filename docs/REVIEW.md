@@ -93,14 +93,14 @@ Key numbers: 42.9 kWh per shift; maximum demand 8.35 kW (36.3 A at 230 V) with t
 
 Decided by Amish, 2026-09-25, go with recommendation: 1 plastics-only reference line with aluminium as a separate add-on bay; 2 two 40 ft container footprints; 3 PET sold as clean flake; 4 passport schema v0.2 with example records, as a new file beside v0.1; 5 single-phase supply with staggered heating; 6 keep CERN-OHL-S-2.0 on the playbook text for now. Cross-cutting SwapCell items and the shared-pack pricing rule do not apply to this repo. The pitch, problem line and `budget_usd` (null) are unchanged; the TRL 2 review recommended no change to them.
 
-### Still proposed, awaiting Amish
+### Still proposed, awaiting Amish (status updated 2026-09-25, see the next session)
 
-1. License for the first release of the playbook text (item 6, release): recommendation CC BY-SA 4.0 for documents, CERN-OHL-S-2.0 for hardware, MIT for scripts.
-2. First co-design partner (item 7): left open under the rule that partners are picked per area later.
-3. How R8 counts process losses (item 8): recommendation keep the honest total and add an intake quality rule.
-4. Single-phase sheet press (item 9): recommendation a derated 5 kW press for the playbook, with the published 15 kW press where 400 V exists.
-5. Fume fan size (item 10): recommendation 1.5 kW for margin (maximum demand rises to 38 A).
-6. Container structure (item 11): recommendation a rented shed where available; side-wall removal only with a structural engineer's design.
+1. License for the first release of the playbook text (item 6, release): recommendation CC BY-SA 4.0 for documents, CERN-OHL-S-2.0 for hardware, MIT for scripts. **Decided by Amish, 2026-09-25: go with recommendation** (RFE-DDR-002).
+2. First co-design partner (item 7): left open under the rule that partners are picked per area later. Still proposed, awaiting Amish (no single recommendation).
+3. How R8 counts process losses (item 8): recommendation keep the honest total and add an intake quality rule. **Decided by Amish, 2026-09-25: go with recommendation** (RFE-DDR-002).
+4. Single-phase sheet press (item 9): recommendation a derated 5 kW press for the playbook, with the published 15 kW press where 400 V exists. **Decided by Amish, 2026-09-25: go with recommendation** (RFE-DDR-002).
+5. Fume fan size (item 10): recommendation 1.5 kW for margin (maximum demand rises to 38 A). **Decided by Amish, 2026-09-25: go with recommendation** (RFE-DDR-002).
+6. Container structure (item 11): recommendation a rented shed where available; side-wall removal only with a structural engineer's design. **Decided by Amish, 2026-09-25: go with recommendation** (RFE-DDR-002).
 
 ### Sources
 
@@ -118,3 +118,50 @@ Web search and fetch were available in this session. The TRL 2 sources in RFE-PR
 ### Recommended next step
 
 TRL 4 is on hold by Amish's instruction; do not start it. Within TRL 3, the next session could close R1 and R4 in the playbook (hazard, export point and source columns in the feasibility matrix; per-stream export rules) and settle the open items above. For reference only, TRL 4 would need: a co-design partner and site; measured shredder rate and sound power, sheet press cycle on a single-phase press, and wash and melt losses; air monitoring at the hoods; a timed passport form trial; a TST report with `environment: lab`; and build log entries.
+
+## Session 2026-09-25: recommendations accepted
+
+Authority: on 2026-09-25 Amish wrote "i accept all your recommendations, go with them across all repos." Every open item with a recommendation is now **Decided by Amish, 2026-09-25: go with recommendation**, recorded in `docs/decisions/0002-recommendations-accepted.md` (RFE-DDR-002 v0.1). RFE-DDR-001 moved to v0.2 with the new status column. **TRL 4 remains on hold by Amish's instruction**; `trl: 3` and `trl_target: 3` are unchanged.
+
+### Decisions applied and what changed
+
+| Item | Decision | Before | After |
+| --- | --- | --- | --- |
+| 6 (release) License for the first release | CC BY-SA 4.0 for documents, CERN-OHL-S-2.0 for hardware, MIT for scripts | Open | Applied when the first release is tagged; noted in README and RFE-PRC-001; no license file changed now |
+| 8 R8 and process losses | Keep the honest total; add an intake quality rule | R8 not met, method open | R8 restated (losses counted), still not met at 28.4 % for the reference input; new R16: loads above 10 % sampled residue refused or charged (limit 10.6 %; 19.5 % to disposal at the threshold, 58.0 % kept local) |
+| 9 Single-phase sheet press | Derated 5 kW press as reference; published 15 kW press where 400 V exists | Proposed | Recorded as decided; design unchanged |
+| 10 Fume fan | 1.5 kW | 1.1 kW, 91 % loaded, $2,800 | 1.5 kW, 66 % loaded, $2,950 |
+| 10 (effect) | | Maximum demand 8.35 kW, 36.3 A; connected 13.35 kW | 8.75 kW, 38.0 A (5 % margin on 40 A); connected 13.75 kW |
+| 10 (effect) | | Equipment $24,050; result +$1.73 per shift | Equipment $24,200 (R10 still met, $800 margin); result +$1.61 per shift; break-even product price unchanged at $2.45/kg |
+| 11 Building shell | Rented shed preferred; container side walls only to a structural engineer's design | Containers first | Shed first in BOM item 13, RFE-PRC-001, RFE-PRB-001, RFE-REQ-001, RFE-DWG-001 notes and the blueprint key figures; footprint unchanged |
+
+`budget_usd` stays null (playbook repo; no budget recommendation). The pitch and problem line are unchanged.
+
+Files changed: RFE-PRB-001 v0.4, RFE-PRC-001 v0.4, RFE-REQ-001 v0.4, RFE-CAL-001 v0.2 (`docs/04-calcs/sizing.py` and `results.csv` re-run), RFE-DDR-001 v0.2, new RFE-DDR-002 v0.1, `bom/bom.csv`, `bom/bom-notes.md`, `docs/playbook/economics_inputs.csv` (capex), `cad/src/sheets.py` (RFE-DWG-001 Rev P1 to P2: notes and revision row only), `cad/src/concept_media.py` (key figures), `project.yaml` (evidence list) and `README.md`. `cad/src/model.py` was re-run unchanged to regenerate STEP and STL. All drawings, media and PDFs were regenerated, which also replaces the old site address with designmolecule.com. The README gained the sections Concept rationale, Burning platform, Where it could be used and What sparked the idea (China's 2018 plastic waste import ban and the Brooks, Wang and Jambeck study).
+
+### Requirement status now (RFE-CAL-001 v0.2)
+
+| Status | Requirements |
+| --- | --- |
+| **Not met** | **R1** feasibility matrix lacks hazard, export point and source columns; **R4** per-stream export rules not written; **R8** 28.4 % to licensed disposal at the reference input (20 % residue), against 20 % |
+| At risk | R6 shredder 3.79 h of 4 h and press 2.06 sheets for 2; R12 noise 79 dB(A) enclosed from an assumed sound power |
+| Not verifiable at TRL 3 | R11 air monitoring; R15 timed passport trial |
+| Met on paper | R2, R3 (+$1.61 per shift), R5, R7 (51.6 %), R9 (0.83 kWh/kg), R10 ($24,200), R13, R14, R16 (intake rule, 10 % threshold) |
+
+The new finding: the reference input assumed 20 % residue, which the new intake rule would refuse. Meeting R8 depends on collectors delivering loads at about 10 % residue or less; only a co-design partner can confirm that.
+
+### Still awaiting Amish
+
+- First co-design partner and region (RFE-DDR-001 item 7): no single recommendation; partners are picked per area later.
+
+### Cross-repo actions
+
+None.
+
+### Safety
+
+No safety rule was relaxed. The larger fan keeps face velocity as filters load; the heater interlock is still required (without it the connected 13.75 kW would draw 60 A on a 40 A supply). The container option still needs a structural engineer. A qualified safety professional must review the layout before any site operates.
+
+### Recommended next step
+
+TRL 4 is on hold by Amish's instruction. Within TRL 3, close R1 and R4 in the playbook and choose the first co-design partner when Amish is ready.
