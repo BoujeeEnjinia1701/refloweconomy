@@ -133,15 +133,15 @@ s._layers.append(_t(sx(600), sy(P["SEAM_Y"]) - 0.8, "container seam (container o
 hx0, hx1 = P["HOT_X"]
 s._layers.append(f'<rect x="{sx(hx0):.2f}" y="{sy(P["FL_Y"] - P["WALL_T"]):.2f}" width="{(hx1 - hx0) * K:.2f}" '
                  f'height="{(P["FL_Y"] - P["WALL_T"] - a1) * K:.2f}" fill="none" stroke="#B45309" stroke-width="0.35" stroke-dasharray="2 1"/>')
-s._layers.append(_t(sx(hx0) + 1, sy(a1 + 120), "HOT ZONE", 2.0, 600, "#B45309"))
+s._layers.append(_t(sx(hx0) + 3, sy(P["FL_Y"] - P["WALL_T"]) + 21, "HOT ZONE", 2.0, 600, "#B45309"))
 # doors and flow arrow
 s._layers.append(_t(sx(0) + 1.5, sy(1550) + 0.8, "INTAKE DOOR", 1.9, 600, ACCENT))
-s._layers.append(_t(sx(0) + 1.5, sy(3000) + 0.8, "EXPORT DOOR", 1.9, 600, ACCENT))
-s._layers.append(_t(sx(P["FL_X"]) - 1.5, sy(sum(P["EXIT"]) / 2) + 0.8, "EXIT", 2.0, 600, ACCENT, "end"))
+s._layers.append(_t(sx(0) + 1.5, sy(3000) - 0.8, "EXPORT DOOR", 1.9, 600, ACCENT))
+s._layers.append(_t(sx(P["FL_X"]) - 1.5, sy(sum(P["EXIT"]) / 2) - 0.8, "EXIT", 2.0, 600, ACCENT, "end"))
 ay = sy(a0 + P["AISLE_W"] / 2)
 line(sx(1500), ay, sx(10200), ay, 0.35, ACCENT)
 s._layers.append(f'<path d="M{sx(10200):.2f} {ay - 1.4:.2f} L{sx(10200) + 3:.2f} {ay:.2f} L{sx(10200):.2f} {ay + 1.4:.2f} Z" fill="{ACCENT}"/>')
-s._layers.append(_t(sx(5600), ay - 1.0, "MATERIAL FLOW", 2.0, 600, ACCENT, "middle"))
+s._layers.append(_t(sx(5600), ay + 3.6, "MATERIAL FLOW", 2.0, 600, ACCENT, "middle"))
 # zone balloons (BOM numbers)
 seen = set()
 for key, (bom, name, x0, x1, y0, y1, h, row) in ZONES.items():
@@ -168,7 +168,7 @@ s.add_notes("Zones (numbers match bom/bom.csv)", [
     "11 Electrical board, 230 V 40 A, interlock",
     "12 Export and residue cage by export door",
     "13 Shed preferred, or two 40 ft boxes 12 192 x 4 876",
-], x=276, y=34, width=146)
+], x=276, y=34, width=140)
 s.add_notes("Key data (RFE-CAL-001)", [
     "59.4 m2 footprint; clear aisle 1.52 m (1.20 m painted)",
     "Hot zone 1.0 m from stock; exits at both ends",
@@ -179,7 +179,7 @@ s.add_notes("Key data (RFE-CAL-001)", [
     "Not met: R1, R4, R8. At risk: R6, R12",
     "Container side walls: structural engineer only",
     "PRELIMINARY, NOT FOR FABRICATION",
-], x=276, y=113, width=146)
+], x=276, y=113, width=140)
 s.save(ROOT / "cad/drawings/RFE-DWG-001")
 shutil.rmtree(WORK, ignore_errors=True)
 print("wrote cad/drawings/RFE-DWG-001.svg, .pdf, .png")
