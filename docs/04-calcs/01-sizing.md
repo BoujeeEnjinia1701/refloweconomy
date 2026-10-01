@@ -3,9 +3,9 @@ doc_id: RFE-CAL-001
 title: ReflowEconomy reference micro-factory sizing and economics
 project: ReflowEconomy
 doc_type: Calculation note
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-09-25'
+date: '2026-09-30'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,11 +17,15 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002). Fume fan 1.5 kW (maximum demand 8.75 kW, 38.0 A; equipment $24,200; result +$1.61 per shift); intake quality rule (R16, 10 % residue threshold) added to the mass balance; rented shed preferred over containers
+- version: "0.3"
+  date: '2026-09-30'
+  author: Amish Chadha
+  change: "Design for construction (RFE-DDR-003): equipment $25,300 against the R10 value-engineering target of $25,000; result +$0.73 per shift; aisle 1.57 m; seam beam space and aisle headroom"
 ---
 
 # ReflowEconomy reference micro-factory sizing and economics
 
-On paper, the reference micro-factory handles 100 kg of mixed input per 8 h shift on 59.4 m², keeps 51.6 % of the input local as products and clean flake, uses 0.83 kWh per kilogram of output, needs at most 8.75 kW (38.0 A at 230 V) on a single-phase supply with staggered heating, and costs $24,200 in equipment. It breaks even at best: the result is about +$1.61 per shift before rent at the reference prices, and the break-even product price is $2.45/kg against an assumed $2.50/kg. Three requirements are **not met** (R1, R4 and R8: 28.4 % of the reference input goes to licensed disposal against a 20 % target; the new intake quality rule R16 shows a load needs 10.6 % residue or less to meet it), two are **at risk** (R6 throughput, R12 noise) and two cannot be verified at TRL 3 (R11 exposure, R15 form time).
+On paper, the reference micro-factory handles 100 kg of mixed input per 8 h shift on 59.4 m², keeps 51.6 % of the input local as products and clean flake, uses 0.83 kWh per kilogram of output, needs at most 8.75 kW (38.0 A at 230 V) on a single-phase supply with staggered heating, and costs $25,300 in equipment ($300 over the R10 value-engineering target of $25,000). It breaks even at best: the result is about +$0.73 per shift before rent at the reference prices, and the break-even product price is $2.48/kg against an assumed $2.50/kg. Three requirements are **not met** (R1, R4 and R8: 28.4 % of the reference input goes to licensed disposal against a 20 % target; the new intake quality rule R16 shows a load needs 10.6 % residue or less to meet it), two are **at risk** (R6 throughput, R12 noise) and two cannot be verified at TRL 3 (R11 exposure, R15 form time).
 
 Every number in this note is printed by `python docs/04-calcs/sizing.py`, which also writes `docs/04-calcs/results.csv`. The script reads the layout from `cad/src/model.py`, the equipment cost from `bom/bom.csv` and the economics from `docs/playbook/economics_model.py` with `docs/playbook/economics_inputs.csv`, and it stops with an error if the economics inputs disagree with this calculation. All values are estimates for a paper proof of concept; none has been measured.
 
@@ -152,16 +156,16 @@ The layout is built by `cad/src/model.py` and drawn on RFE-DWG-001 Rev P2.
 | Check | Value | Target |
 | --- | --- | --- |
 | Footprint | 12.19 x 4.88 m = 59.4 m² (56.7 m² inside) | 60 m² or less |
-| Central aisle | 1.52 m clear between equipment; 1.20 m painted | 1.0 m or more |
+| Central aisle | 1.57 m clear between equipment; 1.20 m painted; 2.04 m headroom under the cable tray crossing | 1.0 m or more |
 | Hot zone clearance to stock | 1.00 m (to racking bay 1) | 1.0 m or more |
 | Exits | Intake and export doors at X = 0, personnel exit at the far end; worst travel along the aisle 7.9 m | Two exits |
 | Zone overlaps | None | None |
 
-R5 is **met**, with the hot zone clearance exactly at its limit. Amish decided on 2026-09-25 (RFE-DDR-002, item 11) that a rented shed of the same size is the preferred shell where one is available. The container option is kept for sites without a shed; removing the adjoining side walls of two containers weakens them, so it is done only to a structural engineer's design.
+R5 is **met**, with the hot zone clearance exactly at its limit. Amish decided on 2026-09-25 (RFE-DDR-002, item 11) that a rented shed of the same size is the preferred shell where one is available. The container option is kept for sites without a shed; removing the adjoining side walls of two containers weakens them, so it is done only to a structural engineer's design. The constructable design (RFE-DDR-003) reserves a 165 x 305 mm space under the roof along the seam for the engineer's seam beam; the lowest thing over the aisle is the cable tray crossing, 2.04 m above the floor.
 
 ## 9. Equipment cost
 
-`bom/bom.csv` prices every line. Items 1 to 12 total **$24,200**, $800 under the R10 target of $25,000 (met on paper). The building shell adds about $8,000. Against the TRL 2 list, the shredder line gained a $600 acoustic enclosure, the fume line $300 for a second hood and the carbon stage, and the board $300 for the heater interlock. In v0.2 the fume line gains a further $150 for the 1.5 kW fan (RFE-DDR-002), which moves the total from $24,050 to $24,200. `budget_usd` in `project.yaml` stays null because this is a playbook repo; the equipment list is checked against R10 instead.
+`bom/bom.csv` prices every line. Items 1 to 12 total **$25,300** against the R10 value-engineering target of $25,000 (a hypothetical control target, not a limit): $300 over the target. The building shell adds about $9,200 for the container option. Against the TRL 2 list, the shredder line gained a $600 acoustic enclosure, the fume line $300 for a second hood and the carbon stage, and the board $300 for the heater interlock. In v0.2 the fume line gains a further $150 for the 1.5 kW fan (RFE-DDR-002), which moves the total from $24,050 to $24,200. In v0.3 the design for construction (RFE-DDR-003, 2026-09-30) adds $1,100 to items 1 to 12 (drying fan stand $50, transfer bridge $250, sash, take-off, brackets, wall sleeve and fan stand $400, backboard and cable tray $400) and $1,200 to the container shell (seam beam, floor seam plate, roof flashing). `budget_usd` in `project.yaml` stays null because this is a playbook repo; R10 is the value-engineering target instead.
 
 ## 10. Economics model
 
@@ -183,10 +187,10 @@ The operator-editable model is `docs/playbook/economics_model.py` with its input
 | Consumables | Allowance | -10.00 |
 | Filters | Allowance | -3.00 |
 | **Operating margin** | | **+20.97** |
-| Equipment recovery | $24,200 over 5 years of 250 shifts | -19.36 |
-| **Result before rent and finance** | | **+1.61** |
+| Equipment recovery | $25,300 over 5 years of 250 shifts | -20.24 |
+| **Result before rent and finance** | | **+0.73** |
 
-Break-even product price: **$2.45/kg** at 100 kg input (the reference is $2.50/kg). Break-even input: **98 kg per shift** against a line capacity of 100 kg. Each $0.50/kg on the product price moves the result by $16.15 per shift, far more than any machine choice. The full cost of products and flake is $1.85/kg of output. R3 is **met**: the model exists, works per kilogram and per shift, gives the break-even points and is editable. Its review with an operating recycler is later work.
+Break-even product price: **$2.48/kg** at 100 kg input (the reference is $2.50/kg). Break-even input: **99 kg per shift** against a line capacity of 100 kg. Each $0.50/kg on the product price moves the result by $16.15 per shift, far more than any machine choice. The full cost of products and flake is $1.86/kg of output. R3 is **met**: the model exists, works per kilogram and per shift, gives the break-even points and is editable. Its review with an operating recycler is later work.
 
 ## 11. Material passport
 
@@ -202,14 +206,14 @@ The script validates the three example records in `standards/examples/` (an inta
 | --- | --- | --- | --- |
 | R1 | Feasibility matrix: 7 groups with route, rating, hazard, export point and a source per row | 7 groups with route and reason; no hazard, export point or source columns | **Not met** |
 | R2 | Sourced recipe for PET, HDPE, PP and aluminium | 4 recipes in `docs/playbook/recipes/` (aluminium as the add-on bay) | Met |
-| R3 | Operator-editable economics model with break-even | Model and CSV; result +$1.61 per shift; break-even product price $2.45/kg | Met |
+| R3 | Operator-editable economics model with break-even | Model and CSV; result +$0.73 per shift; break-even product price $2.48/kg | Met |
 | R4 | Every export stream names refining step, receiver type and packing rule | Principle and cell packing rule only | **Not met** |
-| R5 | 60 m² or less, aisles 1.0 m or more, separate hot zone | 59.4 m²; aisle 1.52 m; hot zone 1.00 m from stock | Met |
+| R5 | 60 m² or less, aisles 1.0 m or more, separate hot zone | 59.4 m²; aisle 1.57 m; hot zone 1.00 m from stock | Met |
 | R6 | 100 kg or more of mixed input per 8 h shift | Shredder 3.79 h of 4 h at an assumed 15 kg/h; press capacity 2.06 sheets for 2 | At risk |
 | R7 | 50 % or more kept local as products or clean flake | 51.6 % | Met |
 | R8 | Residue to licensed disposal 20 % or less, process losses counted | 28.4 % at the reference mix (20 % sorting residue plus 8.4 % process losses); 19.5 % for a load at the R16 threshold | **Not met** |
 | R9 | 1.0 kWh/kg of output or less | 0.83 kWh/kg | Met |
-| R10 | Equipment items 1 to 12 $25,000 or less | $24,200 | Met |
+| R10 | Equipment items 1 to 12: value-engineering target $25,000 | $25,300 ($300 over the target) | Over target |
 | R11 | 0.5 m/s on every melt process; no PVC, PS or unknown plastics; air below exposure limits | Hoods sized for 0.5 m/s (0.57 m³/s, fan 1.00 kW); exposure needs air monitoring | Not verifiable at TRL 3 |
 | R12 | Guarded shredder, insulated hot surfaces, RCDs, 85 dB(A) LEX or hearing zones | Guarding defined; LEX 94 dB(A) bare, 79 dB(A) enclosed (sound power assumed) | At risk |
 | R13 | Valid passport for every outgoing lot | 3 of 3 examples valid against schema v0.2 | Met |
@@ -217,10 +221,12 @@ The script validates the three example records in `standards/examples/` (an inta
 | R15 | Passport filled in 2 min or less | Needs a form and a timed trial | Not verifiable at TRL 3 |
 | R16 | Intake quality rule with a residue threshold that keeps R8 within 20 % | Threshold 10 % residue by sampled mass (limit 10.6 %); loads above it refused or charged | Met |
 
-Summary: 3 not met (R1, R4, R8), 2 at risk (R6, R12), 2 not verifiable at TRL 3 (R11, R15), 9 met (including the new R16).
+Summary: 3 not met (R1, R4, R8), 2 at risk (R6, R12), 2 not verifiable at TRL 3 (R11, R15), 1 over its value-engineering target (R10, by $300), 8 met (including R16).
 
 ## 13. Corrections to earlier figures
 
 The TRL 2 documents quoted first-order values that this calculation replaces: products 30 kg (now 32.3 kg), flake 20 kg (19.3 kg), process losses 10 kg (8.4 kg), energy about 45 kWh and 0.9 kWh/kg (42.9 kWh and 0.83 kWh/kg), peak load about 13 kW (8.35 kW maximum demand with the interlock; 13.35 kW connected), equipment $22,850 (now $24,050), operating margin about $18 and result about $0 (now $20.97 and +$1.73 in v0.1, updated below). The TRL 2 note that about 2 % of the melt feed is lost as purge did not match its own 2 kg figure; the calculation uses 3 %. R8 was reported as met at the limit because only the sorting residue was counted; counting the process losses that also go to licensed disposal, it is not met.
 
 In v0.2 (RFE-DDR-002, 2026-09-25) the 1.5 kW fume fan changes the maximum demand from 8.35 kW (36.3 A) to 8.75 kW (38.0 A), the connected load from 13.35 kW to 13.75 kW, the equipment total from $24,050 to $24,200 and the result per shift from +$1.73 to +$1.61. Energy per shift is unchanged, because the fan input depends on the air flow and pressure, not on the motor rating.
+
+In v0.3 (RFE-DDR-003, 2026-09-30, design for construction) the equipment total moves from $24,200 to $25,300, the result per shift from +$1.61 to +$0.73, the break-even product price from $2.45/kg to $2.48/kg and the break-even input from 98 to 99 kg per shift; the clear aisle widens from 1.52 m to 1.57 m because the bins and sorting table now stand behind the painted aisle line. The hood flows are unchanged: the press booth now has two front openings, but one sliding sash always covers one of them, and the larger opening (1.2 x 0.6 m) is the one in the calculation. The duct route is shorter than the 8 m equivalent length assumed, so the pressure figure stays conservative.

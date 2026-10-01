@@ -183,3 +183,51 @@ Amish asked on 2026-09-26 for photoreal renders across the portfolio, starting w
 - Kit 1.5.0 synced: STANDARDS v1.5 (sections 12 to 15: product renders, storefront images and image quality, public release, authorship and signing), `.kit/cards.py`, `.kit/image_qc.py`, `.kit/release_gate.py`, issue templates, and the `/render-product` and `/release` commands. `CLAUDE.md` now matches `.kit/CLAUDE.md`.
 - Every `media/render-*.png` recaptioned from its original render with the new layout: the title, concept label and repository sit in a band above the render and the view note in a band below it, each line wrapped to the image width, so no text overlaps other text or the render or runs off the image. `media/card.png` and `media/social-preview.png` regenerated with the same rules.
 - `python .kit/image_qc.py` and `python .kit/release_gate.py` pass. trl stays 3.
+
+## Session 2026-09-30: kit 1.7.0, design for construction and prototype build plan
+
+Authority: Amish's 2026-09-30 instruction to write an illustrated build plan for every repo and to "fix the design assumptions to match and be physically feasible as you draw the illustrations", his approval of the build plan format with open decisions kept in a separate register, and his 2026-10-01 instruction that budgets are value-engineering targets. TRL stays 3; TRL 4 remains on hold. No git commit was made in this copy.
+
+### What was done
+
+- Kit 1.7.0 installed (`.kit/`, `.claude/commands/`); `CLAUDE.md` replaced by `.kit/CLAUDE.md`.
+- `cad/src/model.py` rebuilt as a constructable layout with named components and `--check` (1,457 constructability checks: overlaps, 37 required contacts, roof height, aisle clearance and headroom; all pass). STEP and STL regenerated.
+- New decision record `docs/decisions/0003-design-for-construction.md` (RFE-DDR-003, Draft).
+- New build plan `docs/05-build-plan.md` (RFE-BLD-001) and register `docs/06-design-decisions.md` (RFE-DEC-001).
+- `cad/src/build_plan_media.py`: overview, 11 making sketches (`cad/drawings/RFE-DWG-101` to `111`), 13 joint close-ups and 20 step pictures in `docs/05-build-plan/`.
+- RFE-DWG-001 Rev P3; concept media regenerated (`media/hero.png`, `exploded.png`, `flow.png`, `concept-blueprint.*`, `model.glb`).
+- `bom/bom.csv`, `bom/bom-notes.md`, `docs/playbook/economics_inputs.csv` (capex) and `docs/04-calcs/sizing.py` (R10 as a value-engineering target) updated; RFE-CAL-001 v0.3, RFE-REQ-001 v0.5, RFE-PRC-001 v0.5, README (links and "Building the prototype") and `project.yaml` (`design_state: constructable`, new evidence) updated.
+
+### Design changes made for construction (RFE-DDR-003)
+
+1. Seam beam under the roof on the container corner posts (engineer's design; 165 x 305 mm space reserved), walls cut only after it is in; floor seam cover plate in four lengths.
+2. Hood B is a sheet box bolted to the extruder frame, barrel through its end; it no longer cuts into the extruder or hangs in the air.
+3. Duct lowered under the booth roof, through a sealed collar in the booth end wall, with a booth take-off and damper at the elbow (the booth was not extracted before); two wall brackets; flanged wall sleeve.
+4. Booth gets a second opening at the cooling press, one sliding sash on rails covering one opening at a time, and a roller transfer bridge between the presses; cooling press moved 50 mm.
+5. Shredder enclosure loses its floor (the shredder stood inside it), its roof drops to 1.60 m so the chute mouth is 1.70 m (was 2.1 m), the chute becomes a hollow collar with an interlocked lid, and the access door moves to the aisle face (it opened into the tanks).
+6. Plywood backboard for the electrical board and eyewash.
+7. Cable tray: back run, one aisle crossing under the seam beam (2.04 m headroom), front run.
+8. Braced fan stand outside; discharge stack drawn.
+9. Drying fan on a floor stand.
+10. Export cage gate on the aisle face (the export doors are 170 mm away).
+11. Sorting table and bins moved behind the painted aisle line (clear aisle 1.52 to 1.57 m); flake bags out of the racking shelf; hot zone line beside the booth wall.
+
+### Key numbers
+
+Equipment items 1 to 12: $25,300, $300 over the R10 value-engineering target of $25,000 (was $24,200). Container shell $9,200 (was $8,000). Result per shift +$0.73 before rent (was +$1.61); break-even product price $2.48/kg. Hood flows, energy (42.9 kWh per shift) and maximum demand (8.75 kW) unchanged. Requirements: not met R1, R4, R8; at risk R6, R12; not verifiable R11, R15; R10 over its target; 8 met.
+
+### Proposed, awaiting Amish
+
+All in `docs/06-design-decisions.md`: acceptance of RFE-DDR-003; shredder feed height and reach distance; the booth's second opening; doors and gates that open into the aisle; aisle headroom; first co-design partner (carried over).
+
+### Safety concerns
+
+The four open items above touch the safety case. The seam beam and wall removal still need a structural engineer; the shredder enclosure has no ventilation, so the gearmotor temperature must be checked; a qualified safety professional must review the finished layout, exits and headroom.
+
+### Stale media
+
+`media/render-hero.png`, `media/card.png` and `media/social-preview.png` (made on Amish's Mac) show the concept layout without the seam beam, cable tray, fan stand, sash or the new hood B. They need regenerating there.
+
+### Recommended next step
+
+Amish to review RFE-DDR-003 and the open decisions in the register. TRL 4 remains on hold.

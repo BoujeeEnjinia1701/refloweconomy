@@ -8,7 +8,7 @@ Open playbook for local micro-factories that recover and remanufacture materials
 
 ![ReflowEconomy: local micro-factory for recovered plastics, photoreal render](media/render-hero.png)
 
-[Interactive 3D model](media/viewer.html) · [Floor plan GA (PDF)](cad/drawings/RFE-DWG-001.pdf) · [Calculation note](docs/04-calcs/01-sizing.md) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Material flow](media/flow.png) · [Review note](docs/REVIEW.md)
+[Interactive 3D model](media/viewer.html) · [Floor plan GA (PDF)](cad/drawings/RFE-DWG-001.pdf) · [Calculation note](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Material flow](media/flow.png) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
@@ -55,7 +55,7 @@ Smaller and lower-income countries export scrap and import finished goods, losin
 
 ## Concept
 
-The playbook is built around one reference design: a plastics micro-factory on 59.4 m² (a rented shed, or two 40 ft container footprints where no shed is available) with a central aisle, intake and sorting, washing and float-sink, an enclosed shredder, drying, a hot zone with an extruder and a sheet press under enclosing hoods, a product store, a passport desk and a safety station. Per 100 kg of collected input, the calculation note (RFE-CAL-001) gives on paper 32.3 kg of HDPE and PP products and 19.3 kg of clean PET flake kept local (51.6 %), 10 kg exported for industrial refining (metals, circuit boards, cells), 10 kg of paper sold locally and 28.4 kg to licensed disposal, using 0.83 kWh per kilogram of output with a maximum demand of 8.75 kW on a single-phase supply. The equipment costs $24,200 (indicative, outside any hardware budget), and the site only breaks even at the assumed prices. Keeping disposal at 20 % needs deliveries with about 10 % residue or less, so the playbook adds an intake quality rule. A material passport (schema v0.2) opens at intake and travels with every lot that leaves.
+The playbook is built around one reference design: a plastics micro-factory on 59.4 m² (a rented shed, or two 40 ft container footprints where no shed is available) with a central aisle, intake and sorting, washing and float-sink, an enclosed shredder, drying, a hot zone with an extruder and a sheet press under enclosing hoods, a product store, a passport desk and a safety station. Per 100 kg of collected input, the calculation note (RFE-CAL-001) gives on paper 32.3 kg of HDPE and PP products and 19.3 kg of clean PET flake kept local (51.6 %), 10 kg exported for industrial refining (metals, circuit boards, cells), 10 kg of paper sold locally and 28.4 kg to licensed disposal, using 0.83 kWh per kilogram of output with a maximum demand of 8.75 kW on a single-phase supply. The equipment costs $25,300 (indicative, outside any hardware budget; $300 over the $25,000 value-engineering target), and the site only breaks even at the assumed prices. Keeping disposal at 20 % needs deliveries with about 10 % residue or less, so the playbook adds an intake quality rule. A material passport (schema v0.2) opens at intake and travels with every lot that leaves.
 
 ![Material flow](media/flow.png)
 
@@ -70,6 +70,12 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md)
 - Reference micro-factory: parametric layout [cad/src/model.py](cad/src/model.py), floor plan [RFE-DWG-001](cad/drawings/RFE-DWG-001.pdf), sizing [RFE-CAL-001](docs/04-calcs/01-sizing.md) and equipment list [bom/bom.csv](bom/bom.csv)
 - Material passport schema v0.2 (JSON): [standards/material-passport-v0.2.schema.json](standards/material-passport-v0.2.schema.json), with [example records](standards/examples/); v0.1 kept at [standards/material-passport.schema.json](standards/material-passport.schema.json)
 - Links to machine repos (WasteWise Scan, WasteWise-ml, planned shredder, foundry and cell tester)
+
+## Building the prototype
+
+The prototype is the reference micro-factory itself, fitted out in a rented shed or in two 40 ft containers joined side by side. The build plan ([docs/05-build-plan.md](docs/05-build-plan.md)) takes it component by component in build order: the shell and seam beam, the safety station and electrical board, the hot zone with its booth and fume duct, the enclosed shredder and the front row, then racking, desk and the export cage. Eleven parts are made in a local workshop from steel angle, sheet, mesh and plywood, each with its own making sketch; the machines are built to their published open designs or bought. Writing the plan made the layout buildable: the parts added and moved are recorded in [RFE-DDR-003](docs/decisions/0003-design-for-construction.md), and decisions still open are in the [design decisions register](docs/06-design-decisions.md).
+
+![Every component of the reference micro-factory, pulled apart and numbered in build order](docs/05-build-plan/overview.png)
 
 ## Safety
 

@@ -42,7 +42,9 @@ def zone_parts(exploded=False):
     out = []
     for bom, items in sorted(build_parts().items(), key=lambda kv: (kv[0] in (0, 13), kv[0])):
         for j, (name, shape, colour) in enumerate(items):
-            if bom == 13:
+            if bom == 13 and j > 0 and exploded:
+                continue                     # seam beam and seam plate: shown in the build plan, not the zone key
+            if bom == 13 and j == 0:
                 shape = SLAB if exploded else shape - FRONT_WALL
                 name = "Building shell (floor slab shown; walls omitted)" if exploded else "Building shell (front wall omitted)"
             elif j == 0 and bom:
@@ -160,9 +162,9 @@ if __name__ == "__main__":
                      "100 kg input per shift: 51.6 kg kept local (est.)",
                      "10 kg exported for refining; 28.4 kg to disposal (est.)",
                      "0.83 kWh/kg of output; 8.75 kW max demand, 230 V",
-                     "Equipment $24,200 indicative, excl. site",
+                     "Equipment $25,300 indicative (VE target $25,000)",
                      "Passport v0.2 on every lot that leaves (RFE-CAL-001)"],
-        cut=False, date="2026-09-25")
+        cut=False, date="2026-09-30")
     # Re-render the exploded view on a wider canvas so the legend clears the long floor plan
     from concept import _render
     _render(zone_parts(exploded=True), ROOT / "media" / "exploded.png", offsets=True, labels=True, size=(12, 6),

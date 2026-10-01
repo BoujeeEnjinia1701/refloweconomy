@@ -269,8 +269,11 @@ rows = list(csv.DictReader((ROOT / "bom" / "bom.csv").open()))
 cost = {int(r["item"].split()[0]): float(r["qty"]) * float(r["unit_cost_usd"]) for r in rows}
 equip = sum(v for k, v in cost.items() if k <= 12)
 say("\nH. Equipment cost (bom/bom.csv, indicative)")
-say(f"  Items 1 to 12: ${equip:,.0f} (R10 target $25,000; margin ${25000 - equip:,.0f}); building shell ${cost[13]:,.0f} extra")
-say(f"  budget_usd in project.yaml is null (playbook repo); the equipment list is checked against R10 instead")
+ve_target = 25000.0
+ve_delta = equip - ve_target
+ve_word = f"${abs(ve_delta):,.0f} {'over' if ve_delta > 0 else 'under'} the target"
+say(f"  Items 1 to 12: ${equip:,.0f} against the R10 value-engineering target of ${ve_target:,.0f} ({ve_word}); building shell ${cost[13]:,.0f} extra")
+say(f"  budget_usd in project.yaml is null (playbook repo); R10 is a value-engineering target, not a limit")
 
 # ---------------------------------------------------------------- I economics
 inp = econ.load()
@@ -317,7 +320,8 @@ R = [
     ("R7", "50 % or more of input kept local as products or clean flake", f"{local:.1f} %", "Met"),
     ("R8", "Residue to licensed disposal 20 % or less, process losses counted", f"{disposal:.1f} % at the reference mix ({c['residue']:.0f} % sorting residue + {losses:.1f} % process losses); {disposal_at(r_rule):.1f} % for a load at the R16 threshold", "Not met"),
     ("R9", "1.0 kWh/kg of output or less", f"{e_total / output:.2f} kWh/kg", "Met"),
-    ("R10", "Equipment items 1 to 12 $25,000 or less", f"${equip:,.0f}", "Met"),
+    ("R10", "Equipment items 1 to 12: value-engineering target $25,000", f"${equip:,.0f} ({ve_word})",
+     "Under target" if ve_delta <= 0 else "Over target"),
     ("R11", "0.5 m/s face velocity on every melt process; no PVC, PS or unknown; air below OELs",
      f"Hoods sized for 0.5 m/s ({Q:.2f} m3/s, fan {fan_kw:.2f} kW); exposure needs air monitoring", "Not verifiable at TRL 3"),
     ("R12", "Guarded shredder, insulated hot surfaces, RCDs, 85 dB(A) LEX or hearing zones",

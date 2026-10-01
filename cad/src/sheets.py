@@ -1,4 +1,4 @@
-"""ReflowEconomy general arrangement drawing RFE-DWG-001 (Rev P2): micro-factory floor plan.
+"""ReflowEconomy general arrangement drawing RFE-DWG-001 (Rev P3): micro-factory floor plan.
 
 Run from the repo root:  python cad/src/sheets.py
 Builds cad/drawings/RFE-DWG-001.svg, .pdf and .png from the parametric model in
@@ -54,22 +54,33 @@ D = 1e5
 cutter = box(-1000, P["FL_X"] + 1000, -1000, P["FL_Y"] + 2000, -200, CUT_Z)
 
 # plan: section below the cut, plus overhead items (hoods, duct, fan box) dashed
-below = Compound(children=[(s & cutter) for k, items in parts.items() for n, s, _ in items
-                           if not (k == 7 and ("Duct" in n or "Fan" in n))])
-over = collect(lambda k, n: k == 7)
+OVER = ("Duct", "Fan and filter", "Discharge", "Wall sleeve", "Booth take-off", "Duct wall", "Seam beam", "Cable tray", "Tray wall")
+def _cut(shp):
+    c = shp & cutter
+    try:
+        return c if c.wrapped is not None and c.volume > 1 else None
+    except Exception:
+        return None
+
+
+below = Compound(children=[c for k, items in parts.items() for n, s, _ in items
+                           if not n.startswith(OVER) for c in [_cut(s)] if c is not None])
+over = collect(lambda k, n: n.startswith(OVER))
 plan_top = project(below, "plan", (cx, cy, cz + D), (0, 1, 0), (cx, cy, cz))
 plan_over = project(over, "plan_over", (cx, cy, cz + D), (0, 1, 0), (cx, cy, cz), dashed=True)
 # front elevation without the front wall
-no_front = Compound(children=[s for k, items in parts.items() for n, s, _ in items if k not in (0, 13)]
+ELEV_TOP = box(-1000, P["FL_X"] + 1000, -1000, P["FL_Y"] + 2000, -200, 2750)   # stack drawn as a stub
+no_front = Compound(children=[s & ELEV_TOP for k, items in parts.items() for n, s, _ in items if k not in (0, 13)]
                     + [box(0, P["FL_X"], P["FL_Y"] - P["WALL_T"], P["FL_Y"], 0, P["WALL_H"]),
                        box(0, P["FL_X"], 0, P["FL_Y"], -150, 0)])
 elev = project(no_front, "front", (cx, cy - D, cz), (0, 0, 1), (cx, cy, cz))
 
 s = Sheet(project="ReflowEconomy", title="Reference micro-factory, floor plan GA", dwg_no="RFE-DWG-001",
-          rev="P2", author="Amish Chadha", date="2026-09-25", scale=K, concept=True,
+          rev="P3", author="Amish Chadha", date="2026-09-30", scale=K, concept=True,
           material="Layout only; equipment envelopes. See bom/bom.csv and RFE-CAL-001",
           revisions=[("P1", "Preliminary GA from the TRL 3 model (RFE-CAL-001)", "2026-09-25", "AC"),
-                     ("P2", "Notes: 1.5 kW fan, 38 A demand, shed preferred (RFE-DDR-002)", "2026-09-25", "AC")])
+                     ("P2", "Notes: 1.5 kW fan, 38 A demand, shed preferred (RFE-DDR-002)", "2026-09-25", "AC"),
+                     ("P3", "Design for construction (RFE-DDR-003): booth, duct, tray, seam beam", "2026-09-30", "AC")])
 
 # placement: plan at top left, elevation below, both at 1:50
 PX, PY = 20.0, 24.0
@@ -85,12 +96,12 @@ def place(svg, x_of, y_of):
 place(plan_top, lambda vx: PX + (cx + vx - bb.min.X) * K, lambda vy: PY + (bb.max.Y - (cy - vy)) * K)
 place(plan_over, lambda vx: PX + (cx + vx - bb.min.X) * K, lambda vy: PY + (bb.max.Y - (cy - vy)) * K)
 s._layers.append(_t(PX + pw / 2, PY + ph + 11, "PLAN, SECTION AT 1.45 M", 2.8, 600, INK, "middle"))
-s._layers.append(_t(PX + pw / 2, PY + ph + 15, "Scale 1:50; dashed: hoods, duct and fan above the cut", 2.2, 400, MUTED, "middle"))
+s._layers.append(_t(PX + pw / 2, PY + ph + 15, "Scale 1:50; dashed: duct, fan, seam beam and cable tray above the cut", 2.2, 400, MUTED, "middle"))
 
 nb = no_front.bounding_box()
 EX, EY = PX, PY + ph + 18
 place(elev, lambda vx: EX + (cx + vx - bb.min.X) * K, lambda vy: EY + (nb.max.Z - (cz - vy)) * K)
-s._layers.append(_t(PX + pw / 2, EY + nb.size.Z * K + 6, "FRONT ELEVATION (FRONT WALL REMOVED)", 2.8, 600, INK, "middle"))
+s._layers.append(_t(PX + pw / 2, EY + nb.size.Z * K + 6, "FRONT ELEVATION (FRONT WALL REMOVED; STACK CONTINUES 1 M ABOVE THE ROOF)", 2.8, 600, INK, "middle"))
 s._layers.append(_t(PX + pw / 2, EY + nb.size.Z * K + 10, "Scale 1:50", 2.2, 400, MUTED, "middle"))
 
 
@@ -128,12 +139,12 @@ dim_v(sx(0) - 5, sy(P["FL_Y"]), sy(0), f"{P['FL_Y']:.0f}")
 a0, a1 = P["AISLE_Y0"], P["AISLE_Y0"] + P["AISLE_W"]
 dim_v(sx(P["FL_X"]) + 4, sy(a1), sy(a0), f"{P['AISLE_W']:.0f} AISLE")
 line(sx(P["WALL_T"]), sy(P["SEAM_Y"]), sx(P["FL_X"] - P["WALL_T"]), sy(P["SEAM_Y"]), 0.18, MUTED, "3 1 0.6 1")
-s._layers.append(_t(sx(600), sy(P["SEAM_Y"]) - 0.8, "container seam (container option only)", 1.9, 400, MUTED))
+s._layers.append(_t(sx(600), sy(P["SEAM_Y"] + 260), "seam beam over the container seam (container option only)", 1.9, 400, MUTED))
 # hot zone boundary
 hx0, hx1 = P["HOT_X"]
 s._layers.append(f'<rect x="{sx(hx0):.2f}" y="{sy(P["FL_Y"] - P["WALL_T"]):.2f}" width="{(hx1 - hx0) * K:.2f}" '
                  f'height="{(P["FL_Y"] - P["WALL_T"] - a1) * K:.2f}" fill="none" stroke="#B45309" stroke-width="0.35" stroke-dasharray="2 1"/>')
-s._layers.append(_t(sx(hx0) + 3, sy(P["FL_Y"] - P["WALL_T"]) + 21, "HOT ZONE", 2.0, 600, "#B45309"))
+s._layers.append(_t(sx(hx0) + 7, sy(P["FL_Y"] - P["WALL_T"]) + 21, "HOT ZONE", 2.0, 600, "#B45309"))
 # doors and flow arrow
 s._layers.append(_t(sx(0) + 1.5, sy(1550) + 0.8, "INTAKE DOOR", 1.9, 600, ACCENT))
 s._layers.append(_t(sx(0) + 1.5, sy(3000) - 0.8, "EXPORT DOOR", 1.9, 600, ACCENT))
@@ -141,7 +152,7 @@ s._layers.append(_t(sx(P["FL_X"]) - 1.5, sy(sum(P["EXIT"]) / 2) - 0.8, "EXIT", 2
 ay = sy(a0 + P["AISLE_W"] / 2)
 line(sx(1500), ay, sx(10200), ay, 0.35, ACCENT)
 s._layers.append(f'<path d="M{sx(10200):.2f} {ay - 1.4:.2f} L{sx(10200) + 3:.2f} {ay:.2f} L{sx(10200):.2f} {ay + 1.4:.2f} Z" fill="{ACCENT}"/>')
-s._layers.append(_t(sx(5600), ay + 3.6, "MATERIAL FLOW", 2.0, 600, ACCENT, "middle"))
+s._layers.append(_t(sx(4500), ay + 3.6, "MATERIAL FLOW", 2.0, 600, ACCENT, "middle"))
 # zone balloons (BOM numbers)
 seen = set()
 for key, (bom, name, x0, x1, y0, y1, h, row) in ZONES.items():
@@ -161,23 +172,24 @@ s.add_notes("Zones (numbers match bom/bom.csv)", [
     "4  Drying rack (7.2 m2 trays) and fan",
     "5  Extruder with barrel enclosure (hood B)",
     "6  Sheet press and cooling press (booth A)",
-    "7  Hoods, 250 mm duct, 1.5 kW fan, filter outside",
+    "7  Hoods, sash, 250 mm duct, 1.5 kW fan on a stand",
     "8  Racking: bay 1 products, bay 2 flake",
     "9  Passport and quality desk",
     "10 PPE cabinet, eyewash, extinguishers",
-    "11 Electrical board, 230 V 40 A, interlock",
+    "11 Board on backboard, interlock, cable tray",
     "12 Export and residue cage by export door",
-    "13 Shed preferred, or two 40 ft boxes 12 192 x 4 876",
+    "13 Shed preferred, or two 40 ft boxes with seam beam",
 ], x=276, y=34, width=140)
 s.add_notes("Key data (RFE-CAL-001)", [
-    "59.4 m2 footprint; clear aisle 1.52 m (1.20 m painted)",
+    "59.4 m2 footprint; clear aisle 1.57 m (1.20 m painted)",
     "Hot zone 1.0 m from stock; exits at both ends",
     "100 kg input/shift: 32.3 kg products, 19.3 kg flake",
     "Max demand 8.75 kW (38 A) with heater interlock",
     "Hoods 0.5 m/s face: 0.57 m3/s at about 815 Pa",
     "Shredder LEX 79 dB(A) enclosed (sound power assumed)",
     "Not met: R1, R4, R8. At risk: R6, R12",
-    "Container side walls: structural engineer only",
+    "Seam beam and side walls: structural engineer only",
+    "Aisle headroom 2.04 m under the tray crossing",
     "PRELIMINARY, NOT FOR FABRICATION",
 ], x=276, y=113, width=140)
 s.save(ROOT / "cad/drawings/RFE-DWG-001")

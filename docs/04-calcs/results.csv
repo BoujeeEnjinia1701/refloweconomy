@@ -1,14 +1,14 @@
 id,target,value,status
 R1,"Feasibility matrix: 7 groups with route, rating, hazard, export point and a source per row","7 groups with route and reason; no hazard, export point or source columns",Not met
 R2,"Sourced recipe for PET, HDPE, PP and aluminium",4 recipes in docs/playbook/recipes/ (aluminium as the add-on bay),Met
-R3,Operator-editable economics model with break-even,Model and CSV delivered; result +1.61 USD/shift; break-even product price 2.45 USD/kg,Met
+R3,Operator-editable economics model with break-even,Model and CSV delivered; result +0.73 USD/shift; break-even product price 2.48 USD/kg,Met
 R4,"Every export stream names refining step, receiver type and packing rule",Principle and cell packing rule only,Not met
-R5,"60 m2 or less, aisles 1.0 m or more, separate hot zone",59.4 m2; aisle 1.52 m; hot zone 1.00 m from stock,Met
+R5,"60 m2 or less, aisles 1.0 m or more, separate hot zone",59.4 m2; aisle 1.57 m; hot zone 1.00 m from stock,Met
 R6,100 kg or more mixed input per 8 h shift,Shredder 3.79 h of 4 h at an assumed 15 kg/h; press 2.06 sheets of capacity for 2,At risk
 R7,50 % or more of input kept local as products or clean flake,51.6 %,Met
 R8,"Residue to licensed disposal 20 % or less, process losses counted",28.4 % at the reference mix (20 % sorting residue + 8.4 % process losses); 19.5 % for a load at the R16 threshold,Not met
 R9,1.0 kWh/kg of output or less,0.83 kWh/kg,Met
-R10,"Equipment items 1 to 12 $25,000 or less","$24,200",Met
+R10,"Equipment items 1 to 12: value-engineering target $25,000","$25,300 ($300 over the target)",Over target
 R11,"0.5 m/s face velocity on every melt process; no PVC, PS or unknown; air below OELs","Hoods sized for 0.5 m/s (0.57 m3/s, fan 1.00 kW); exposure needs air monitoring",Not verifiable at TRL 3
 R12,"Guarded shredder, insulated hot surfaces, RCDs, 85 dB(A) LEX or hearing zones","Guarding defined; LEX 94 dB(A) bare, 79 dB(A) with enclosure (sound power assumed)",At risk
 R13,Valid passport for every outgoing lot,3 of 3 examples valid against schema v0.2,Met
