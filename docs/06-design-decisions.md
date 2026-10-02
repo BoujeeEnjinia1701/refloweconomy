@@ -3,9 +3,9 @@ doc_id: RFE-DEC-001
 title: ReflowEconomy design decisions register
 project: ReflowEconomy
 doc_type: Design decisions register
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,6 +13,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Register opened with the build plan; open decisions from RFE-DDR-001 to RFE-DDR-003; equipment cost treated as a value-engineering target
+- version: "0.2"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: 'Amish approved the recommendations for all six open decisions (2026-10-02); RFE-DDR-003 accepted; moved to decisions made'
 ---
 
 # ReflowEconomy design decisions register
@@ -21,14 +25,7 @@ Every design decision still to be made, and every decision made, in one place. E
 
 ## Open decisions
 
-| # | Decision needed | Options | Recommendation | Affects in the build | Source |
-| --- | --- | --- | --- | --- | --- |
-| 1 | Design for construction: accept the changes that make the layout buildable (seam beam and floor plate, hood B on the extruder frame, duct route and booth take-off, sliding sash with two openings and the transfer bridge, shredder enclosure without a floor and with a lower roof, backboard, cable tray, fan stand and stack, drying fan stand, cage gate, bins behind the aisle line) | (a) accept all; (b) accept with named exceptions | (a) | The whole build plan follows these changes | RFE-DDR-003, Table 1 |
-| 2 | Shredder feed height and reach distance (safety case) | (a) chute mouth at 1.70 m as modelled, reach distance to the cutters checked against ISO 13857 at the safety review and the chute lengthened if short; (b) the concept's 2.1 m mouth with a fixed step platform and handrail | (a): no work at height; the interlocked lid still stops the rotor | Enclosure roof height, chute collar (RFE-DWG-109) | RFE-DDR-003, A1 |
-| 3 | Second opening in the press booth (safety case) | (a) one sliding sash over two openings, as modelled; (b) two sashes with an electrical interlock; (c) one opening only, cooled sheets taken out through it | (a): "one opening at a time" is mechanical, not a rule | Booth front panel, sash and rails (RFE-DWG-105, 106) | RFE-DDR-003, A2 |
-| 4 | Shredder enclosure door and cage gates opening into the aisle (safety case) | (a) hinged, opening into the aisle only during locked-off maintenance or loading; (b) sliding door and gates (about +$300) | (a), with the rule written into the playbook safety section | Enclosure door, cage gates (RFE-DWG-109, 111) | RFE-DDR-003, A3 |
-| 5 | Aisle headroom of 2.04 m under the tray crossing and about 2.09 m under the seam beam (container option; safety case) | (a) accept, if the local code allows 2.0 m on an escape route; (b) cables through a sleeve in the beam web, if the engineer allows | (a), confirmed against the local code by the safety professional | Cable tray crossing, seam beam | RFE-DDR-003, A4 |
-| 6 | First co-design partner and region | (a) a waste-picker cooperative; (b) an existing Precious Plastic workspace; (c) a municipal program | (a) or (b); left open under the rule that partners are picked per area later | Site, shell choice, local prices and the input quality that R8 depends on | RFE-DDR-001, item 7; RFE-DDR-002 |
+None. All open decisions were decided on 2026-10-02.
 
 ## To confirm when parts are bought
 
@@ -58,3 +55,9 @@ Value-engineering target: USD 25,000 for equipment items 1 to 12 (requirement R1
 | 2026-09-25 | First release licensing (documents CC BY-SA 4.0, hardware CERN-OHL-S-2.0, scripts MIT); R8 keeps the honest total with an intake quality rule (R16, 10 % residue threshold); derated 5 kW single-phase sheet press as the reference; 1.5 kW fume fan; rented shed preferred, container side walls removed only to a structural engineer's design | Amish: "i accept all your recommendations, go with them across all repos." | RFE-DDR-002, items 6 (release) and 8 to 11 |
 | 2026-09-25 | TRL 4 on hold for every repo | Amish: "Make sure we don't proceed to TRL 4 on any of them." | RFE-DDR-001 |
 | 2026-10-01 | Budgets are value-engineering targets, not limits; R10 reported as over or under its target | Amish: "the budgets are a hypothethical control target to ensure we are thinking along a value engineering lens" | This register; RFE-CAL-001 v0.3 |
+| 2026-10-02 | Design for construction accepted: all the changes of Table 1 and their knock-on changes, as made, with the four safety-case items decided separately (A1 to A4, below) | Amish: "i approve your recommendations for all 555 open decisions." | RFE-DDR-003, Table 1 |
+| 2026-10-02 | Shredder feed: keep the 1.70 m chute mouth, but do the ISO 13857 reach check from the model now rather than at the safety review, and lengthen or baffle the chute until it passes | Amish: "i approve your recommendations for all 555 open decisions." | RFE-DDR-003, A1 |
+| 2026-10-02 | Press booth: one sliding sash over the two openings, as modelled | Amish: "i approve your recommendations for all 555 open decisions." | RFE-DDR-003, A2 |
+| 2026-10-02 | Shredder enclosure door and cage gates: hinged, opening into the aisle only during locked-off maintenance or loading, with self-closing hinges and the rule in the playbook's safety section; sliding door and gates instead if the open door leaves less than the local code's minimum escape width | Amish: "i approve your recommendations for all 555 open decisions." | RFE-DDR-003, A3 |
+| 2026-10-02 | Aisle headroom: accept 2.04 m, confirmed against the local code by the safety professional, with the tray crossing padded and marked with hazard tape | Amish: "i approve your recommendations for all 555 open decisions." | RFE-DDR-003, A4 |
+| 2026-10-02 | First co-design partner and region: (a), a waste-picker cooperative; first candidate to approach, SWaCH in Pune, India, reached through the WIEGO network (not agreed) | Amish: "i approve your recommendations for all 555 open decisions." | RFE-DDR-001, item 7; RFE-DDR-002 |

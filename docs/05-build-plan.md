@@ -3,9 +3,9 @@ doc_id: RFE-BLD-001
 title: ReflowEconomy prototype build plan
 project: ReflowEconomy
 doc_type: Build plan
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-09-30'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,6 +13,10 @@ revisions:
     date: '2026-09-30'
     author: Amish Chadha
     change: First build plan, with pictures by component and step; design made constructable (RFE-DDR-003)
+  - version: "0.2"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: 'Safety stop S7: padded and marked tray crossing, escape width past the open enclosure door (decided by Amish, 2026-10-02)'
 ---
 
 # ReflowEconomy prototype build plan
@@ -578,7 +582,7 @@ Stop at each point. Carry on only when everything listed is true.
 - **S4. Before any heater is switched on.** The fan runs; the face velocity at each opening has been measured at 0.5 m/s or more; the heater interlock has been tested; the two hot zone extinguishers are in place; nothing combustible is inside the hot zone line. Extraction runs whenever a heater is on and for 30 minutes after.
 - **S5. Before the shredder takes material.** The lid and door interlocks stop the rotor every time; the intake rules are in force: no lithium cells, sharps, chemical containers or PVC in the feed; cells found at intake go straight into the sand container.
 - **S6. Before the first melt.** Only identified HDPE and PP go into the extruder or press; PVC, polystyrene, PET and unknown plastics are never heated. Heat-resistant gloves and face shields are worn at the presses.
-- **S7. Before anyone works a shift in it.** A qualified safety professional has reviewed the finished layout, the exits and the headroom against the local code; workers are trained and none is under 18.
+- **S7. Before anyone works a shift in it.** A qualified safety professional has reviewed the finished layout, the exits and the headroom against the local code, including the 2.04 m under the tray crossing, which is padded and marked with hazard tape, and the escape width past the open enclosure door; workers are trained and none is under 18 (headroom and door rules decided by Amish, 2026-10-02).
 
 ## 7. Tools, skills and workspace
 

@@ -231,3 +231,45 @@ The four open items above touch the safety case. The seam beam and wall removal 
 ### Recommended next step
 
 Amish to review RFE-DDR-003 and the open decisions in the register. TRL 4 remains on hold.
+
+## Session 2026-10-02: open decisions decided by Amish
+
+Authority: Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." The recommendations approved are those written for the open decisions in the design decisions register. No model, BOM quantity or price, or picture was changed; where a decision needs one, it is listed below as a follow-up. `trl` and `trl_target` stay at 3. No commit or push.
+
+### Decisions recorded
+
+6, all moved to "Decisions made" in `docs/06-design-decisions.md`, dated 2026-10-02:
+
+1. Design for construction (RFE-DDR-003) accepted: all changes of Table 1, with the four safety-case items decided separately.
+2. Shredder feed: keep the 1.70 m chute mouth; ISO 13857 reach check from the model now; lengthen or baffle the chute until it passes.
+3. Press booth: one sliding sash over the two openings.
+4. Enclosure door and cage gates: hinged, opening into the aisle only during locked-off maintenance or loading, self-closing hinges, rule in the playbook safety section; sliding if the escape width falls short.
+5. Aisle headroom: 2.04 m accepted, confirmed against the local code by the safety professional; tray crossing padded and marked with hazard tape.
+6. First co-design partner: a waste-picker cooperative; first candidate to approach SWaCH in Pune, India, through the WIEGO network.
+
+### Documents changed
+
+- `docs/06-design-decisions.md` (RFE-DEC-001 v0.2)
+- `docs/decisions/0003-design-for-construction.md` (RFE-DDR-003 v0.2): accepted; A1 to A4 recorded; status stays Draft
+- `docs/decisions/0001-trl2-review-decisions.md` (RFE-DDR-001 v0.3): item 7 decided
+- `docs/decisions/0002-recommendations-accepted.md` (RFE-DDR-002 v0.2): item 7 decided
+- `docs/01-problem.md` (RFE-PRB-001 v0.5): first partner
+- `docs/02-concept.md` (RFE-PRC-001 v0.6): shredder safety rules; first partner
+- `docs/04-calcs/01-sizing.md` (RFE-CAL-001 v0.4): guarding note: reach check now
+- `docs/05-build-plan.md` (RFE-BLD-001 v0.2): safety stop S7: headroom padding and escape width
+- `docs/playbook/safety.md`: three rules added: chute reach, door and gates, aisle headroom
+
+### Follow-up actions to carry approved decisions into the design
+
+1. Decision 2 (calcs): Do the ISO 13857 reach check from the 1.70 m chute mouth to the cutters using the model's distances, and record it in RFE-CAL-001, section 7 or 8.
+2. Decision 2 (model): If the check fails, lengthen or baffle the chute collar in `cad/src/model.py` and on RFE-DWG-109.
+3. Decision 2 (pictures): Show any chute change in build plan section 3.16 and step 16.
+4. Decision 4 (model): Fit self-closing hinges to the enclosure door and cage gates in the model and on RFE-DWG-109 and 111.
+5. Decision 4 (bom): Add self-closing hinges to the BOM line 3 spec and the cage line (price check).
+6. Decision 5 (pictures): Add padding and hazard tape on the tray crossing to the model, Figure 9 and the cable tray spec in the BOM.
+7. Decision 5 (bom): Add the padding and hazard tape to the BOM cable tray line.
+
+### Points found in the review
+
+- A saving in Value engineering (a rented shed removing USD 1,200 of seam work) is a container-shell cost outside the USD 25,000 equipment target, so it does not reduce the USD 300 gap.
+- The guarding note in the calculations defers ISO 13857 checks to 'the detailed design stage'; with the chute shortened, the shredder reach check should not wait.

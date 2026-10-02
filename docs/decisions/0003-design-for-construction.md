@@ -3,9 +3,9 @@ doc_id: RFE-DDR-003
 title: ReflowEconomy design for construction
 project: ReflowEconomy
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-09-30'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,12 +13,16 @@ revisions:
   date: '2026-09-30'
   author: Amish Chadha
   change: Changes that make the reference micro-factory physically buildable, with the reason for each; made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review
+- version: "0.2"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: 'Accepted by Amish on 2026-10-02, with A1 to A4 as recommended in review; record stays Draft'
 ---
 
 # 0003: Design for construction
 
 - **Date:** 2026-09-30
-- **Status:** Draft. The changes in Table 1 were made under Amish's 2026-09-30 instruction to make the design physically buildable; they are open for his review. The questions in Table 3 touch the safety case and are **Proposed, awaiting Amish**; they are also listed in the design decisions register (RFE-DEC-001).
+- **Status:** accepted. Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." This covers every change in Tables 1 and 2, with the four safety-case items in Table 3 (A1 to A4) decided separately as recommended in review and recorded in the design decisions register (RFE-DEC-001). The record stays Draft.
 
 > **Safety:** The reference micro-factory has a shredder, surfaces at 190 to 200 °C, melt fumes, water near electricity, lithium cells in the waste stream and a high fire load. No change here relaxes a safety rule. Four changes touch the safety case (the shredder feed height, the booth's second opening, doors and gates that open into the aisle, and the aisle headroom); each is recorded below and put to Amish, not decided.
 
@@ -60,14 +64,14 @@ The changes keep what the micro-factory does: the same footprint, zones, rows, a
 | Drawing | RFE-DWG-001 Rev P3; making sketches RFE-DWG-101 to 111 added. | Follows the model. |
 | Documents | RFE-CAL-001 v0.3, RFE-REQ-001 v0.5, RFE-PRC-001 v0.5; build plan RFE-BLD-001 v0.1; design decisions register RFE-DEC-001 v0.1. | Follows the model. |
 
-*Table 3. Proposed, awaiting Amish (these touch the safety case).*
+*Table 3. Items that touch the safety case; decided by Amish on 2026-10-02.*
 
 | # | Question | Options | Recommendation |
 | --- | --- | --- | --- |
-| A1 | Shredder feed. The chute mouth is now 1.70 m up (was 2.1 m), so the distance from the mouth to the cutters is shorter than in the concept. | (a) 1.70 m mouth as modelled, with the reach distance from the mouth to the cutters checked against ISO 13857 at the safety review and the chute lengthened if it falls short; (b) the concept's 2.1 m mouth with a fixed step platform and handrail. | (a): no work at height, and the interlocked lid still stops the rotor whenever it is open. |
-| A2 | Booth A now has a second opening at the cooling press, covered by the one sliding sash. | (a) one sliding sash over two openings, as modelled; (b) two sashes with an electrical interlock so only one opens; (c) one opening only, with the cooled sheet taken out through it. | (a): the single panel makes "one opening at a time" mechanical, not a rule. |
-| A3 | The shredder enclosure door and the cage gates open into the aisle. | (a) hinged, opening into the aisle only during locked-off maintenance or loading; (b) sliding door and gates (about +$300). | (a), with the rule written into the safety section of the playbook. |
-| A4 | Aisle headroom is 2.04 m under the cable tray crossing and about 2.09 m under the seam beam (container option). | (a) accept, if the local code allows 2.0 m on an escape route; (b) take the cables through a sleeve in the beam web, if the engineer allows. | (a), confirmed against the local building code by the safety professional. |
+| A1 | Shredder feed. The chute mouth is now 1.70 m up (was 2.1 m), so the distance from the mouth to the cutters is shorter than in the concept. | (a) 1.70 m mouth as modelled, with the reach distance from the mouth to the cutters checked against ISO 13857 at the safety review and the chute lengthened if it falls short; (b) the concept's 2.1 m mouth with a fixed step platform and handrail. | (a): no work at height, and the interlocked lid still stops the rotor whenever it is open. **Decided by Amish, 2026-10-02:** (a), with the ISO 13857 reach check done from the model now rather than at the safety review, and the chute lengthened or baffled until it passes. |
+| A2 | Booth A now has a second opening at the cooling press, covered by the one sliding sash. | (a) one sliding sash over two openings, as modelled; (b) two sashes with an electrical interlock so only one opens; (c) one opening only, with the cooled sheet taken out through it. | (a): the single panel makes "one opening at a time" mechanical, not a rule. **Decided by Amish, 2026-10-02:** (a). |
+| A3 | The shredder enclosure door and the cage gates open into the aisle. | (a) hinged, opening into the aisle only during locked-off maintenance or loading; (b) sliding door and gates (about +$300). | (a), with the rule written into the safety section of the playbook. **Decided by Amish, 2026-10-02:** (a), with self-closing hinges and the rule in the playbook's safety section; (b) if the open door leaves less than the local code's minimum escape width. |
+| A4 | Aisle headroom is 2.04 m under the cable tray crossing and about 2.09 m under the seam beam (container option). | (a) accept, if the local code allows 2.0 m on an escape route; (b) take the cables through a sleeve in the beam web, if the engineer allows. | (a), confirmed against the local building code by the safety professional. **Decided by Amish, 2026-10-02:** (a), with the tray crossing padded and marked with hazard tape. |
 
 ## Consequences
 

@@ -3,9 +3,9 @@ doc_id: RFE-PRC-001
 title: ReflowEconomy design precis
 project: ReflowEconomy
 doc_type: Design precis
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-09-30'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,6 +29,10 @@ revisions:
   date: '2026-09-30'
   author: Amish Chadha
   change: "Design for construction (RFE-DDR-003): equipment $25,300 against a $25,000 value-engineering target, result +$0.73 per shift, aisle 1.57 m, RFE-DWG-001 Rev P3, link to the build plan"
+- version: "0.6"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: 'Decisions of 2026-10-02 carried in: chute reach check now, self-closing door and gates, first partner candidate'
 ---
 
 # ReflowEconomy design precis
@@ -156,7 +160,7 @@ Two layout choices follow from these and are not separate decisions: one hot zon
 
 > **Safety:** A micro-factory combines moving machinery, hot surfaces, fumes, water near electricity, sharp and contaminated input and a high fire load of plastic. These rules extend `docs/playbook/safety.md` and must be reviewed by a qualified safety professional before any site operates.
 
-- **Shredder (moving machinery).** Fixed guards, a hopper interlock that stops the rotor when opened, an emergency stop within reach, lockout before clearing jams, and no hands or tools in the hopper. In the reverberant steel room a bare shredder would put the whole floor at about 95 dB(A), so the shredder sits in a lined acoustic enclosure with an interlocked feed chute and door (about 79 dB(A) over 8 h on paper, RFE-CAL-001 section 7). The shredder area stays a hearing protection zone until the level is measured.
+- **Shredder (moving machinery).** Fixed guards, a hopper interlock that stops the rotor when opened, an emergency stop within reach, lockout before clearing jams, and no hands or tools in the hopper. In the reverberant steel room a bare shredder would put the whole floor at about 95 dB(A), so the shredder sits in a lined acoustic enclosure with an interlocked feed chute and door (about 79 dB(A) over 8 h on paper, RFE-CAL-001 section 7). The shredder area stays a hearing protection zone until the level is measured. The reach from the 1.70 m chute mouth to the cutters is checked against ISO 13857 from the model now, and the chute is lengthened or baffled until it passes; the enclosure door and the cage gates have self-closing hinges and open into the aisle only during locked-off maintenance or loading (decided by Amish, 2026-10-02).
 - **Heat.** Extruder barrels and press platens run at about 190 to 200 °C (never above 230 °C for HDPE or 240 °C for PP). Insulated covers, heat-resistant gloves, face shields and a cool-down rule before maintenance. Never leave heaters on unattended.
 - **Fumes.** Only identified HDPE and PP are melted. PVC is never heated (it releases hydrogen chloride), and polystyrene, PET and unknown plastics are not melted in the reference line. Extraction runs whenever a heater is on and for 30 min after, through two enclosing hoods sized for 0.5 m/s at their openings (RFE-CAL-001 section 6).
 - **Electricity and water.** 30 mA RCDs on every circuit, splash-rated sockets near the wash tanks, a heater interlock that keeps the maximum demand at about 38 A on a 40 A single-phase supply, and an installation by a licensed electrician.
@@ -178,4 +182,4 @@ Two layout choices follow from these and are not separate decisions: one hot zon
 - [ ] Passport fields that buyers actually need, and a form fast enough for R15
 - [ ] Permits for a small plastics recycler in the first target region
 - [ ] Whether collectors can supply loads at 10 % residue or less, the R16 threshold (R8)
-- [ ] First co-design partner and region (RFE-DDR-001 item 7), awaiting Amish
+- [x] First co-design partner and region (RFE-DDR-001 item 7): a waste-picker cooperative; the first candidate to approach is a waste-picker cooperative, for example SWaCH in Pune, India, reached through the WIEGO network; nothing is agreed (decided by Amish, 2026-10-02)

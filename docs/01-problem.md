@@ -3,9 +3,9 @@ doc_id: RFE-PRB-001
 title: ReflowEconomy problem statement
 project: ReflowEconomy
 doc_type: Problem statement
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,6 +25,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002). Supply figures updated for the 1.5 kW fume fan (maximum demand near 9 kW, about 14 kW connected); rented shed preferred; intake quality rule noted
+- version: "0.5"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: 'First co-design partner decided by Amish on 2026-10-02: a waste-picker cooperative, first candidate SWaCH through WIEGO'
 ---
 
 # ReflowEconomy problem statement
@@ -84,7 +88,7 @@ Sources were checked online on 2026-09-25: the World Bank, UNEP, OECD, *Global E
 
 ## Open questions
 
-- Which region and partner should the first co-design round use: a waste-picker cooperative, an existing Precious Plastic workspace or a municipal program? This stays open, awaiting Amish; partners are picked per area later (RFE-DDR-001 item 7).
+- Which region and partner should the first co-design round use: a waste-picker cooperative, an existing Precious Plastic workspace or a municipal program? Decided by Amish on 2026-10-02 (RFE-DDR-001 item 7): a waste-picker cooperative; the first candidate to approach is a waste-picker cooperative, for example SWaCH in Pune, India, reached through the WIEGO network; nothing is agreed.
 - What do local buyers actually require before they will pay a premium for recycled feedstock, and which passport fields matter to them?
 - What share of collected material is target plastic in practice? The 60 % used in the concept is an estimate for source-separated collection; mixed dumpsite material will be lower.
 - Which permits apply to a small plastics recycler in the first target region (environmental, fire, occupational safety, waste handling)?

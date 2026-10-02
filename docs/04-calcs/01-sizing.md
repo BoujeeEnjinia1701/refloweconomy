@@ -3,9 +3,9 @@ doc_id: RFE-CAL-001
 title: ReflowEconomy reference micro-factory sizing and economics
 project: ReflowEconomy
 doc_type: Calculation note
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-09-30'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -21,6 +21,10 @@ revisions:
   date: '2026-09-30'
   author: Amish Chadha
   change: "Design for construction (RFE-DDR-003): equipment $25,300 against the R10 value-engineering target of $25,000; result +$0.73 per shift; aisle 1.57 m; seam beam space and aisle headroom"
+- version: "0.4"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: 'Guarding note: ISO 13857 reach check from the chute mouth done now (decided by Amish, 2026-10-02)'
 ---
 
 # ReflowEconomy reference micro-factory sizing and economics
@@ -143,7 +147,7 @@ Assumptions: the bare shredder chopping rigid plastic has an A-weighted sound po
 
 The steel room is reverberant, so a bare shredder puts the whole floor above 85 dB(A), not only the shredder zone. With the lined acoustic enclosure the operator exposure is 79.1 dB(A) over 8 h, below the 85 dB(A) limit in R12. With a 15 dB enclosure, the design still meets 85 dB(A) for any bare-machine sound power up to 107.9 dB; both the sound power and the insertion loss are assumptions. The shredder area stays a hearing protection zone until the level is measured.
 
-Guarding (defined, not detailed): fixed guards on all drive parts; feed through an interlocked chute in the enclosure roof, so the rotor cannot be reached with the lid open; interlocked enclosure door; emergency stop at the chute and at the board; lockout before clearing jams. Opening sizes and reach distances must be checked against ISO 13857 at the detailed design stage.
+Guarding (defined, not detailed): fixed guards on all drive parts; feed through an interlocked chute in the enclosure roof, so the rotor cannot be reached with the lid open; interlocked enclosure door; emergency stop at the chute and at the board; lockout before clearing jams. Opening sizes and reach distances must be checked against ISO 13857. Decided by Amish on 2026-10-02: the reach from the 1.70 m chute mouth to the cutters is checked from the model now, not at the detailed design stage or the safety review, and the chute is lengthened or baffled until it passes.
 
 R12 status: **at risk**. The noise result rests on an assumed sound power and insertion loss, and the guarding is defined but not detailed. The insulated hot surfaces and 30 mA RCDs are specified in the BOM.
 

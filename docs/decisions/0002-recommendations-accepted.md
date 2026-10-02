@@ -3,9 +3,9 @@ doc_id: RFE-DDR-002
 title: ReflowEconomy recommendations accepted
 project: ReflowEconomy
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,12 +13,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Record Amish's 2026-09-25 acceptance of all open recommendations, what changed in the repo and the items still open
+- version: "0.2"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: 'Item 7 (first co-design partner) decided by Amish on 2026-10-02'
 ---
 
 # 0002: Recommendations accepted
 
 - **Date:** 2026-09-25
-- **Status:** accepted (items 6 release, 8, 9, 10 and 11); item 7 remains proposed, awaiting Amish
+- **Status:** accepted (items 6 release, 8, 9, 10 and 11); item 7 decided by Amish on 2026-10-02 ("i approve your recommendations for all 555 open decisions.")
 
 > **Safety:** The reference micro-factory has a shredder, surfaces at 190 to 200 °C, melt fumes, water near electricity, lithium cells in the waste stream and a high fire load. None of these decisions relaxes a safety rule. Item 10 adds fan margin for the fume hoods, and item 11 makes the structurally simpler shell the preferred one.
 
@@ -46,11 +50,11 @@ The options for each item are in RFE-DDR-001 ("Items raised at TRL 3") and are n
 
 ### Items still open
 
-These stay **Proposed, awaiting Amish**.
+These stayed **Proposed, awaiting Amish** until Amish decided them on 2026-10-02.
 
 | # | Item | Why it stays open |
 | --- | --- | --- |
-| 7 | First co-design partner (waste-picker cooperative, Precious Plastic workspace or municipal program) | No single recommendation; partners are picked per area later under the cross-cutting rule in RFE-DDR-001 |
+| 7 | First co-design partner (waste-picker cooperative, Precious Plastic workspace or municipal program) | No single recommendation; partners are picked per area later under the cross-cutting rule in RFE-DDR-001. Decided by Amish, 2026-10-02: (a); the first candidate to approach is a waste-picker cooperative, for example SWaCH in Pune, India, reached through the WIEGO network; nothing is agreed |
 
 ### Cross-repo actions
 

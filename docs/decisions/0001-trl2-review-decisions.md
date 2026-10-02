@@ -3,9 +3,9 @@ doc_id: RFE-DDR-001
 title: ReflowEconomy TRL 2 review decisions
 project: ReflowEconomy
 doc_type: Design decision record
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,12 +17,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002). Items 6 (release license), 8, 9, 10 and 11 marked decided; item 7 stays open
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: 'Item 7 (first co-design partner) decided by Amish on 2026-10-02'
 ---
 
 # 0001: TRL 2 review decisions
 
 - **Date:** 2026-09-25
-- **Status:** accepted (items 1 to 6, 8, 9, 10 and 11; items 6 (release) and 8 to 11 decided by Amish on 2026-09-25 through RFE-DDR-002); item 7 remains proposed, awaiting Amish
+- **Status:** accepted (items 1 to 6, 8, 9, 10 and 11; items 6 (release) and 8 to 11 decided by Amish on 2026-09-25 through RFE-DDR-002); item 7 decided by Amish on 2026-10-02 ("i approve your recommendations for all 555 open decisions.")
 
 > **Safety:** The reference micro-factory has a shredder, surfaces at 190 to 200 °C, melt fumes, water near electricity, lithium cells in the waste stream and a high fire load. None of the decisions below relaxes a safety rule. Item 1 keeps molten aluminium out of the reference floor until an add-on bay has its own safety case.
 
@@ -64,7 +68,7 @@ On 2026-09-25 Amish wrote "i accept all your recommendations, go with them acros
 | # | Item | Options | Recommendation | Status |
 | --- | --- | --- | --- | --- |
 | 6 (release) | License for the first release of the playbook text | (a) keep CERN-OHL-S-2.0 for everything; (b) CC BY-SA 4.0 for documents, CERN-OHL-S-2.0 for hardware and MIT for scripts | (b), decided before the first release; this is a licensing decision for Amish | Decided by Amish, 2026-09-25: go with recommendation (b), applied when the first release is tagged |
-| 7 | First co-design partner | (a) a waste-picker cooperative; (b) an existing Precious Plastic workspace; (c) a municipal program | (a) or (b); left open under the cross-cutting rule that partners are picked per area later | Proposed, awaiting Amish |
+| 7 | First co-design partner | (a) a waste-picker cooperative; (b) an existing Precious Plastic workspace; (c) a municipal program | (a) or (b); left open under the cross-cutting rule that partners are picked per area later | Decided by Amish, 2026-10-02: (a); the first candidate to approach is a waste-picker cooperative, for example SWaCH in Pune, India, reached through the WIEGO network; nothing is agreed |
 | 8 | R8 definition (new at TRL 3) | (a) keep "residue to licensed disposal 20 % or less" and count process losses (not met at 28.4 %); (b) apply the 20 % limit to sorting residue only and report process losses separately; (c) keep the target and set a minimum input quality at intake | (c) with (a): keep the honest total and add an intake quality rule, because the site can refuse poor loads but cannot make losses disappear | Decided by Amish, 2026-09-25: go with recommendation |
 | 9 | Single-phase sheet press (new at TRL 3) | (a) a derated 5 kW press with lighter platens (the TRL 3 design, not a published open design); (b) the published 15 kW press on a site with a 400 V supply; (c) buy sheets pressed elsewhere and make only beams | (a) for the playbook, with (b) as an option where three-phase exists; RFE-CAL-001 shows (a) has almost no time margin | Decided by Amish, 2026-09-25: go with recommendation |
 | 10 | Fume fan size (new at TRL 3) | (a) 1.1 kW, 91 % loaded with dirty filters; (b) 1.5 kW, which raises the maximum demand to 38 A | (b), because filter loading is hard to police on a small site | Decided by Amish, 2026-09-25: go with recommendation |
