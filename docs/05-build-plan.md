@@ -3,7 +3,7 @@ doc_id: RFE-BLD-001
 title: ReflowEconomy prototype build plan
 project: ReflowEconomy
 doc_type: Build plan
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -17,6 +17,10 @@ revisions:
     date: '2026-10-02'
     author: Amish Chadha
     change: 'Safety stop S7: padded and marked tray crossing, escape width past the open enclosure door (decided by Amish, 2026-10-02)'
+  - version: "0.3"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: 'Decisions of 2026-10-02 carried into the pictures and text: feed hood on the chute, self-closing door and gate hinges, padded and taped tray crossing'
 ---
 
 # ReflowEconomy prototype build plan
@@ -45,12 +49,12 @@ The concept layout showed where everything goes; some of its parts overlapped, h
 | Hood B | A hood hanging in the air, cutting into the extruder | A sheet box bolted to the extruder frame, the barrel through its end (Figure 13) | The frame is the only thing there to carry it |
 | Duct | Through the booth wall and roof, with no inlet in the booth | Under the booth roof, through a sealed collar, with a booth take-off and damper (Figures 18 and 22) | The booth is now actually extracted |
 | Press booth | One opening, the cooling press unreachable | Two openings, one sliding sash, a transfer bridge between the presses (Figures 15, 17 and 20) | The hot mould stays in the booth; only one opening is ever open |
-| Shredder enclosure | A floor the shredder stood in; chute mouth 2.1 m up; door blocked by the tanks | No floor; roof 1.60 m; chute mouth 1.70 m with a lid; door on the aisle face (Figures 26 to 28) | It can be built round the machine, fed from the floor and opened |
+| Shredder enclosure | A floor the shredder stood in; chute mouth 2.1 m up; door blocked by the tanks | No floor; roof 1.60 m; a feed hood on the chute with its slot 1.70 m up, so a hand cannot reach the cutters; self-closing door on the aisle face (Figures 26 to 28) | It can be built round the machine, fed from the floor and opened |
 | Board and eyewash | On the bare corrugated wall | On a plywood backboard (Figure 7) | Something flat to screw to |
-| Cables | No route | One cable tray, crossing the aisle under the seam beam (Figure 9) | One crossing, with the least loss of headroom |
+| Cables | No route | One cable tray, crossing the aisle under the seam beam, padded and taped where it crosses (Figure 9) | One crossing, with the least loss of headroom |
 | Fan box | Floating outside the wall | On a braced stand, with the stack drawn (Figure 25) | It needs a support that does not load the wall |
 | Drying fan | Floating | On a floor stand (Figure 31) | |
-| Export cage | No gate that could open | A double gate on the aisle face (Figure 33) | The export doors are only 170 mm away |
+| Export cage | No gate that could open | A double gate on self-closing hinges on the aisle face (Figure 33) | The export doors are only 170 mm away |
 | Bins | Over the painted aisle line | Behind it; the clear aisle widens to 1.57 m | Keeps the aisle clear |
 
 ## 3. Making the components
@@ -136,13 +140,13 @@ The backboard sits on the back wall from 3,350 to 4,650 along and from 600 to 2,
 
 *Figure 8. The tray runs along the back wall, crosses the aisle once under the seam beam and runs along the front wall.*
 
-**What to buy and fit.** A distribution board for a 230 V, 40 A single-phase supply with 30 mA residual current devices on every circuit, circuit breakers, an emergency stop circuit, the heater interlock contactor that locks the press heaters out while the shredder or extruder runs, and an energy meter. About 20 m of 100 x 50 perforated galvanised cable tray with three wall spacers, two beam clamps and a short riser trunking from the board top.
+**What to buy and fit.** A distribution board for a 230 V, 40 A single-phase supply with 30 mA residual current devices on every circuit, circuit breakers, an emergency stop circuit, the heater interlock contactor that locks the press heaters out while the shredder or extruder runs, and an energy meter. About 20 m of 100 x 50 perforated galvanised cable tray with three wall spacers, two beam clamps and a short riser trunking from the board top. For the aisle crossing: 1.4 m of 15 mm closed-cell foam edge guard and a roll of yellow and black hazard tape.
 
-**How it fits.** The tray's underside is 2,038 above the floor everywhere. The back run sits on the backboard and on 20 mm spacers riveted to the wall at about 5,100, 6,100 and 7,050 along, from 3,900 to the end wall of the press booth, where the cables pass through a gland. The crossing runs across the aisle at 5,550 to 5,650 along, clamped under the seam beam. The front run is screwed to the front wall from 3,800 to 8,900 along, over the washing tanks, the shredder enclosure and the drying rack.
+**How it fits.** The tray's underside is 2,038 above the floor everywhere. The back run sits on the backboard and on 20 mm spacers riveted to the wall at about 5,100, 6,100 and 7,050 along, from 3,900 to the end wall of the press booth, where the cables pass through a gland. The crossing runs across the aisle at 5,550 to 5,650 along, clamped under the seam beam. Over the aisle, from 1,600 to 3,000 from the front wall, the foam is fitted round its underside and sides and wrapped in hazard tape in 100 mm yellow and black bands, so a head that touches it meets something soft and seen. The front run is screwed to the front wall from 3,800 to 8,900 along, over the washing tanks, the shredder enclosure and the drying rack.
 
 ![Figure 9. Joint 3: the tray crossing under the seam beam](05-build-plan/joint-03.png)
 
-*Figure 9. Two beam clamps carry the crossing; it leaves 2.04 m of headroom over the aisle.*
+*Figure 9. Two beam clamps carry the crossing; under its taped padding there is 2.02 m of headroom over the aisle.*
 
 **Check before moving on.** The electrician's installation certificate and residual current device trip tests are done (stop S3).
 
@@ -332,29 +336,30 @@ The stand stands on a concrete pad (or four paving slabs on compacted ground) ou
 
 *Figure 27. Shredder acoustic enclosure making sketch (RFE-DWG-109).*
 
-**What it is and what it is made from.** A lined box built round the shredder to cut its noise by about 15 dB, with an interlocked access door and an interlocked feed chute. Panels 60 thick: 1.5 mm steel outer skin, 50 mm mineral wool and a perforated inner liner, on frames of 40 x 40 x 4 angle.
+**What it is and what it is made from.** A lined box built round the shredder to cut its noise by about 15 dB, with a self-closing interlocked access door and an interlocked feed chute. A feed hood on top of the chute turns the way in, so a hand pushed into the feed slot cannot reach the cutters. Panels 60 thick: 1.5 mm steel outer skin, 50 mm mineral wool and a perforated inner liner, on frames of 40 x 40 x 4 angle.
 
 **How to make it.**
 
 1. Make four wall panels (two 1,600 long and two 1,400 long, all 1,540 tall) and a roof panel 1,600 x 1,400. There is no floor.
 2. In the aisle-side panel, frame a door opening 800 wide x 1,450 tall, 400 from the washing end.
-3. Make the door leaf 790 x 1,440 x 30 the same way, with three hinges, a rubber seal and an interlock switch.
+3. Make the door leaf 790 x 1,440 x 30 the same way, with three self-closing spring hinges on the edge nearer the washing tanks, a rubber seal and an interlock switch.
 4. In the roof, frame a hole 500 x 410, 550 from the washing end and 500 from the face nearest the front wall.
-5. Make the chute collar: a 500 x 410 x 160 tube of lined 2 mm sheet, with a hinged lid and an interlock switch on the lid.
+5. Make the chute collar: a 500 x 410 x 160 tube of lined 2 mm sheet.
+6. Make the feed hood: a lined 2 mm sheet box 500 wide, 850 long and 180 tall with a closed top, closed sides and a closed end over the collar, and a lined sill 100 tall under its other half that stands on the roof. Its open end, facing the aisle, is the feed slot, 460 wide and 160 tall, with its bottom lip 1,700 above the floor. Hang a flap over the slot from the top edge, with an interlock switch.
 
 **How it fits the parts next to it.**
 
 ![Figure 28. Joint 10: the feed chute over the shredder hopper](05-build-plan/joint-10.png)
 
-*Figure 28. Cut across: the collar goes through the roof over the hopper; a rubber skirt closes the 28 mm gap below it.*
+*Figure 28. Cut across: material goes in through the slot, along the hood and down the collar to the hopper. A hand would have to go 460 mm in and 600 mm down, 1,060 mm in all, to touch the cutters; 850 mm is enough. A rubber skirt closes the 28 mm gap below the collar.*
 
 ![Figure 29. Joint 11: the access door on the aisle face](05-build-plan/joint-11.png)
 
-*Figure 29. The door opens into the aisle only with the shredder locked off; the flake bin comes out here.*
+*Figure 29. The door shuts itself on its spring hinges and opens into the aisle only with the shredder locked off; the flake bin comes out here.*
 
-The panels bolt together at the corners round the shredder and stand on the floor at 5,800 to 7,400 along and 150 to 1,550 from the front wall, held by angle cleats screwed down at 600 pitch. They clear the shredder by 140 and 135 at the ends, 370 in front, 360 behind and 28 above. The collar sits in the roof hole with its mouth 1,700 above the floor. Both interlock switches are wired into the shredder's stop circuit by the electrician.
+The panels bolt together at the corners round the shredder and stand on the floor at 5,800 to 7,400 along and 150 to 1,550 from the front wall, held by angle cleats screwed down at 600 pitch. They clear the shredder by 140 and 135 at the ends, 370 in front, 360 behind and 28 above. The collar sits in the roof hole and the feed hood bolts on top of it, its sill on the roof, with the slot facing the aisle and its lip 1,700 above the floor. Feed pieces must be thinner than the 160 mm slot. Both interlock switches are wired into the shredder's stop circuit by the electrician. The reach from the slot to the cutters assumes the cutters are about 1,100 above the floor; measure them on the machine actually built and tell the safety professional if they are higher.
 
-**Check before moving on.** Opening the lid, or the door, stops the rotor every time (stop S5).
+**Check before moving on.** Opening the flap, or the door, stops the rotor every time, and the door swings shut by itself when let go (stop S5).
 
 ### 3.17 Washing tanks and trap (bought)
 
@@ -402,18 +407,18 @@ The rack stands on the floor at 7,700 to 8,900 along, 200 to 800 from the front 
 **How to make it.**
 
 1. Make six panels 1,800 tall: two sides 1,400 wide, a back 2,100 wide, and on the aisle face two panels either side of a 1,200 gate opening (350 and 550 wide).
-2. Make two gate leaves 590 x 1,770 of the same mesh and angle, with two hinges each, a drop bolt on one and a padlock hasp on the other.
+2. Make two gate leaves 590 x 1,770 of the same mesh and angle, each on two self-closing gate hinges, with a drop bolt on one and a padlock hasp on the other.
 3. Drill the frames for M8 bolts at the corners.
 
 **How it fits the parts next to it.**
 
 ![Figure 33. Joint 13: the cage gates on the aisle face](05-build-plan/joint-13.png)
 
-*Figure 33. The gates open into the aisle, not toward the export doors 170 mm away.*
+*Figure 33. The gates shut themselves and open into the aisle only while loading, not toward the export doors 170 mm away.*
 
 The cage stands at 250 to 2,350 along and 3,300 to 4,700 from the front wall, no floor, open top, held by angle cleats at each corner. Inside go a fire-safe steel container with dry sand for lithium cells and the bale bags.
 
-**Check before moving on.** Both gates swing fully open and lock shut.
+**Check before moving on.** Both gates swing fully open, shut by themselves when let go, and lock shut. With them open, 1.08 m of aisle remains.
 
 ### 3.21 Bought components
 
@@ -472,7 +477,7 @@ The electrician fits the board with its residual current devices, emergency stop
 
 ![Step 7](05-build-plan/step-07.png)
 
-Spacers, then the back run, the crossing under the seam beam on two beam clamps, and the front run. **Hold point:** stop S2.
+Spacers, then the back run, the crossing under the seam beam on two beam clamps, and the front run. Then the foam padding and hazard tape on the crossing over the aisle. **Hold point:** stop S2.
 
 ### Step 8: extruder into the hot zone
 
@@ -526,7 +531,7 @@ Levelled; its emergency stop and drive wired from the front tray by the electric
 
 ![Step 16](05-build-plan/step-16.png)
 
-Wall panels bolted together round the shredder and cleated down, then the roof, the collar and lid, and the door. Both interlocks wired into the stop circuit. **Hold point:** stop S5.
+Wall panels bolted together round the shredder and cleated down, then the roof, the collar, the feed hood with its flap, and the door on its self-closing hinges. Both interlocks wired into the stop circuit. **Hold point:** stop S5.
 
 ### Step 17: washing tanks, drying rack and fan
 
@@ -550,7 +555,7 @@ Racking anchored to the floor, bay 1 exactly 1.0 m from the hot zone line; desk 
 
 ![Step 20](05-build-plan/step-20.png)
 
-Panels bolted together and cleated down; gates on the aisle face; sand container and bale bags inside.
+Panels bolted together and cleated down; gates on self-closing hinges on the aisle face; sand container and bale bags inside.
 
 ## 5. First checks
 
@@ -561,11 +566,11 @@ These are the checks a TRL 4 test report would record; this plan only lists them
 | Check | Requirement | How | Pass when |
 | --- | --- | --- | --- |
 | Floor area and aisle | R5 | Tape measure along the aisle and between rows | Clear aisle 1.0 m or more everywhere (1.57 m by design); nothing stands on the painted lines |
-| Headroom over the aisle | R5 | Measure under the tray crossing and the seam beam | 2.0 m or more (2.04 m by design) |
+| Headroom over the aisle | R5 | Measure under the tray crossing and the seam beam | 2.0 m or more (2.02 m under the padding by design) |
 | Hot zone clearance | R5 | Measure from the boundary line to the nearest stock | 1.0 m or more |
 | Residual current devices | R12 | Trip test on every circuit, by the electrician | Each trips within its rated time at 30 mA |
 | Heater interlock | R12 | Run the shredder, then try to switch on the press heaters; repeat with the extruder | The press heaters cannot switch on while either motor runs |
-| Shredder interlocks and stop | R12 | Open the chute lid, then the door, then press the emergency stop, each with the rotor running empty | The rotor stops each time and does not restart until reset |
+| Shredder interlocks and stop | R12 | Open the feed slot flap, then the door, then press the emergency stop, each with the rotor running empty | The rotor stops each time and does not restart until reset |
 | Hood face velocity | R11 | Vane anemometer across opening 1 (sash over opening 2), opening 2 (sash over opening 1) and the hood B face, fan running, filters new | 0.5 m/s or more averaged over each opening |
 | Sash | R11 | Slide it end to end | It covers each opening with 25 mm or more to spare and cannot leave both open |
 | Shredder noise | R12 | Sound level meter 1 m from the enclosure, shredder running on HDPE | Recorded; the area stays a hearing protection zone until this is known |
@@ -580,9 +585,9 @@ Stop at each point. Carry on only when everything listed is true.
 - **S2. Before the supply is connected.** The electrician has installed and tested the board, the residual current devices, the emergency stop circuit and the heater interlock, and issued the installation certificate. Every socket near the washing tanks is residual-current protected and above splash height.
 - **S3. Before any motor runs.** Guards on, emergency stops within reach of each machine, lockout padlocks and tags for every isolator, hearing protection at the shredder.
 - **S4. Before any heater is switched on.** The fan runs; the face velocity at each opening has been measured at 0.5 m/s or more; the heater interlock has been tested; the two hot zone extinguishers are in place; nothing combustible is inside the hot zone line. Extraction runs whenever a heater is on and for 30 minutes after.
-- **S5. Before the shredder takes material.** The lid and door interlocks stop the rotor every time; the intake rules are in force: no lithium cells, sharps, chemical containers or PVC in the feed; cells found at intake go straight into the sand container.
+- **S5. Before the shredder takes material.** The flap and door interlocks stop the rotor every time; the door and the cage gates shut themselves; the intake rules are in force: no lithium cells, sharps, chemical containers or PVC in the feed; cells found at intake go straight into the sand container.
 - **S6. Before the first melt.** Only identified HDPE and PP go into the extruder or press; PVC, polystyrene, PET and unknown plastics are never heated. Heat-resistant gloves and face shields are worn at the presses.
-- **S7. Before anyone works a shift in it.** A qualified safety professional has reviewed the finished layout, the exits and the headroom against the local code, including the 2.04 m under the tray crossing, which is padded and marked with hazard tape, and the escape width past the open enclosure door; workers are trained and none is under 18 (headroom and door rules decided by Amish, 2026-10-02).
+- **S7. Before anyone works a shift in it.** A qualified safety professional has reviewed the finished layout, the exits and the headroom against the local code, including the 2.02 m under the padded and taped tray crossing, the escape width past the open enclosure door (1.66 m by design) and the reach from the feed slot to the cutters measured on the built machine; workers are trained and none is under 18 (headroom and door rules decided by Amish, 2026-10-02).
 
 ## 7. Tools, skills and workspace
 

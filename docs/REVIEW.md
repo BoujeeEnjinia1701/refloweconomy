@@ -273,3 +273,53 @@ Authority: Amish, 2026-10-02: "i approve your recommendations for all 555 open d
 
 - A saving in Value engineering (a rented shed removing USD 1,200 of seam work) is a container-shell cost outside the USD 25,000 equipment target, so it does not reduce the USD 300 gap.
 - The guarding note in the calculations defers ISO 13857 checks to 'the detailed design stage'; with the chute shortened, the shredder reach check should not wait.
+
+## Session 2026-10-02: Approved follow-ups carried out
+
+Authority: Amish, 2026-10-02: "497 follow-up actions that need CAD, drawing, picture, BOM or calculation work ... APPROVED CHANGES, COMPLETE THESE" and "Photoreal renders are out of date in most repos ... COMPLETE THESE". `trl` and `trl_target` stay at 3; `budget_usd` stays null. No commit or push.
+
+### Follow-ups
+
+1. Decision 2 (calcs), done: ISO 13857 reach check from the model in RFE-CAL-001 section 7 (Table 6a). With the cutter tops taken as 1,100 mm above the floor (assumed in the 1,512 mm machine envelope), the straight collar fails: 600 mm from the 1.70 m mouth against 850 mm, and the 460 x 370 mm mouth admits the head.
+2. Decision 2 (model), done: a cranked feed hood on the collar (`chute_hood` in `cad/src/model.py`): closed top, lined sill on the roof, 460 x 160 mm feed slot facing the aisle with its lip still at 1.70 m, interlocked flap replacing the lid. Reach path 1,060 mm (passes by 210 mm); the 160 mm slot keeps the head out. Two new constructability checks (reach and slot height); RFE-DWG-109 Rev P2.
+3. Decision 2 (pictures), done: build plan section 3.16 (new making step 6, Figures 28 and 29 captions, fit and check text), step 16 picture and text, joint 10 redrawn as a cut through the hood.
+4. Decision 4 (model), done: three self-closing spring hinges on the enclosure door and two per cage gate leaf, in the model and on RFE-DWG-109 and RFE-DWG-111 (both Rev P2); joints 11 and 13, step 20 redrawn. Escape width with them open: 1.66 m past the door, 1.08 m past the gates, so hinged doors are kept (RFE-CAL-001 section 8).
+5. Decision 4 (BOM), done: line 3 spec and price ($4,100 to $4,205, including the feed hood, about $80, and three hinges, about $25); line 12 ($900 to $960, two pairs of gate hinges at about $30 a pair). Basis: hardware retail and local workshop rates, indicative.
+6. Decision 5 (pictures), done: 15 mm foam padding in 100 mm yellow and black hazard tape bands round the tray crossing over the aisle (1.6 to 3.0 m from the front wall) in the model, Figure 9 (joint 3), step 7 and the overview. Headroom is now 2.02 m to the underside of the padding (2.04 m to the tray); still above the 2.0 m check.
+7. Decision 5 (BOM), done: line 11 spec and price ($1,900 to $1,940; foam edge guard about $15/m over 1.4 m, a roll of hazard tape about $10).
+
+### Documents changed and new versions
+
+- `cad/src/model.py` (feed hood, flap, hinges, padding, new checks: 1,745 checks, 0 failed); STEP and STL regenerated
+- `bom/bom.csv`, `bom/bom-notes.md`; `docs/playbook/economics_inputs.csv` (capex $25,505)
+- `docs/04-calcs/sizing.py` and `results.csv`; `docs/04-calcs/01-sizing.md` (RFE-CAL-001 v0.5)
+- `docs/03-requirements.md` (RFE-REQ-001 v0.6), `docs/02-concept.md` (RFE-PRC-001 v0.7), `docs/06-design-decisions.md` (RFE-DEC-001 v0.3), `docs/05-build-plan.md` (RFE-BLD-001 v0.3), `README.md`
+- Drawings: RFE-DWG-001 Rev P4, RFE-DWG-109 Rev P2, RFE-DWG-111 Rev P2
+- Pictures: overview, joints 3, 10, 11 and 13, steps 7, 16, 17, 19 and 20; concept media (hero, blueprint, exploded, flow, model.glb)
+- `cad/src/product_model.py` (new) and render scenes exported to `/home/claude/renders/refloweconomy` (views hero and hot-zone)
+
+### Results
+
+- Requirement status changes: none. R12 stays at risk (noise rests on an assumed sound power), with the reach check now passing on paper. R5 stays met at 2.02 m headroom.
+- Value-engineering target: USD 25,000. Estimated cost of the constructable design: USD 25,505 (USD 505 over the target). Result per shift +$0.57 (was +$0.73); break-even product price unchanged at $2.48/kg.
+- The calculation script needs jsonschema 4 or later for the passport check (section J); the system copy here is 3.2, so it was run with a newer copy on the path.
+
+### Appearance model (Proposed, awaiting Amish)
+
+ReflowEconomy is a scene repository, so the hero stays a scene render of the micro-factory. `cad/src/product_model.py` takes every part from `cad/src/model.py`; its deviations are: the front wall is left out so the floor shows (as in the concept media), surface materials are added, and two 1.75 m mannequins stand in the aisle (one at the feed slot, one walking) for scale. Views: hero (from the front above the intake end) and hot-zone (from the product end).
+
+### Cross-repo actions
+
+None.
+
+### Safety
+
+The reach result depends on the assumed cutter height; each 100 mm higher takes 100 mm off the 210 mm margin. The cutter height is measured on the chosen machine and the check confirmed by the safety professional (stop S7), with the escape widths and the 2.02 m headroom.
+
+### Recommended next step
+
+Amish to make the photoreal renders on his Mac from the exported scenes, then run `python .kit/cards.py .`. TRL 4 remains on hold.
+
+## 2026-10-02: photoreal renders redone on the constructable design
+
+Rendered with Blender Cycles on Amish's Mac from the updated appearance model; captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` regenerated with `.kit/cards.py`. Views: hero, hot-zone. image_qc passes. Appearance deviations are those logged above as proposed, awaiting Amish.

@@ -162,9 +162,9 @@ if __name__ == "__main__":
                      "100 kg input per shift: 51.6 kg kept local (est.)",
                      "10 kg exported for refining; 28.4 kg to disposal (est.)",
                      "0.83 kWh/kg of output; 8.75 kW max demand, 230 V",
-                     "Equipment $25,300 indicative (VE target $25,000)",
+                     "Equipment $25,505 indicative (VE target $25,000)",
                      "Passport v0.2 on every lot that leaves (RFE-CAL-001)"],
-        cut=False, date="2026-09-30")
+        cut=False, date="2026-10-02")
     # Re-render the exploded view on a wider canvas so the legend clears the long floor plan
     from concept import _render
     _render(zone_parts(exploded=True), ROOT / "media" / "exploded.png", offsets=True, labels=True, size=(12, 6),

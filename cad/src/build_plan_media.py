@@ -68,6 +68,7 @@ ORDER = [
     ("backboard", "Backboard", ["backboard"], (0, 0, 1500)),
     ("board", "Electrical board", ["board"], (0, -500, 1500)),
     ("tray", "Cable tray and spacers", ["tray", "tray_spacers"], (0, 0, 1900)),
+    ("tray_pad", "Tray crossing padding and hazard tape", ["tray_pad", "tray_tape"], (0, 0, 2500)),
     ("extruder", "Extruder", ["extruder"], (0, 0, 600)),
     ("hood_b", "Hood B", ["hood_b"], (0, 0, 1300)),
     ("presses", "Sheet press and cooling press", ["press_hot", "press_cool"], (0, 0, 500)),
@@ -77,13 +78,13 @@ ORDER = [
     ("duct", "Duct, brackets, take-off, sleeve", ["duct", "takeoff", "sleeve", "duct_brackets"], (0, 0, 3600)),
     ("fan", "Fan stand, fan and filter box, stack", ["fan_stand", "fan", "stack"], (0, 900, 0)),
     ("shredder", "Shredder", ["shredder"], (0, -2300, 0)),
-    ("enclosure", "Acoustic enclosure, door, chute and lid", ["shred_enc", "enc_door", "chute", "chute_lid"], (0, -2300, 1900)),
+    ("enclosure", "Acoustic enclosure, door and hinges, chute, feed hood", ["shred_enc", "enc_door", "door_hinges", "chute", "chute_hood", "chute_lid"], (0, -2300, 1900)),
     ("wash", "Washing tanks and trap", ["wash"], (0, -2300, 0)),
     ("dryer", "Drying rack and fan on its stand", ["rack_dry", "dry_stand", "dry_fan"], (0, -2300, 0)),
     ("intake", "Intake: scale, sorting table, bins", ["scale", "table", "bin_pet", "bin_hdpe", "bin_pp", "bin_metals"], (0, -2300, 0)),
     ("racking", "Racking with flake bags and products", ["rack1", "rack2", "lots1", "lots2"], (0, 0, 0)),
     ("desk", "Passport and quality desk", ["desk", "desk_kit"], (0, -2300, 0)),
-    ("cage", "Export cage, gates, sand container", ["cage", "cage_gates", "cage_kit"], (0, 0, 700)),
+    ("cage", "Export cage, gates, sand container", ["cage", "cage_gates", "gate_hinges", "cage_kit"], (0, 0, 700)),
 ]
 
 
@@ -111,7 +112,7 @@ def sheets(only=None):
 
     def make(no, *a, **k):
         if only is None or only == no:
-            out.append(bv.component_sheet(*a, dwg_no=f"RFE-DWG-{no}", **k, **base))
+            out.append(bv.component_sheet(*a, dwg_no=f"RFE-DWG-{no}", **{**base, **k}))
 
     # 101 floor seam cover plate (one of four lengths)
     one = C["seam_plate"][2].solids()[0]
@@ -261,7 +262,7 @@ def sheets(only=None):
                 "Check: the frame is level and does not rock under a hand push."])
 
     # 109 acoustic enclosure
-    enc = sh("shred_enc", "enc_door", "chute", "chute_lid")
+    enc = sh("shred_enc", "enc_door", "door_hinges", "chute", "chute_hood", "chute_lid")
     make(109, part("Acoustic enclosure", enc, col("shred_enc")),
          [part("Shredder", C["shredder"][2], GH), ctx(5300, 7900, -1, 2400)],
          title="ReflowEconomy shredder acoustic enclosure: making sketch",
@@ -271,15 +272,21 @@ def sheets(only=None):
                 "  outer skin, 50 mm mineral wool, perforated inner liner, on a",
                 "  frame of 40 x 40 x 4 angle, bolted together at the corners.",
                 "Aisle face: door opening 800 x 1450, 400 from the washing end.",
-                "Door: 790 x 1440 x 30 lined leaf, three hinges, rubber seal,",
-                "  interlock switch wired into the shredder stop circuit.",
+                "Door: 790 x 1440 x 30 lined leaf on three self-closing spring",
+                "  hinges at the washing-end edge, rubber seal, interlock switch.",
                 "Roof: hole 500 x 410, 550 from the washing end and 500 from the",
-                "  wall face; chute collar 500 x 410 x 160 of lined 2 mm sheet",
-                "  through it, mouth 1700 mm up; hinged lid with an interlock.",
+                "  wall face; chute collar 500 x 410 x 160 of lined 2 mm sheet.",
+                "Feed hood on the collar: 500 wide x 850 long x 180 tall, closed",
+                "  top, lined sill 100 tall on the roof; feed slot 460 x 160 in",
+                "  its aisle end, lip 1700 mm up; interlocked flap over the slot.",
+                "Reach from the slot to the cutters 1060 mm (850 mm needed).",
                 "Clear of the shredder: 140 and 135 at the ends, 370 in front,",
                 "  360 behind, 28 above (rubber skirt from chute to hopper).",
                 "Fit: angle cleats screwed to the floor at 600 pitch.",
-                "Check: lid or door open stops the rotor every time."])
+                "Check: flap or door open stops the rotor; the door shuts itself."],
+         date="2026-10-02", rev="P2",
+         revisions=[("P1", "First issue (RFE-BLD-001 v0.1)", "2026-09-30", "AC"),
+                    ("P2", "Feed hood for the reach check; self-closing door hinges", "2026-10-02", "AC")])
 
     # 110 drying rack and fan stand
     make(110, part("Drying rack and fan stand", sh("rack_dry", "dry_stand"), col("rack_dry")),
@@ -300,7 +307,7 @@ def sheets(only=None):
                 "Check: every tray slides out with one hand when full."])
 
     # 111 export cage
-    make(111, part("Export cage and gates", sh("cage", "cage_gates"), col("cage")),
+    make(111, part("Export cage and gates", sh("cage", "cage_gates", "gate_hinges"), col("cage")),
          [ctx(-1, 3000, 2600), part("Sand container and bale bags", C["cage_kit"][2], GH)],
          title="ReflowEconomy export and residue cage: making sketch",
          material="Welded mesh 50 x 50 x 4 on 40 x 40 x 4 angle frames",
@@ -310,11 +317,14 @@ def sheets(only=None):
                 "  bolted together at the corners with M8 bolts.",
                 "Aisle face: gate opening 1200 wide, 350 from the export-door end.",
                 "Gates (make 2): 590 x 1770 mesh leaves, 20 mm off the floor,",
-                "  two hinges each, drop bolt on one, padlock hasp on the other.",
+                "  two self-closing hinges each, drop bolt on one, padlock hasp.",
                 "Fit: 170 mm clear of the intake end wall, 96 mm from the back wall;",
                 "  angle cleats screwed to the floor at each corner.",
                 "Gates open into the aisle only while loading; keep them shut.",
-                "Check: both gates swing fully open and lock shut."])
+                "Check: both gates swing fully open, shut themselves and lock."],
+         date="2026-10-02", rev="P2",
+         revisions=[("P1", "First issue (RFE-BLD-001 v0.1)", "2026-09-30", "AC"),
+                    ("P2", "Self-closing gate hinges", "2026-10-02", "AC")])
     return out
 
 
@@ -351,9 +361,11 @@ def joints(only=None):
     # 3 tray crossing under the seam beam
     W = (5300, 5900, 2000, 2900, 1700, 2400)
     j(3, [part("Seam beam", win(C["seam_beam"][2], *W), col("seam_beam")),
-          part("Cable tray crossing, clamped under the beam", win(C["tray"][2], *W), col("tray"))],
-      "cable tray crossing the aisle under the seam beam",
-      "Two beam clamps hold the tray; its underside is 2,038 mm above the floor", elev=-15, azim=-60)
+          part("Cable tray crossing, clamped under the beam", win(C["tray"][2], *W), col("tray")),
+          part("Foam padding, yellow hazard tape", win(C["tray_pad"][2], *W), col("tray_pad")),
+          part("Black hazard tape bands", win(C["tray_tape"][2], *W), col("tray_tape"))],
+      "padded cable tray crossing under the seam beam",
+      "Two beam clamps hold the tray at 2,038 mm; the taped padding leaves 2,023 mm of headroom", elev=-15, azim=-60)
     # 4 hood B on the extruder frame (cut along the barrel)
     W = (5650, 7050, 3950, 4520, 600, 1800)
     j(4, [part("Extruder frame, drive and hopper", win(C["extruder"][2], *W), col("extruder")),
@@ -407,21 +419,23 @@ def joints(only=None):
       "fan and filter box on its stand (outside the back wall)",
       "Seen from outside, behind the factory", elev=15, azim=120)
     # 10 chute collar over the shredder (cut)
-    W = (6100, 7100, 400, 1300, 1200, 1800)
+    W = (6100, 7100, 400, 1650, 1050, 1950)
     j(10, [part("Shredder top and hopper", win(C["shredder"][2], *W), col("shredder")),
            part("Enclosure roof (lined)", win(C["shred_enc"][2], *W), col("shred_enc")),
            part("Chute collar through the roof", win(C["chute"][2], *W), col("chute")),
-           part("Interlocked lid", win(C["chute_lid"][2], *W), col("chute_lid"))],
-       "feed chute over the shredder hopper (cut across)",
-       "Mouth 1.70 m up; a rubber skirt closes the 28 mm gap down to the hopper", cut="+X", elev=12, azim=-30)
+           part("Feed hood, closed top", win(C["chute_hood"][2], *W), col("chute_hood")),
+           part("Interlocked flap over the slot", win(C["chute_lid"][2], *W), col("chute_lid"))],
+       "feed hood and chute over the shredder hopper (cut across)",
+       "Slot lip 1.70 m up; a hand must go 460 mm in and 600 mm down to the cutters", cut="+X", elev=12, azim=-155)
     # 11 enclosure door on the aisle face
     W = (5750, 7450, 1200, 1700, -10, 1700)
     j(11, [part("Enclosure (aisle face)", win(C["shred_enc"][2], *W), col("shred_enc")),
            part("Access door, interlocked", win(C["enc_door"][2], *W), col("enc_door")),
+           part("Three self-closing hinges", win(C["door_hinges"][2], *W), col("door_hinges")),
            part("Shredder", win(C["shredder"][2], *W), col("shredder")),
            part("Painted aisle line", win(C["markings"][2], *W), col("markings"))],
        "enclosure access door on the aisle face",
-       "Opens into the aisle only with the shredder locked off; the flake bin comes out here", elev=15, azim=-110)
+       "Shuts itself; opens into the aisle only with the shredder locked off", elev=15, azim=-110)
     # 12 drying fan on its stand
     W = (7650, 8950, 150, 1250, -10, 1900)
     j(12, [part("Drying rack and trays", win(C["rack_dry"][2], *W), col("rack_dry")),
@@ -432,9 +446,10 @@ def joints(only=None):
     # 13 cage gate
     W = (150, 2450, 3150, 4800, -10, 1900)
     j(13, [part("Mesh panels on angle frames", win(C["cage"][2], *W), col("cage")),
-           part("Two gate leaves (aisle face)", win(C["cage_gates"][2], *W), "#A16207")],
+           part("Two gate leaves (aisle face)", win(C["cage_gates"][2], *W), "#A16207"),
+           part("Self-closing gate hinges", win(C["gate_hinges"][2], *W), col("gate_hinges"))],
        "export cage gates on the aisle face",
-       "The gates open into the aisle, not toward the export doors 170 mm away", elev=22, azim=-60)
+       "Self-closing; they open into the aisle only while loading, never toward the export doors", elev=22, azim=-60)
     return out
 
 
@@ -476,8 +491,9 @@ def steps(only=None):
        "The licensed electrician fits the board, RCDs, emergency stop circuit and heater interlock",
        elev=22, azim=-60)
     st(7, [whole, g("Board and backboard", "board", "backboard", "ppe")],
-       [c("Cable tray and wall spacers", ["tray", "tray_spacers"], (0, 0, 700))],
-       "cable tray", "Back run on the backboard and spacers, crossing under the seam beam, front run on the front wall",
+       [c("Cable tray and wall spacers", ["tray", "tray_spacers"], (0, 0, 700)),
+        c("Crossing padding and hazard tape", ["tray_pad", "tray_tape"], (0, 0, 1300))],
+       "cable tray", "Back run, crossing under the seam beam with taped padding over the aisle, front run",
        context=[part("Seam beam", C["seam_beam"][2], "#E5E7EB")], elev=30, azim=-62, label_done=False)
     hz = ctx(5200, 10100, 2900)
     st(8, [hz], [c("Extruder", ["extruder"], (0, -900, 0))],
@@ -514,12 +530,13 @@ def steps(only=None):
        "shredder in place", "Built to its published design; levelled; emergency stop wired by the electrician",
        elev=24, azim=-60)
     st(16, [fr, g("Shredder", "shredder")],
-       [c("Acoustic enclosure panels", ["shred_enc"], (0, 0, 1300)), c("Access door", ["enc_door"], (0, 900, 0)),
-        c("Chute collar and lid", ["chute", "chute_lid"], (0, 0, 2200))],
-       "acoustic enclosure, door and feed chute", "Panels bolted round the shredder and cleated down; both interlocks wired into the stop circuit",
+       [c("Acoustic enclosure panels", ["shred_enc"], (0, 0, 1300)),
+        c("Access door on self-closing hinges", ["enc_door", "door_hinges"], (0, 900, 0)),
+        c("Chute collar, feed hood and flap", ["chute", "chute_hood", "chute_lid"], (0, 0, 2200))],
+       "acoustic enclosure, door and feed chute", "Panels round the shredder, cleated down; feed hood on the collar; both interlocks in the stop circuit",
        elev=24, azim=-60, label_done=False)
     fr2 = ctx(3400, 9300, -1, 2400)
-    st(17, [fr2, g("Shredder enclosure", "shred_enc", "enc_door", "chute", "chute_lid")],
+    st(17, [fr2, g("Shredder enclosure", "shred_enc", "enc_door", "door_hinges", "chute", "chute_hood", "chute_lid")],
        [c("Washing tanks and trap", ["wash"], (0, -900, 0)),
         c("Drying rack", ["rack_dry"], (0, -900, 0)), c("Drying fan on its stand", ["dry_stand", "dry_fan"], (0, 600, 0))],
        "washing tanks, drying rack and fan", "Tanks on level ground near the RCD-protected socket; fan stand in front of the rack",
@@ -529,13 +546,13 @@ def steps(only=None):
                   c("Four bins", ["bin_pet", "bin_hdpe", "bin_pp", "bin_metals"], (0, 600, 0))],
        "intake: scale, sorting table and bins", "Bins stand behind the painted aisle line, not on it",
        elev=24, azim=-60)
-    st(19, [whole, g("Equipment fitted", "shred_enc", "wash", "rack_dry", "booth", "extruder", "board", "backboard", "ppe", "scale", "table")],
+    st(19, [whole, g("Equipment fitted", "shred_enc", "chute_hood", "wash", "rack_dry", "booth", "extruder", "board", "backboard", "ppe", "scale", "table")],
        [c("Racking bays", ["rack1", "rack2"], (0, 0, 900)), c("Passport desk", ["desk", "desk_kit"], (0, -900, 0)),
         c("Product-end extinguisher", ["extinguisher_3"], (0, -900, 0))],
        "racking, passport desk and the last extinguisher", "Racking anchored to the floor, 1.0 m clear of the hot zone line",
        elev=28, azim=-62, label_done=False)
     ce = ctx(-1, 3200, 2600)
-    st(20, [ce], [c("Export cage panels", ["cage"], (0, 0, 900)), c("Gates", ["cage_gates"], (0, -900, 0)),
+    st(20, [ce], [c("Export cage panels", ["cage"], (0, 0, 900)), c("Gates on self-closing hinges", ["cage_gates", "gate_hinges"], (0, -900, 0)),
                   c("Sand container and bale bags", ["cage_kit"], (0, 0, 1900))],
        "export and residue cage", "Panels bolted together and cleated to the floor; gates on the aisle face",
        elev=24, azim=-60)

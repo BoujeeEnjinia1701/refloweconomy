@@ -3,7 +3,7 @@ doc_id: RFE-PRC-001
 title: ReflowEconomy design precis
 project: ReflowEconomy
 doc_type: Design precis
-version: "0.6"
+version: "0.7"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -33,11 +33,15 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: 'Decisions of 2026-10-02 carried in: chute reach check now, self-closing door and gates, first partner candidate'
+- version: "0.7"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: 'Approved follow-ups: cranked feed hood passes the reach check; tray crossing padded (2.02 m headroom); equipment $25,505, result +$0.57 per shift; RFE-DWG-001 Rev P4'
 ---
 
 # ReflowEconomy design precis
 
-ReflowEconomy is an open playbook for local micro-factories, built around one reference design: a plastics micro-factory on 59.4 m² (a rented shed, or two 40 ft container footprints) that takes in 100 kg of collected material per shift, sorts out metals, e-waste and residue, and turns HDPE and PP into sheets and beams while selling PET as clean flake. The calculation note RFE-CAL-001 shows, on paper, that 51.6 % of input mass is kept local as products and clean flake, 10 % is exported for industrial refining, 10 % is sold to a local mill and 28.4 % goes to licensed disposal, using 0.83 kWh per kilogram of output with a maximum demand of 8.75 kW on a single-phase supply. The equipment costs $25,300 (indicative, excluding the building; $300 over the $25,000 value-engineering target). The site only breaks even at the assumed prices (about +$0.73 per shift before rent), so the product price, not the machinery, decides whether a site pays its way. A material passport opens at intake and travels with every lot that leaves.
+ReflowEconomy is an open playbook for local micro-factories, built around one reference design: a plastics micro-factory on 59.4 m² (a rented shed, or two 40 ft container footprints) that takes in 100 kg of collected material per shift, sorts out metals, e-waste and residue, and turns HDPE and PP into sheets and beams while selling PET as clean flake. The calculation note RFE-CAL-001 shows, on paper, that 51.6 % of input mass is kept local as products and clean flake, 10 % is exported for industrial refining, 10 % is sold to a local mill and 28.4 % goes to licensed disposal, using 0.83 kWh per kilogram of output with a maximum demand of 8.75 kW on a single-phase supply. The equipment costs $25,505 (indicative, excluding the building; $505 over the $25,000 value-engineering target). The site only breaks even at the assumed prices (about +$0.57 per shift before rent), so the product price, not the machinery, decides whether a site pays its way. A material passport opens at intake and travels with every lot that leaves.
 
 ![Material flow](../media/flow.png)
 
@@ -76,7 +80,7 @@ The steps are written out per material in the process recipes (`docs/playbook/re
 | --- | --- | --- | --- |
 | 1 | Intake scale and sorting table | 300 kg platform scale, 2.0 x 0.9 m steel table, four color-coded bins (PET, HDPE, PP, metals) | Opens the batch record |
 | 2 | Washing tanks and sediment trap | Two 400 to 500 L polyethylene tanks (pre-wash, float-sink), 0.75 kW pump, settling trap | Wash water reused; sludge to licensed disposal |
-| 3 | Shredder with acoustic enclosure | Open-design shredder (Precious Plastic Shredder Pro class), 2.2 kW gearmotor on a single-phase input drive, interlocked feed chute, lined enclosure | 15 kg/h assumed; about 15 dB insertion loss assumed |
+| 3 | Shredder with acoustic enclosure | Open-design shredder (Precious Plastic Shredder Pro class), 2.2 kW gearmotor on a single-phase input drive, interlocked feed chute with a cranked feed hood, lined enclosure with a self-closing door | 15 kg/h assumed; about 15 dB insertion loss assumed |
 | 4 | Drying rack and fan | Ten mesh trays (7.2 m²), 0.4 kW fan | 7.3 kg/m² at the reference input |
 | 5 | Extruder | Open-design extruder, 1.5 kW motor and 2.0 kW heaters, with barrel enclosure (hood B) | HDPE and PP only; 5 kg/h assumed |
 | 6 | Sheet press and cooling press | 1 x 1 m press with 5 kW single-phase heaters and a cooling press, in booth hood A | A derated variant of the published 15 kW, 400 V sheetpress |
@@ -94,7 +98,7 @@ The steps are written out per material in the process recipes (`docs/playbook/re
 
 ## Layout
 
-The floor plan general arrangement is RFE-DWG-001 Rev P3 (`cad/drawings/RFE-DWG-001.pdf`), generated from `cad/src/model.py`. A central aisle runs along the middle of the floor (the seam in the container option), 1.20 m painted and 1.57 m clear between equipment, with 2.04 m headroom under the cable tray crossing. How each part is made and fitted is in the prototype build plan RFE-BLD-001 (`docs/05-build-plan.md`); the changes that made the layout buildable are in RFE-DDR-003. The front row holds intake, washing, the enclosed shredder, drying, the flake racking and the passport desk; the back row holds the export cage by the export door, the safety station, the electrical board, the hot zone and the product racking. Doors are at the intake end (intake and export) and a personnel exit is at the far end.
+The floor plan general arrangement is RFE-DWG-001 Rev P4 (`cad/drawings/RFE-DWG-001.pdf`), generated from `cad/src/model.py`. A central aisle runs along the middle of the floor (the seam in the container option), 1.20 m painted and 1.57 m clear between equipment, with 2.02 m headroom under the padded and taped cable tray crossing. How each part is made and fitted is in the prototype build plan RFE-BLD-001 (`docs/05-build-plan.md`); the changes that made the layout buildable are in RFE-DDR-003. The front row holds intake, washing, the enclosed shredder, drying, the flake racking and the passport desk; the back row holds the export cage by the export door, the safety station, the electrical board, the hot zone and the product racking. Doors are at the intake end (intake and export) and a personnel exit is at the far end.
 
 ## Numbers from RFE-CAL-001
 
@@ -114,14 +118,14 @@ All values are estimates on paper. The calculation note gives the assumptions an
 | Sheet press | 2.06 sheets of capacity for 2 in the afternoon | R6 at risk |
 | Fume extraction | 0.57 m³/s, 815 Pa, 1.00 kW input on a 1.5 kW fan | R11 hoods sized; exposure not verifiable at TRL 3 |
 | Shredder noise at the operator | 94 dB(A) bare, 79 dB(A) enclosed (LEX,8h, assumed sound power) | R12 at risk |
-| Equipment, items 1 to 12 | $25,300 indicative | R10: $300 over the $25,000 value-engineering target |
-| Result per shift before rent | +$0.73; break-even product price $2.48/kg; break-even input 99 kg | R3 met (model delivered) |
+| Equipment, items 1 to 12 | $25,505 indicative | R10: $505 over the $25,000 value-engineering target |
+| Result per shift before rent | +$0.57; break-even product price $2.48/kg; break-even input 99 kg | R3 met (model delivered) |
 
 The TRL 2 figures in v0.2 of this precis (30 kg products, 20 kg flake, about 45 kWh, about 13 kW peak, $22,850, margin about $18) are replaced by Table 1. The v0.3 figures changed by RFE-DDR-002 were 8.35 kW (36 A), $24,050 and +$1.73 per shift.
 
 ## Economics
 
-The operator-editable model (`docs/playbook/economics_model.py`, inputs in `docs/playbook/economics_inputs.csv`) gives an operating margin of about $21 per shift and a result of about +$0.73 after recovering the equipment over five years, before rent. Each $0.50/kg on the product price moves the result by about $16 per shift, so product design and local buyers matter more than machine cost. Prices and wages vary widely by country and must come from the co-design partner.
+The operator-editable model (`docs/playbook/economics_model.py`, inputs in `docs/playbook/economics_inputs.csv`) gives an operating margin of about $21 per shift and a result of about +$0.57 after recovering the equipment over five years, before rent. Each $0.50/kg on the product price moves the result by about $16 per shift, so product design and local buyers matter more than machine cost. Prices and wages vary widely by country and must come from the co-design partner.
 
 ## Material passport
 
@@ -160,7 +164,7 @@ Two layout choices follow from these and are not separate decisions: one hot zon
 
 > **Safety:** A micro-factory combines moving machinery, hot surfaces, fumes, water near electricity, sharp and contaminated input and a high fire load of plastic. These rules extend `docs/playbook/safety.md` and must be reviewed by a qualified safety professional before any site operates.
 
-- **Shredder (moving machinery).** Fixed guards, a hopper interlock that stops the rotor when opened, an emergency stop within reach, lockout before clearing jams, and no hands or tools in the hopper. In the reverberant steel room a bare shredder would put the whole floor at about 95 dB(A), so the shredder sits in a lined acoustic enclosure with an interlocked feed chute and door (about 79 dB(A) over 8 h on paper, RFE-CAL-001 section 7). The shredder area stays a hearing protection zone until the level is measured. The reach from the 1.70 m chute mouth to the cutters is checked against ISO 13857 from the model now, and the chute is lengthened or baffled until it passes; the enclosure door and the cage gates have self-closing hinges and open into the aisle only during locked-off maintenance or loading (decided by Amish, 2026-10-02).
+- **Shredder (moving machinery).** Fixed guards, a hopper interlock that stops the rotor when opened, an emergency stop within reach, lockout before clearing jams, and no hands or tools in the hopper. In the reverberant steel room a bare shredder would put the whole floor at about 95 dB(A), so the shredder sits in a lined acoustic enclosure with an interlocked feed chute and door (about 79 dB(A) over 8 h on paper, RFE-CAL-001 section 7). The shredder area stays a hearing protection zone until the level is measured. The reach from the 1.70 m chute mouth to the cutters was checked against ISO 13857 from the model: a straight collar fails (600 mm against 850 mm), so a cranked feed hood with a closed top sits on the collar and the feed goes in through a 160 mm slot facing the aisle, which gives 1,060 mm and keeps the head out (RFE-CAL-001 section 7); the enclosure door and the cage gates have self-closing hinges and open into the aisle only during locked-off maintenance or loading (decided by Amish, 2026-10-02).
 - **Heat.** Extruder barrels and press platens run at about 190 to 200 °C (never above 230 °C for HDPE or 240 °C for PP). Insulated covers, heat-resistant gloves, face shields and a cool-down rule before maintenance. Never leave heaters on unattended.
 - **Fumes.** Only identified HDPE and PP are melted. PVC is never heated (it releases hydrogen chloride), and polystyrene, PET and unknown plastics are not melted in the reference line. Extraction runs whenever a heater is on and for 30 min after, through two enclosing hoods sized for 0.5 m/s at their openings (RFE-CAL-001 section 6).
 - **Electricity and water.** 30 mA RCDs on every circuit, splash-rated sockets near the wash tanks, a heater interlock that keeps the maximum demand at about 38 A on a 40 A single-phase supply, and an installation by a licensed electrician.

@@ -1,4 +1,4 @@
-"""ReflowEconomy general arrangement drawing RFE-DWG-001 (Rev P3): micro-factory floor plan.
+"""ReflowEconomy general arrangement drawing RFE-DWG-001 (Rev P4): micro-factory floor plan.
 
 Run from the repo root:  python cad/src/sheets.py
 Builds cad/drawings/RFE-DWG-001.svg, .pdf and .png from the parametric model in
@@ -54,7 +54,7 @@ D = 1e5
 cutter = box(-1000, P["FL_X"] + 1000, -1000, P["FL_Y"] + 2000, -200, CUT_Z)
 
 # plan: section below the cut, plus overhead items (hoods, duct, fan box) dashed
-OVER = ("Duct", "Fan and filter", "Discharge", "Wall sleeve", "Booth take-off", "Duct wall", "Seam beam", "Cable tray", "Tray wall")
+OVER = ("Duct", "Fan and filter", "Discharge", "Wall sleeve", "Booth take-off", "Duct wall", "Seam beam", "Cable tray", "Tray wall", "Tray crossing")
 def _cut(shp):
     c = shp & cutter
     try:
@@ -76,11 +76,12 @@ no_front = Compound(children=[s & ELEV_TOP for k, items in parts.items() for n, 
 elev = project(no_front, "front", (cx, cy - D, cz), (0, 0, 1), (cx, cy, cz))
 
 s = Sheet(project="ReflowEconomy", title="Reference micro-factory, floor plan GA", dwg_no="RFE-DWG-001",
-          rev="P3", author="Amish Chadha", date="2026-09-30", scale=K, concept=True,
+          rev="P4", author="Amish Chadha", date="2026-10-02", scale=K, concept=True,
           material="Layout only; equipment envelopes. See bom/bom.csv and RFE-CAL-001",
           revisions=[("P1", "Preliminary GA from the TRL 3 model (RFE-CAL-001)", "2026-09-25", "AC"),
                      ("P2", "Notes: 1.5 kW fan, 38 A demand, shed preferred (RFE-DDR-002)", "2026-09-25", "AC"),
-                     ("P3", "Design for construction (RFE-DDR-003): booth, duct, tray, seam beam", "2026-09-30", "AC")])
+                     ("P3", "Design for construction (RFE-DDR-003): booth, duct, tray, seam beam", "2026-09-30", "AC"),
+                     ("P4", "Feed hood on the chute; self-closing hinges; padded tray crossing", "2026-10-02", "AC")])
 
 # placement: plan at top left, elevation below, both at 1:50
 PX, PY = 20.0, 24.0
@@ -186,10 +187,10 @@ s.add_notes("Key data (RFE-CAL-001)", [
     "100 kg input/shift: 32.3 kg products, 19.3 kg flake",
     "Max demand 8.75 kW (38 A) with heater interlock",
     "Hoods 0.5 m/s face: 0.57 m3/s at about 815 Pa",
-    "Shredder LEX 79 dB(A) enclosed (sound power assumed)",
+    "Shredder LEX 79 dB(A) enclosed; feed reach 1.06 m",
     "Not met: R1, R4, R8. At risk: R6, R12",
     "Seam beam and side walls: structural engineer only",
-    "Aisle headroom 2.04 m under the tray crossing",
+    "Headroom 2.02 m under the padded tray crossing",
     "PRELIMINARY, NOT FOR FABRICATION",
 ], x=276, y=113, width=140)
 s.save(ROOT / "cad/drawings/RFE-DWG-001")

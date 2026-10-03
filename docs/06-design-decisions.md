@@ -3,7 +3,7 @@ doc_id: RFE-DEC-001
 title: ReflowEconomy design decisions register
 project: ReflowEconomy
 doc_type: Design decisions register
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -17,6 +17,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: 'Amish approved the recommendations for all six open decisions (2026-10-02); RFE-DDR-003 accepted; moved to decisions made'
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: 'Approved follow-ups carried into the design: feed hood, self-closing hinges, tray padding; Value engineering restated at USD 25,505'
 ---
 
 # ReflowEconomy design decisions register
@@ -41,11 +45,14 @@ None. All open decisions were decided on 2026-10-02.
 
 ## Value engineering
 
-Value-engineering target: USD 25,000 for equipment items 1 to 12 (requirement R10; a hypothetical control target, not a limit; `budget_usd` is null because this is a playbook repo). Estimated cost of the constructable design: USD 25,300 (USD 300 over the target), plus about USD 9,200 for the container shell, which is site-dependent and outside the target. Main cost drivers and savings worth trying:
+Value-engineering target: USD 25,000. Estimated cost of the constructable design: USD 25,505 (USD 505 over the target).
 
-- The largest lines are the sheet press, cooling press and transfer bridge (USD 6,250), the shredder with its enclosure (USD 4,100), the extruder (USD 4,000) and the fume extraction (USD 3,350). Together they are 70 % of the equipment.
+The target covers equipment items 1 to 12 (requirement R10; a hypothetical control target, not a limit; `budget_usd` is null because this is a playbook repo). The container shell adds about USD 9,200; it is site-dependent and outside the target. Main cost drivers and savings worth trying:
+
+- The largest lines are the sheet press, cooling press and transfer bridge (USD 6,250), the shredder with its enclosure and feed hood (USD 4,205), the extruder (USD 4,000) and the fume extraction (USD 3,350). Together they are 70 % of the equipment.
 - Making the design constructable added USD 1,100 to the equipment (sash, take-off, brackets, wall sleeve and fan stand USD 400; backboard and cable tray USD 400; transfer bridge USD 250; drying fan stand USD 50) and USD 1,200 to the container shell (seam beam, floor plate, flashing).
-- Savings worth trying: a cooling press built from scrap steel plate and the drying rack and fan stand from offcuts of the same stock (about USD 300 together); second-hand pallet racking (about USD 150); a rented shed instead of containers, which removes the USD 1,200 of seam work and most of the shell cost; quotes from two local fabricators for the press, which is the largest single line.
+- Carrying the decisions of 2026-10-02 into the design added USD 205: the cranked feed hood and three self-closing door hinges (USD 105), two pairs of self-closing cage gate hinges (USD 60), and padding and hazard tape on the tray crossing (USD 40).
+- Savings worth trying: a cooling press built from scrap steel plate and the drying rack and fan stand from offcuts of the same stock (about USD 300 together); second-hand pallet racking (about USD 150); a rented shed instead of containers, which removes the USD 1,200 of seam work and most of the shell cost (a shell saving, outside the equipment target, so it does not reduce the USD 505 gap); quotes from two local fabricators for the press, which is the largest single line.
 
 ## Decisions made
 

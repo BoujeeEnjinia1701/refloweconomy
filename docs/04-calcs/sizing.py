@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "cad" / "src"))
 sys.path.insert(0, str(ROOT / "docs" / "playbook"))
 import economics_model as econ  # noqa: E402
-from model import PARAMS as MP, ZONES  # noqa: E402
+from model import PARAMS as MP, ZONES, reach_path  # noqa: E402
 
 OUT = []
 
@@ -232,6 +232,14 @@ say(f"  Bare shredder LwA {N['Lw']:.0f} dB: {lp_bare:.1f} dB(A) at 1 m, {lp_bare
 say(f"  With {N['IL']:.0f} dB enclosure: {lp_enc:.1f} dB(A) at 1 m, {lp_enc_far:.1f} dB(A) at 4 m; LEX,8h {lex_enc:.1f} dB(A)")
 lw_max = N["Lw"] + (N["limit"] - lex_enc)
 say(f"  Largest bare-machine LwA that still meets 85 dB(A) LEX with the enclosure: {lw_max:.1f} dB")
+# ISO 13857 reach check from the feed mouth to the cutters (decided by Amish, 2026-10-02: done now from the model)
+slot_w, slot_h = MP["CHUTE_SLOT"]
+drop_straight = MP["CHUTE_MOUTH_Z"] - MP["CUTTER_Z"]
+reach = reach_path(MP)
+reach_ok = reach >= MP["REACH_SR"] and slot_h <= 180
+say(f"  Reach check (ISO 13857): slot {slot_w:.0f} x {slot_h:.0f} mm (over 120 mm: arm to the shoulder; 180 mm or less: head kept out)")
+say(f"    straight collar: {drop_straight:.0f} mm from the 1.70 m mouth down to the cutters, against {MP['REACH_SR']:.0f} mm: {'pass' if drop_straight >= MP['REACH_SR'] else 'FAIL'}")
+say(f"    cranked feed hood: {MP['CHUTE_MOUTH_Y'] - MP['CHUTE_DROP_Y']:.0f} mm along the hood plus {drop_straight:.0f} mm down = {reach:.0f} mm: {'pass' if reach_ok else 'FAIL'} ({reach - MP['REACH_SR']:+.0f} mm)")
 
 # ---------------------------------------------------------------- G layout checks
 fx, fy, t = MP["FL_X"], MP["FL_Y"], MP["WALL_T"]
@@ -263,6 +271,20 @@ say(f"  Footprint {fx / 1000:.2f} x {fy / 1000:.2f} m = {area_ext:.1f} m2 extern
 say(f"  Central aisle {aisle:.0f} mm clear (R5 target 1000 mm); front row depth {front_max - t:.0f} mm, back row depth {fy - t - back_min:.0f} mm")
 say(f"  Hot zone {hx0:.0f} to {hx1:.0f} mm; nearest stock {hot_clear:.0f} mm away (target {MP['HOT_CLEAR']:.0f} mm)")
 say(f"  Worst travel distance to an exit along the aisle {travel / 1000:.1f} m; zone overlaps: {overlap or 'none'}")
+pad_t = MP["TRAY_PAD"][0]
+headroom_tray, headroom_pad = MP["TRAY_Z"][0], MP["TRAY_Z"][0] - pad_t
+say(f"  Aisle headroom {headroom_tray:.0f} mm under the tray crossing, {headroom_pad:.0f} mm under its {pad_t:.0f} mm padding (R5 check 2000 mm)")
+
+
+def escape(x0, x1, y_open, row):
+    """Clear width left in the aisle with a door or gate open: from its swung edge to the nearest zone opposite."""
+    opp = [z for z in ZONES.values() if z[7] == row and z[2] < x1 and z[3] > x0]
+    return (min(z[4] for z in opp) - y_open) if row == "back" else (y_open - max(z[5] for z in opp))
+
+
+esc_door = escape(6200, 7000, ZONES["shred"][5] + 790, "back")
+esc_gate = escape(600, 1800, ZONES["cage"][4] - 590, "front")
+say(f"  Escape width past the open enclosure door {esc_door:.0f} mm; past the open cage gates {esc_gate:.0f} mm")
 
 # ---------------------------------------------------------------- H equipment cost
 rows = list(csv.DictReader((ROOT / "bom" / "bom.csv").open()))
@@ -315,7 +337,7 @@ R = [
     ("R2", "Sourced recipe for PET, HDPE, PP and aluminium", "4 recipes in docs/playbook/recipes/ (aluminium as the add-on bay)", "Met"),
     ("R3", "Operator-editable economics model with break-even", f"Model and CSV delivered; result {r['result']:+.2f} USD/shift; break-even product price {r['be_product_price']:.2f} USD/kg", "Met"),
     ("R4", "Every export stream names refining step, receiver type and packing rule", "Principle and cell packing rule only", "Not met"),
-    ("R5", "60 m2 or less, aisles 1.0 m or more, separate hot zone", f"{area_ext:.1f} m2; aisle {aisle / 1000:.2f} m; hot zone {hot_clear / 1000:.2f} m from stock", "Met"),
+    ("R5", "60 m2 or less, aisles 1.0 m or more, separate hot zone", f"{area_ext:.1f} m2; aisle {aisle / 1000:.2f} m; headroom {headroom_pad / 1000:.2f} m under the padded tray crossing; hot zone {hot_clear / 1000:.2f} m from stock", "Met"),
     ("R6", "100 kg or more mixed input per 8 h shift", f"Shredder {shred_h:.2f} h of {B['block_a']:.0f} h at an assumed {B['shred_rate']:.0f} kg/h; press {press_capacity:.2f} sheets of capacity for {B['sheets']}", "At risk"),
     ("R7", "50 % or more of input kept local as products or clean flake", f"{local:.1f} %", "Met"),
     ("R8", "Residue to licensed disposal 20 % or less, process losses counted", f"{disposal:.1f} % at the reference mix ({c['residue']:.0f} % sorting residue + {losses:.1f} % process losses); {disposal_at(r_rule):.1f} % for a load at the R16 threshold", "Not met"),
@@ -325,7 +347,7 @@ R = [
     ("R11", "0.5 m/s face velocity on every melt process; no PVC, PS or unknown; air below OELs",
      f"Hoods sized for 0.5 m/s ({Q:.2f} m3/s, fan {fan_kw:.2f} kW); exposure needs air monitoring", "Not verifiable at TRL 3"),
     ("R12", "Guarded shredder, insulated hot surfaces, RCDs, 85 dB(A) LEX or hearing zones",
-     f"Guarding defined; LEX {lex_bare:.0f} dB(A) bare, {lex_enc:.0f} dB(A) with enclosure (sound power assumed)", "At risk"),
+     f"Guarding defined; feed reach {reach:.0f} mm against {MP['REACH_SR']:.0f} mm (ISO 13857, {'passes' if reach_ok else 'fails'}); LEX {lex_bare:.0f} dB(A) bare, {lex_enc:.0f} dB(A) with enclosure (sound power assumed)", "At risk"),
     ("R13", "Valid passport for every outgoing lot", f"{sum(v2)} of {len(ex)} examples valid against schema v0.2", "Met" if pp_ok else "Not met"),
     ("R14", "Passport lists parent batch IDs and schema version", "v0.2 requires schema_version and parent_batch_ids for every non-intake lot", "Met" if pp_ok else "Not met"),
     ("R15", "Passport filled in 2 min or less", "Needs a form and a timed trial", "Not verifiable at TRL 3"),

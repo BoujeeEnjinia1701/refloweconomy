@@ -3,9 +3,9 @@ doc_id: RFE-REQ-001
 title: ReflowEconomy requirements
 project: ReflowEconomy
 doc_type: Requirements
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-09-30'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,11 +29,15 @@ revisions:
   date: '2026-09-30'
   author: Amish Chadha
   change: "Design for construction (RFE-DDR-003): R3, R5 and R10 figures updated; R10 reported against its value-engineering target"
+- version: "0.6"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Approved follow-ups (decided by Amish, 2026-10-02): R3, R5, R10 and R12 figures updated (result +$0.57 per shift; headroom 2.02 m under the padded tray crossing; $25,505; feed reach check passes); no status changes"
 ---
 
 # ReflowEconomy requirements
 
-These are first-pass requirements for the playbook, its reference micro-factory and the material passport. Targets are proposals for review, not user-validated needs, and will be revised after co-design sessions. Status is judged at TRL 3 against the calculation note RFE-CAL-001 v0.3 (`docs/04-calcs/01-sizing.md`, results in `docs/04-calcs/results.csv`): **3 are not met (R1, R4, R8)**, 2 are at risk (R6, R12), 2 cannot be verified at TRL 3 (R11, R15), 8 are met on paper, and 1 (R10) is $300 over its value-engineering target. Decisions from RFE-DDR-001 (Amish, 2026-09-25) are applied: R2 is redefined for the aluminium add-on bay, and R13 and R14 name passport schema v0.2. Decisions from RFE-DDR-002 (recommendations accepted by Amish, 2026-09-25) are applied: R8 is restated to count process losses, and R16 adds an intake quality rule.
+These are first-pass requirements for the playbook, its reference micro-factory and the material passport. Targets are proposals for review, not user-validated needs, and will be revised after co-design sessions. Status is judged at TRL 3 against the calculation note RFE-CAL-001 v0.5 (`docs/04-calcs/01-sizing.md`, results in `docs/04-calcs/results.csv`): **3 are not met (R1, R4, R8)**, 2 are at risk (R6, R12), 2 cannot be verified at TRL 3 (R11, R15), 8 are met on paper, and 1 (R10) is $505 over its value-engineering target. Decisions from RFE-DDR-001 (Amish, 2026-09-25) are applied: R2 is redefined for the aluminium add-on bay, and R13 and R14 name passport schema v0.2. Decisions from RFE-DDR-002 (recommendations accepted by Amish, 2026-09-25) are applied: R8 is restated to count process losses, and R16 adds an intake quality rule.
 
 ## Playbook content
 
@@ -41,21 +45,21 @@ These are first-pass requirements for the playbook, its reference micro-factory 
 | --- | --- | --- | --- | --- |
 | R1 | Say which materials a small operation can recover safely | Feasibility matrix covers at least 7 material groups (plastics, aluminium, steel, glass, lithium cells, e-waste, ore), each with route, feasibility rating, main hazard and export point, and at least one cited source per row | Document review | **Not met**: the matrix has routes, ratings and reasons for 7 groups; hazard, export point and source columns are still to add |
 | R2 | Give a process recipe for each locally processed material | One recipe each for PET, HDPE, PP and aluminium: input grade, steps, temperature window, drying, yield, rejects and PPE, each sourced. Redefined by RFE-DDR-001 item 1: the aluminium recipe serves the add-on bay, which has its own safety case, not the reference floor | Document review against published processing data | Met: four sourced recipes in `docs/playbook/recipes/` |
-| R3 | Show whether a micro-factory can pay its way | Economics model per kilogram and per shift with local inputs (feedstock price, wage, energy tariff, product prices) and a break-even output; editable by an operator | Model review; later with at least one operating recycler | Met on paper: `docs/playbook/economics_model.py` with `economics_inputs.csv`; result +$0.73 per shift before rent, break-even product price $2.48/kg, break-even input 99 kg per shift |
+| R3 | Show whether a micro-factory can pay its way | Economics model per kilogram and per shift with local inputs (feedstock price, wage, energy tariff, product prices) and a break-even output; editable by an operator | Model review; later with at least one operating recycler | Met on paper: `docs/playbook/economics_model.py` with `economics_inputs.csv`; result +$0.57 per shift before rent, break-even product price $2.48/kg, break-even input 99 kg per shift |
 | R4 | Export only what needs industrial refining | Every export stream names the refining step it needs, the licensed receiver type and the packing rule (for example, cells taped and in a fire-safe container) | Document review | **Not met**: principle and the cell packing rule only; per-stream rules still to write |
 
 ## Reference micro-factory
 
 | ID | Requirement | Target | Verification | Status at TRL 3 |
 | --- | --- | --- | --- | --- |
-| R5 | Fit a small site | Floor area 60 m² or less (two 40 ft container footprints or a small workshop), with aisles of 1.0 m or more and a separate hot zone | Layout drawing (RFE-DWG-001) and RFE-CAL-001 section 8 | Met: 59.4 m², clear aisle 1.57 m, aisle headroom 2.04 m, hot zone 1.00 m from stock (at the limit) |
+| R5 | Fit a small site | Floor area 60 m² or less (two 40 ft container footprints or a small workshop), with aisles of 1.0 m or more and a separate hot zone | Layout drawing (RFE-DWG-001) and RFE-CAL-001 section 8 | Met: 59.4 m², clear aisle 1.57 m, aisle headroom 2.02 m under the padded tray crossing (2.04 m to the tray), hot zone 1.00 m from stock (at the limit) |
 | R6 | Process a useful amount per shift | 100 kg or more of mixed collected input per 8 h shift | Time budget from machine ratings (RFE-CAL-001 section 3) | At risk: shredder needs 3.79 h of 4 h at an assumed 15 kg/h (published range 8.8 to 41.8 kg/h); sheet press has 2.06 sheets of capacity for the 2 needed |
 | R7 | Keep value local | 50 % or more of input mass remanufactured or sold locally as clean feedstock | Mass balance, then site data | Met on paper: 51.6 % |
 | R8 | Limit what goes to disposal | Residue to licensed disposal 20 % or less of input mass, counting sorting residue and process losses together; nothing burned in the open. Restated by RFE-DDR-002 (item 8): the honest total is kept and R16 controls input quality | Mass balance, then site data | **Not met** for the reference input: 28.4 % (20 % sorting residue plus 8.4 % process losses). A load at the R16 threshold gives 19.5 % |
 | R9 | Use little energy | 1.0 kWh or less per kilogram of output (products plus clean flake) | Energy budget per shift | Met on paper: 0.83 kWh/kg (42.9 kWh per shift) |
-| R10 | Stay affordable | Equipment for items 1 to 12 of `bom/bom.csv` against a value-engineering target of $25,000 (a hypothetical control target, not a limit), excluding the building shell | Priced equipment list | Over the value-engineering target by $300: $25,300 indicative (was $24,200; +$1,100 for parts added to make the design buildable, RFE-DDR-003) |
+| R10 | Stay affordable | Equipment for items 1 to 12 of `bom/bom.csv` against a value-engineering target of $25,000 (a hypothetical control target, not a limit), excluding the building shell | Priced equipment list | Over the value-engineering target by $505: $25,505 indicative (was $25,300; +$205 for the feed hood, self-closing hinges and tray padding decided on 2026-10-02; +$1,100 before that for parts added to make the design buildable, RFE-DDR-003) |
 | R11 | Protect workers from fumes | Local exhaust on every melt process with a face velocity of 0.5 m/s or more at the hood; no processing of PVC, PS or unknown plastics; workstation air below the local occupational exposure limits | Hood sizing calculation; later air monitoring | Not verifiable at TRL 3: two enclosing hoods sized for 0.5 m/s (0.57 m³/s, 1.00 kW input on a 1.5 kW fan, RFE-DDR-002), filters chosen and limits named; exposure needs air monitoring on a running site |
-| R12 | Protect workers from machinery, heat, noise and electricity | Guarded shredder with interlocked hopper and emergency stop; insulated hot surfaces; 30 mA RCD on every circuit near water; noise 85 dB(A) or less over 8 h or hearing protection zones | Safety checklist and design review | At risk: guarding defined; operator exposure 94 dB(A) with a bare shredder and 79 dB(A) in a lined enclosure, based on an assumed sound power |
+| R12 | Protect workers from machinery, heat, noise and electricity | Guarded shredder with interlocked hopper and emergency stop; insulated hot surfaces; 30 mA RCD on every circuit near water; noise 85 dB(A) or less over 8 h or hearing protection zones | Safety checklist and design review | At risk: guarding defined; feed reach from the 1.70 m mouth to the cutters 1,060 mm through the cranked feed hood against the 850 mm ISO 13857 distance (passes on paper, cutter height assumed); operator exposure 94 dB(A) with a bare shredder and 79 dB(A) in a lined enclosure, based on an assumed sound power |
 | R16 | Control input quality | Every delivery sampled at intake; a load whose sampled residue exceeds a set threshold is refused or charged a disposal fee; the threshold keeps R8 within 20 % (new, RFE-DDR-002 item 8) | Mass balance (RFE-CAL-001 section 2); later intake records | Met on paper: threshold 10 % residue by sampled mass (the limit is 10.6 %); the reference input at 20 % residue would fail it |
 
 ## Material passport

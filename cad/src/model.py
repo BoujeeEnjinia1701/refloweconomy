@@ -26,6 +26,10 @@ feed chute is at 1.70 m, its access door moved to the aisle face and its floor p
 drying fan on a stand; backboard for the board and eyewash; cable tray; duct brackets, fan stand
 and stack outside; cage gate on the aisle face; sorting table and bins clear of the aisle line.
 
+Approved follow-ups (decided by Amish, 2026-10-02): a cranked feed hood on the chute collar so the
+ISO 13857 reach from the 1.70 m mouth to the cutters passes; self-closing hinges on the enclosure
+door and the cage gates; padding and hazard tape on the cable tray crossing over the aisle.
+
 Every zone is an axis-aligned envelope in ZONES so that RFE-CAL-001
 (docs/04-calcs/sizing.py) can check the aisle width, the hot zone clearance and the
 floor area from the same numbers that draw the model.
@@ -59,6 +63,19 @@ PARAMS = {
     "DUCT_D": 250.0, "DUCT_Z": 2050.0, "DUCT_X": 8150.0, "DUCT_Y": (4225.0, 4475.0),
     # cable tray 100 x 50 mm: back run, aisle crossing (under the seam beam), front run
     "TRAY_Z": (2038.0, 2088.0), "TRAY_CROSS_X": (5550.0, 5650.0),
+    # padding on the tray crossing over the aisle (decided by Amish, 2026-10-02): closed-cell foam
+    # (thickness), wrapped in yellow and black hazard tape, from Y0 to Y1 (aisle plus 100 each side)
+    "TRAY_PAD": (15.0, 1600.0, 3000.0),
+    # shredder feed (decided by Amish, 2026-10-02: keep the 1.70 m mouth, lengthen or baffle the
+    # chute until the ISO 13857 reach check passes): a cranked feed hood on the collar turns the feed
+    # path, so the mouth is a slot in the aisle-side end at 1.70 m and an arm must travel along the
+    # hood before it can reach down to the cutters
+    "CHUTE_MOUTH_Z": 1700.0,     # mouth bottom lip above the floor
+    "CHUTE_MOUTH_Y": 1500.0,     # mouth plane (aisle-side end of the feed hood)
+    "CHUTE_SLOT": (460.0, 160.0),  # mouth clear opening (width, height); 160 mm keeps the head out
+    "CHUTE_DROP_Y": 1040.0,      # aisle-side inner face of the collar, where the feed drops
+    "CUTTER_Z": 1100.0,          # top of the cutting chamber (assumed in the 1512 mm machine envelope)
+    "REACH_SR": 850.0,           # ISO 13857 safety distance, upper limb to the shoulder (opening over 120 mm)
     # hood openings (m), used by RFE-CAL-001
     "HOOD_A_OPEN": (1.2, 0.6),  # press booth sliding sash, one opening uncovered at a time
     "HOOD_B_OPEN": (0.8, 0.4),  # extruder barrel enclosure, open face on the aisle side
@@ -305,11 +322,30 @@ def enclosure_door():
     return box(6205, 6995, y1 - 45, y1 - 15, 5, 1445)
 
 
-def feed_chute():
-    """Chute collar through the roof, 20 mm walls, 1.54 to 1.70 m; interlocked lid on top."""
+def feed_chute(p=PARAMS):
+    """Chute collar through the roof, 20 mm walls, 1.54 to 1.70 m, and the cranked feed hood on top of it:
+    closed top, closed sides, a lined sill on the roof, and the feed slot in its aisle-side end with the
+    bottom lip at 1.70 m. An interlocked flap, hinged at the top, closes the slot."""
     c = box(6350, 6850, 650, 1060, 1540, 1700) - box(6370, 6830, 670, 1040, 1539, 1701)
-    lid = box(6350, 6850, 650, 1060, 1700, 1712)
-    return c, lid
+    mz, my = p["CHUTE_MOUTH_Z"], p["CHUTE_MOUTH_Y"]
+    sw, sh_ = p["CHUTE_SLOT"]
+    top = mz + sh_ + 20
+    hood = box(6350, 6850, 650, my, mz, top) - box(6600 - sw / 2, 6600 + sw / 2, 670, my + 1, mz - 1, mz + sh_)
+    hood = hood + box(6350, 6850, 1060, my, 1600, mz)          # sill on the enclosure roof
+    flap = box(6350, 6850, my, my + 12, mz, top)
+    return c, hood, flap
+
+
+def reach_path(p=PARAMS):
+    """Shortest path (mm) an arm entering the feed slot must travel to reach the top of the cutting chamber:
+    along the hood floor from the mouth plane to the collar's inner face, then straight down."""
+    return (p["CHUTE_MOUTH_Y"] - p["CHUTE_DROP_Y"]) + (p["CHUTE_MOUTH_Z"] - p["CUTTER_Z"])
+
+
+def door_hinges():
+    """Three self-closing spring hinges on the washing-end edge of the door opening, aisle face."""
+    y1 = ZONES["shred"][5]
+    return _fuse([cyl_z(6200, y1 + 12, z - 60, z + 60, 12) for z in (200, 725, 1250)])
 
 
 def drying_rack():
@@ -338,6 +374,28 @@ def cage():
 def cage_gates():
     y0 = ZONES["cage"][4]
     return box(605, 1195, y0 + 10, y0 + 50, 20, 1790) + box(1205, 1795, y0 + 10, y0 + 50, 20, 1790)
+
+
+def gate_hinges():
+    """Two self-closing gate hinges per leaf, on the outer edges of the gate opening, aisle face."""
+    y0 = ZONES["cage"][4]
+    return _fuse([cyl_z(x, y0 - 12, z - 60, z + 60, 12) for x in (600, 1800) for z in (300, 1500)])
+
+
+def tray_padding(p=PARAMS):
+    """Foam padding round the underside and sides of the tray crossing over the aisle, in 100 mm bands of
+    yellow and black hazard tape. Returns (yellow bands, black bands)."""
+    t_, y0, y1 = p["TRAY_PAD"]
+    c0, c1 = p["TRAY_CROSS_X"]
+    z0, z1 = p["TRAY_Z"]
+    yel, blk = [], []
+    n = int(round((y1 - y0) / 100))
+    for i in range(n):
+        ya = y0 + i * (y1 - y0) / n
+        yb = ya + (y1 - y0) / n
+        u = box(c0 - t_, c1 + t_, ya, yb, z0 - t_, z1) - box(c0, c1, ya - 1, yb + 1, z0, z1 + 1)
+        (yel if i % 2 == 0 else blk).append(u)
+    return _fuse(yel), _fuse(blk)
 
 
 # ---------------------------------------------------------------- components
@@ -374,9 +432,11 @@ def components(p=PARAMS):
     add("shred_enc", 3, "Acoustic enclosure (lined)", shredder_enclosure(), "#4B5563")
     add("shredder", 3, "Shredder", box(6000, 7205, 580, 1130, 0, 1512), "#1F2937")
     add("enc_door", 3, "Enclosure access door (interlocked)", enclosure_door(), "#6B7280")
-    chute, lid = feed_chute()
+    add("door_hinges", 3, "Door self-closing hinges", door_hinges(), "#111827")
+    chute, hood, flap = feed_chute(p)
     add("chute", 3, "Feed chute collar", chute, "#374151")
-    add("chute_lid", 3, "Chute lid (interlocked)", lid, "#9CA3AF")
+    add("chute_hood", 3, "Cranked feed hood", hood, "#4B5563")
+    add("chute_lid", 3, "Feed slot flap (interlocked)", flap, "#9CA3AF")
 
     # 4 drying rack and fan on its stand
     add("rack_dry", 4, "Drying rack", drying_rack(), "#A3A3A3")
@@ -431,10 +491,14 @@ def components(p=PARAMS):
     add("board", 11, "Electrical board", box(3900, 4600, 4576, 4776, 1200, 2000), "#D4A017")
     add("tray", 11, "Cable tray", cable_tray(p), "#A3A3A3")
     add("tray_spacers", 11, "Tray wall spacers", tray_spacers(p), "#525252")
+    pad_y, pad_k = tray_padding(p)
+    add("tray_pad", 11, "Tray crossing padding (hazard tape, yellow)", pad_y, "#FACC15")
+    add("tray_tape", 11, "Tray crossing padding (hazard tape, black)", pad_k, "#111827")
 
     # 12 export and residue cage by door B, gate on the aisle face
     add("cage", 12, "Export and residue cage", cage(), "#78716C")
     add("cage_gates", 12, "Cage gates", cage_gates(), "#57534E")
+    add("gate_hinges", 12, "Gate self-closing hinges", gate_hinges(), "#111827")
     _, _, x0, x1, y0, y1, h, _ = ZONES["cage"]
     add("cage_kit", 12, "Sand container and bale bags",
         box(x0 + 150, x0 + 900, y0 + 150, y1 - 150, 0, 900) + box(x0 + 1100, x1 - 150, y0 + 150, y1 - 150, 0, 700), "#A8A29E")
@@ -492,7 +556,13 @@ CONTACTS = [
     ("stack", "fan", "stack on the fan outlet"),
     ("shred_enc", "shell", "enclosure panels cleated to the floor"),
     ("chute", "shred_enc", "chute collar through the roof hole"),
-    ("chute_lid", "chute", "lid hinged on the collar"),
+    ("chute_hood", "chute", "feed hood bolted on the collar top"),
+    ("chute_hood", "shred_enc", "hood sill on the enclosure roof"),
+    ("chute_lid", "chute_hood", "flap hinged on the hood over the feed slot"),
+    ("door_hinges", "shred_enc", "door hinges on the enclosure aisle face"),
+    ("gate_hinges", "cage", "gate hinges on the cage aisle face"),
+    ("tray_pad", "tray", "padding taped round the tray crossing"),
+    ("tray_tape", "tray", "padding taped round the tray crossing"),
     ("rack_dry", "shell", "rack posts on the floor"),
     ("dry_stand", "shell", "fan stand on the floor"),
     ("dry_fan", "dry_stand", "fan bolted to the stand post"),
@@ -501,7 +571,7 @@ CONTACTS = [
     ("rack2", "shell", "racking anchored to the floor"),
     ("seam_plate", "shell", "seam plate screwed to one container floor"),
 ]
-CLEAR = [("seam_beam", 2000.0), ("tray", 2000.0)]   # least height over the aisle
+CLEAR = [("seam_beam", 2000.0), ("tray", 2000.0), ("tray_pad", 2000.0), ("tray_tape", 2000.0)]   # least height over the aisle
 
 
 def check(p=PARAMS, verbose=True):
@@ -537,7 +607,7 @@ def check(p=PARAMS, verbose=True):
             fails.append(f"{k} above the roof underside: {bbs[k].max.Z:.0f} mm")
     a0, a1 = p["AISLE_Y0"], p["AISLE_Y0"] + p["AISLE_W"]
     for k in keys:
-        if k in ("shell", "seam_beam", "seam_plate", "markings", "tray"):
+        if k in ("shell", "seam_beam", "seam_plate", "markings", "tray", "tray_pad", "tray_tape"):
             continue
         n += 1
         if bbs[k].min.Y < a1 and bbs[k].max.Y > a0 and bbs[k].min.Z < p["HEADROOM"]:
@@ -547,6 +617,12 @@ def check(p=PARAMS, verbose=True):
         piece = C[k][2] & box(0, p["FL_X"], a0, a1, -1, p["ROOF_IN"])
         if piece.volume > 0 and piece.bounding_box().min.Z < hmin - 0.5:
             fails.append(f"{k} leaves {piece.bounding_box().min.Z:.0f} mm headroom over the aisle")
+    n += 1
+    if reach_path(p) < p["REACH_SR"]:
+        fails.append(f"feed reach path {reach_path(p):.0f} mm is under the ISO 13857 distance {p['REACH_SR']:.0f} mm")
+    n += 1
+    if p["CHUTE_SLOT"][1] > 180.0:
+        fails.append("feed slot taller than 180 mm admits the head")
     if verbose:
         for f in fails:
             print("FAIL", f)
