@@ -15,7 +15,7 @@ disposal_kg,28.4,kg/shift,Sorting residue plus process losses to licensed dispos
 disposal_price,0.05,USD/kg,Gate fee for licensed disposal
 workers,4,people,Workers per shift
 wage,10.00,USD/shift,Wage per worker per shift
-energy_kwh,42.9,kWh/shift,Electricity per shift at the reference input (RFE-CAL-001)
+energy_kwh,45.6,kWh/shift,Electricity per shift at the reference input (RFE-CAL-001 v0.6; motor and drive losses counted)
 energy_fixed_kwh,22.4,kWh/shift,Part of energy_kwh that does not scale with input (heat-up, fume fan, lights and drying fan)
 tariff,0.15,USD/kWh,Electricity tariff
 consumables,10.00,USD/shift,"Wear parts, PPE replacement, detergent, labels"

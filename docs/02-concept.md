@@ -3,9 +3,9 @@ doc_id: RFE-PRC-001
 title: ReflowEconomy design precis
 project: ReflowEconomy
 doc_type: Design precis
-version: "0.7"
+version: "0.8"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-25'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -37,11 +37,17 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: 'Approved follow-ups: cranked feed hood passes the reach check; tray crossing padded (2.02 m headroom); equipment $25,505, result +$0.57 per shift; RFE-DWG-001 Rev P4'
+- version: "0.8"
+  date: '2026-10-25'
+  author: Amish Chadha
+  change: 'Kit 1.9.1 upgrade: concept option A of RFE-OPT-001 (choice awaiting Amish); STEM check fixes (0.88 kWh/kg, 120 mm feed slot); supply counted as currents (about 55 A against 40 A, RFE-DEC-001 D1); result +$0.17 per shift; detailed D3 model; PR numbers of RFE-PRS-001'
 ---
 
 # ReflowEconomy design precis
 
-ReflowEconomy is an open playbook for local micro-factories, built around one reference design: a plastics micro-factory on 59.4 m² (a rented shed, or two 40 ft container footprints) that takes in 100 kg of collected material per shift, sorts out metals, e-waste and residue, and turns HDPE and PP into sheets and beams while selling PET as clean flake. The calculation note RFE-CAL-001 shows, on paper, that 51.6 % of input mass is kept local as products and clean flake, 10 % is exported for industrial refining, 10 % is sold to a local mill and 28.4 % goes to licensed disposal, using 0.83 kWh per kilogram of output with a maximum demand of 8.75 kW on a single-phase supply. The equipment costs $25,505 (indicative, excluding the building; $505 over the $25,000 value-engineering target). The site only breaks even at the assumed prices (about +$0.57 per shift before rent), so the product price, not the machinery, decides whether a site pays its way. A material passport opens at intake and travels with every lot that leaves.
+ReflowEconomy is an open playbook for local micro-factories, built around one reference design: a plastics micro-factory on 59.4 m² (a rented shed, or two 40 ft container footprints) that takes in 100 kg of collected material per shift, sorts out metals, e-waste and residue, and turns HDPE and PP into sheets and beams while selling PET as clean flake. The calculation note RFE-CAL-001 shows, on paper, that 51.6 % of input mass is kept local as products and clean flake, 10 % is exported for industrial refining, 10 % is sold to a local mill and 28.4 % goes to licensed disposal, using 0.88 kWh per kilogram of output. Counted as currents, its morning loads draw about 55 A on paper from the 40 A single-phase supply it was designed for, so how the site gets its power is proposed to Amish (RFE-DEC-001 D1). The equipment costs $25,505 (indicative, excluding the building; $505 over the $25,000 value-engineering target). The site only breaks even at the assumed prices (about +$0.17 per shift before rent), so the product price, not the machinery, decides whether a site pays its way. A material passport opens at intake and travels with every lot that leaves.
+
+This is option A, the reference micro-factory, of the concept options RFE-OPT-001; the alternative is a sort-and-bale hub (option B). B outscores A in that document, and the choice is proposed, awaiting Amish (RFE-DEC-001 D4). Every claim here was checked against known science in the STEM check RFE-STM-001. The model is detailed to D3 (`cad/src/detail_a.py`): every part from real stock with its fixings.
 
 ![Material flow](../media/flow.png)
 
@@ -55,10 +61,10 @@ ReflowEconomy is an open playbook for local micro-factories, built around one re
 
 | Part | File | State at TRL 3 |
 | --- | --- | --- |
-| Material feasibility matrix | `docs/playbook/feasibility-matrix.md` | Draft, 7 material groups; hazard, export point and source columns still to add (R1) |
+| Material feasibility matrix | `docs/playbook/feasibility-matrix.md` | Draft, 7 material groups; hazard, export point and source columns still to add (PR-001) |
 | Safety and environmental rules | `docs/playbook/safety.md` | Ten rules; expanded in the safety section below |
-| Process recipes | `docs/playbook/recipes/` | PET flake, HDPE, PP and aluminium (add-on bay), each sourced (R2) |
-| Economics model | `docs/playbook/economics_model.py` with `economics_inputs.csv` | Operator-editable, per kilogram and per shift, with break-even points (R3) |
+| Process recipes | `docs/playbook/recipes/` | PET flake, HDPE, PP and aluminium (add-on bay), each sourced (PR-002) |
+| Economics model | `docs/playbook/economics_model.py` with `economics_inputs.csv` | Operator-editable, per kilogram and per shift, with break-even points (PR-003) |
 | Reference micro-factory | This precis, `cad/src/model.py`, RFE-DWG-001, `bom/bom.csv`, RFE-CAL-001 | Parametric layout, floor plan GA, priced equipment list and sizing |
 | Material passport | `standards/material-passport-v0.2.schema.json`, `standards/examples/` | Schema v0.2 with example records; v0.1 kept |
 
@@ -66,7 +72,7 @@ Machines live in their own repos: [wastewise-scan](https://github.com/BoujeeEnji
 
 ## How it works
 
-1. **Intake.** Pickers and collectors deliver bags at the intake door. Each delivery is weighed on the platform scale and gets a batch record: batch ID, origin (collection point), mass and date. This opens the material passport. A sample is sorted at once: a load with more than 10 % non-recoverable residue by mass is refused or charged a disposal fee (intake quality rule, R16). The picker is paid by weight and grade.
+1. **Intake.** Pickers and collectors deliver bags at the intake door. Each delivery is weighed on the platform scale and gets a batch record: batch ID, origin (collection point), mass and date. This opens the material passport. A sample is sorted at once: a load with more than 10 % non-recoverable residue by mass is refused or charged a disposal fee (intake quality rule, PR-016). The picker is paid by weight and grade.
 2. **Sorting.** At the sorting table, material is split by hand, helped by WasteWise-ml on a phone or a WasteWise Scan NIR reader for unclear plastics. Target plastics go to color-coded bins (PET, HDPE, PP). Aluminium and steel go to a metals bin, paper and card to bags, and circuit boards and cells to the export cage. PVC, multilayer packaging, film, polystyrene and organics go to residue. Lithium cells are pulled out first and stored in a fire-safe container.
 3. **Washing.** Whole bottles and rigid parts are soaked, scrubbed and rinsed in the first tank, and labels are stripped.
 4. **Shredding.** A guarded 2.2 kW shredder in a lined acoustic enclosure cuts clean parts into flake of about 5 to 10 mm, one polymer at a time.
@@ -108,24 +114,24 @@ All values are estimates on paper. The calculation note gives the assumptions an
 
 | Quantity | Value | Requirement |
 | --- | --- | --- |
-| HDPE and PP products; PET clean flake | 32.3 kg; 19.3 kg (51.6 % kept local) | R7 met |
-| Metals and e-waste exported for refining | 10.0 kg | R4 not met (per-stream rules to write) |
+| HDPE and PP products; PET clean flake | 32.3 kg; 19.3 kg (51.6 % kept local) | PR-007 met |
+| Metals and e-waste exported for refining | 10.0 kg | PR-004 not met (per-stream rules to write) |
 | Paper and card sold to a local mill | 10.0 kg | |
-| To licensed disposal | 28.4 kg (20.0 kg sorting residue, 8.4 kg process losses); 19.5 kg for a load at the 10 % intake threshold | **R8 not met** for the reference input; R16 met |
-| Energy | 42.9 kWh, 0.83 kWh/kg of output | R9 met |
-| Maximum electrical demand | 8.75 kW, 38.0 A at 230 V with the heater interlock (13.75 kW connected) | DDR-001 item 5; DDR-002 item 10 |
-| Shredder time | 3.79 h of 4 h at an assumed 15 kg/h | R6 at risk |
-| Sheet press | 2.06 sheets of capacity for 2 in the afternoon | R6 at risk |
-| Fume extraction | 0.57 m³/s, 815 Pa, 1.00 kW input on a 1.5 kW fan | R11 hoods sized; exposure not verifiable at TRL 3 |
-| Shredder noise at the operator | 94 dB(A) bare, 79 dB(A) enclosed (LEX,8h, assumed sound power) | R12 at risk |
-| Equipment, items 1 to 12 | $25,505 indicative | R10: $505 over the $25,000 value-engineering target |
-| Result per shift before rent | +$0.57; break-even product price $2.48/kg; break-even input 99 kg | R3 met (model delivered) |
+| To licensed disposal | 28.4 kg (20.0 kg sorting residue, 8.4 kg process losses); 19.5 kg for a load at the 10 % intake threshold | **PR-008 not met** for the reference input; PR-016 met |
+| Energy | 45.6 kWh, 0.88 kWh/kg of output (motor and drive losses counted) | PR-009 met |
+| Supply current, morning block | About 55 A running (72 A at full load) against a 230 V, 40 A single-phase supply; afternoon 36 A | **PR-017 not met**; RFE-DEC-001 D1 |
+| Shredder time | 3.79 h of 4 h at an assumed 15 kg/h | PR-006 at risk |
+| Sheet press | 2.06 sheets of capacity for 2 in the afternoon | PR-006 at risk |
+| Fume extraction | 0.57 m³/s, 815 Pa, 1.00 kW input on a 1.5 kW fan | PR-011 hoods sized; exposure not verifiable at TRL 3 |
+| Shredder noise at the operator | 94 dB(A) bare, 79 dB(A) enclosed (LEX,8h, assumed sound power) | PR-012 at risk |
+| Equipment, items 1 to 12 | $25,505 indicative | PR-010: $505 over the $25,000 value-engineering target |
+| Result per shift before rent | +$0.17; break-even product price $2.49/kg; break-even input 100 kg | PR-003 met (model delivered) |
 
 The TRL 2 figures in v0.2 of this precis (30 kg products, 20 kg flake, about 45 kWh, about 13 kW peak, $22,850, margin about $18) are replaced by Table 1. The v0.3 figures changed by RFE-DDR-002 were 8.35 kW (36 A), $24,050 and +$1.73 per shift.
 
 ## Economics
 
-The operator-editable model (`docs/playbook/economics_model.py`, inputs in `docs/playbook/economics_inputs.csv`) gives an operating margin of about $21 per shift and a result of about +$0.57 after recovering the equipment over five years, before rent. Each $0.50/kg on the product price moves the result by about $16 per shift, so product design and local buyers matter more than machine cost. Prices and wages vary widely by country and must come from the co-design partner.
+The operator-editable model (`docs/playbook/economics_model.py`, inputs in `docs/playbook/economics_inputs.csv`) gives an operating margin of about $21 per shift and a result of about +$0.17 after recovering the equipment over five years, before rent. Each $0.50/kg on the product price moves the result by about $16 per shift, so product design and local buyers matter more than machine cost. Prices and wages vary widely by country and must come from the co-design partner.
 
 ## Material passport
 
@@ -147,14 +153,14 @@ The passport is a JSON record, one per lot, validated against `standards/materia
 - **Plastics line as the reference micro-factory.** Plastics have the most open machine designs and the lowest entry cost. Aluminium remelting, rated high in the feasibility matrix, is a separate add-on bay with its own safety case, not part of the reference floor.
 - **Two 40 ft container footprints.** A single 40 ft container is about 2.35 m wide inside, too narrow for safe aisles around a sheet press. Two side by side (or a shed of the same area) give 59.4 m².
 - **PET sold as flake; HDPE and PP made into products.** This keeps the hot zone to the two polymers that small extruders and presses handle well.
-- **Single-phase supply with staggered heating.** A heater interlock keeps the maximum demand at 8.75 kW with the 1.5 kW fume fan, so the playbook works on weak grids.
+- **Single-phase supply with staggered heating.** A heater interlock keeps the press heaters off while the shredder or the extruder runs. The STEM check of 2026-10-25 found that the morning loads still draw about 55 A from a 40 A supply when counted as currents; the options (three-phase, a longer day in three blocks, or less input) are with Amish (RFE-DEC-001 D1).
 - **Passport schema v0.2.** Parent batch IDs, schema version, product form and a recycled content statement, issued as a new file beside v0.1.
 
 Further choices accepted by Amish on 2026-09-25 (RFE-DDR-002):
 
-- **Honest disposal count with an intake quality rule.** R8 counts process losses as well as sorting residue. A delivery whose sample shows more than 10 % non-recoverable residue is refused or charged a disposal fee (R16), because the site can refuse poor loads but cannot make losses disappear.
+- **Honest disposal count with an intake quality rule.** PR-008 counts process losses as well as sorting residue. A delivery whose sample shows more than 10 % non-recoverable residue is refused or charged a disposal fee (PR-016), because the site can refuse poor loads but cannot make losses disappear.
 - **Derated 5 kW single-phase sheet press as the reference.** The published 15 kW, 400 V press is the option where three-phase exists. The derated press has almost no time margin (RFE-CAL-001 section 3).
-- **1.5 kW fume fan.** It keeps margin as the filters load up; the maximum demand rises to 8.75 kW (38.0 A) on the 40 A supply.
+- **1.5 kW fume fan.** It keeps margin as the filters load up (1.00 kW drawn with dirty filters).
 - **Rented shed preferred.** The two-container shell is the fallback, with side walls removed only to a structural engineer's design.
 - **License for the first release.** Documents under CC BY-SA 4.0, hardware under CERN-OHL-S-2.0 and scripts under MIT, applied when the first release is tagged. Until then the repo licenses are unchanged.
 
@@ -164,10 +170,10 @@ Two layout choices follow from these and are not separate decisions: one hot zon
 
 > **Safety:** A micro-factory combines moving machinery, hot surfaces, fumes, water near electricity, sharp and contaminated input and a high fire load of plastic. These rules extend `docs/playbook/safety.md` and must be reviewed by a qualified safety professional before any site operates.
 
-- **Shredder (moving machinery).** Fixed guards, a hopper interlock that stops the rotor when opened, an emergency stop within reach, lockout before clearing jams, and no hands or tools in the hopper. In the reverberant steel room a bare shredder would put the whole floor at about 95 dB(A), so the shredder sits in a lined acoustic enclosure with an interlocked feed chute and door (about 79 dB(A) over 8 h on paper, RFE-CAL-001 section 7). The shredder area stays a hearing protection zone until the level is measured. The reach from the 1.70 m chute mouth to the cutters was checked against ISO 13857 from the model: a straight collar fails (600 mm against 850 mm), so a cranked feed hood with a closed top sits on the collar and the feed goes in through a 160 mm slot facing the aisle, which gives 1,060 mm and keeps the head out (RFE-CAL-001 section 7); the enclosure door and the cage gates have self-closing hinges and open into the aisle only during locked-off maintenance or loading (decided by Amish, 2026-10-02).
+- **Shredder (moving machinery).** Fixed guards, a hopper interlock that stops the rotor when opened, an emergency stop within reach, lockout before clearing jams, and no hands or tools in the hopper. In the reverberant steel room a bare shredder would put the whole floor at about 95 dB(A), so the shredder sits in a lined acoustic enclosure with an interlocked feed chute and door (about 79 dB(A) over 8 h on paper, RFE-CAL-001 section 7). The shredder area stays a hearing protection zone until the level is measured. The reach from the 1.70 m chute mouth to the cutters was checked against ISO 13857 from the model: a straight collar fails (600 mm against 850 mm), so a cranked feed hood with a closed top sits on the collar and the feed goes in through a 460 x 120 mm slot facing the aisle, which gives 1,060 mm against the 850 mm that ISO 13857 Table 4 requires for openings up to 120 mm (RFE-CAL-001 section 7; slot lowered from 160 mm by the STEM check, RFE-DEC-001 D3); the enclosure door and the cage gates have self-closing hinges and open into the aisle only during locked-off maintenance or loading (decided by Amish, 2026-10-02).
 - **Heat.** Extruder barrels and press platens run at about 190 to 200 °C (never above 230 °C for HDPE or 240 °C for PP). Insulated covers, heat-resistant gloves, face shields and a cool-down rule before maintenance. Never leave heaters on unattended.
 - **Fumes.** Only identified HDPE and PP are melted. PVC is never heated (it releases hydrogen chloride), and polystyrene, PET and unknown plastics are not melted in the reference line. Extraction runs whenever a heater is on and for 30 min after, through two enclosing hoods sized for 0.5 m/s at their openings (RFE-CAL-001 section 6).
-- **Electricity and water.** 30 mA RCDs on every circuit, splash-rated sockets near the wash tanks, a heater interlock that keeps the maximum demand at about 38 A on a 40 A single-phase supply, and an installation by a licensed electrician.
+- **Electricity and water.** 30 mA RCDs on every circuit, splash-rated sockets near the wash tanks, a heater interlock that keeps the press heaters off while a motor runs, and an installation by a licensed electrician who confirms the supply against the input currents of the drives actually bought (RFE-CAL-001 section 5; RFE-DEC-001 D1).
 - **Input hazards.** Needles, broken glass, cans and chemical containers arrive mixed in. Puncture-resistant gloves, a sharps container, and a rule that medical, chemical and hazardous waste is refused at the door.
 - **Lithium cells.** Pulled out first at intake, never punctured or crushed, terminals taped and stored in a fire-safe container with dry sand. A cell in the shredder can start a fire.
 - **Fire.** Plastic stock and flake are a high fire load. Three extinguishers (entrance, hot zone, product end), stock kept at least 1.0 m from the hot zone, clear exits, no smoking and a daily cleanup of dust and flake. Fine plastic dust can be combustible.
@@ -178,12 +184,12 @@ Two layout choices follow from these and are not separate decisions: one hot zon
 
 ## Open questions
 
-- [ ] Real target-plastic share and contamination of collected input in the first partner region (drives R7 and R8)
-- [ ] Measured shredder, extruder and sheet press rates, and whether the decided 5 kW single-phase press can be built to hold a 55 min cycle (R6; RFE-DDR-002 item 9)
-- [ ] Measured shredder sound power and enclosure insertion loss (R12)
-- [ ] Air monitoring at the hot zone on a running site (R11)
+- [ ] Real target-plastic share and contamination of collected input in the first partner region (drives PR-007 and PR-008)
+- [ ] Measured shredder, extruder and sheet press rates, and whether the decided 5 kW single-phase press can be built to hold a 55 min cycle (PR-006; RFE-DDR-002 item 9)
+- [ ] Measured shredder sound power and enclosure insertion loss (PR-012)
+- [ ] Air monitoring at the hot zone on a running site (PR-011)
 - [ ] Local prices for products, flake, metals and paper, and local wages (economics model inputs)
-- [ ] Passport fields that buyers actually need, and a form fast enough for R15
+- [ ] Passport fields that buyers actually need, and a form fast enough for PR-015
 - [ ] Permits for a small plastics recycler in the first target region
-- [ ] Whether collectors can supply loads at 10 % residue or less, the R16 threshold (R8)
+- [ ] Whether collectors can supply loads at 10 % residue or less, the PR-016 threshold (PR-008)
 - [x] First co-design partner and region (RFE-DDR-001 item 7): a waste-picker cooperative; the first candidate to approach is a waste-picker cooperative, for example SWaCH in Pune, India, reached through the WIEGO network; nothing is agreed (decided by Amish, 2026-10-02)

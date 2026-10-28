@@ -3,9 +3,9 @@ doc_id: RFE-BLD-001
 title: ReflowEconomy prototype build plan
 project: ReflowEconomy
 doc_type: Build plan
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-25'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -21,6 +21,10 @@ revisions:
     date: '2026-10-02'
     author: Amish Chadha
     change: 'Decisions of 2026-10-02 carried into the pictures and text: feed hood on the chute, self-closing door and gate hinges, padded and taped tray crossing'
+  - version: "0.4"
+    date: '2026-10-25'
+    author: Amish Chadha
+    change: 'Kit 1.9.1 upgrade: feed slot 120 mm high so ISO 13857 Table 4 applies (STEM check fix, RFE-DEC-001 D3); RFE-DWG-109 Rev P3; pictures regenerated'
 ---
 
 # ReflowEconomy prototype build plan
@@ -345,19 +349,19 @@ The stand stands on a concrete pad (or four paving slabs on compacted ground) ou
 3. Make the door leaf 790 x 1,440 x 30 the same way, with three self-closing spring hinges on the edge nearer the washing tanks, a rubber seal and an interlock switch.
 4. In the roof, frame a hole 500 x 410, 550 from the washing end and 500 from the face nearest the front wall.
 5. Make the chute collar: a 500 x 410 x 160 tube of lined 2 mm sheet.
-6. Make the feed hood: a lined 2 mm sheet box 500 wide, 850 long and 180 tall with a closed top, closed sides and a closed end over the collar, and a lined sill 100 tall under its other half that stands on the roof. Its open end, facing the aisle, is the feed slot, 460 wide and 160 tall, with its bottom lip 1,700 above the floor. Hang a flap over the slot from the top edge, with an interlock switch.
+6. Make the feed hood: a lined 2 mm sheet box 500 wide, 850 long and 140 tall with a closed top, closed sides and a closed end over the collar, and a lined sill 100 tall under its other half that stands on the roof. Its open end, facing the aisle, is the feed slot, 460 wide and 120 tall, with its bottom lip 1,700 above the floor. Keep the slot no taller than 120: above that, the safety distance in ISO 13857 for reaching through an opening no longer applies. Hang a flap over the slot from the top edge, with an interlock switch.
 
 **How it fits the parts next to it.**
 
 ![Figure 28. Joint 10: the feed chute over the shredder hopper](05-build-plan/joint-10.png)
 
-*Figure 28. Cut across: material goes in through the slot, along the hood and down the collar to the hopper. A hand would have to go 460 mm in and 600 mm down, 1,060 mm in all, to touch the cutters; 850 mm is enough. A rubber skirt closes the 28 mm gap below the collar.*
+*Figure 28. Cut across: material goes in through the slot, along the hood and down the collar to the hopper. A hand would have to go 460 mm in and 600 mm down, 1,060 mm in all, to touch the cutters; 850 mm is enough for a slot 120 mm tall or less. A rubber skirt closes the 28 mm gap below the collar.*
 
 ![Figure 29. Joint 11: the access door on the aisle face](05-build-plan/joint-11.png)
 
 *Figure 29. The door shuts itself on its spring hinges and opens into the aisle only with the shredder locked off; the flake bin comes out here.*
 
-The panels bolt together at the corners round the shredder and stand on the floor at 5,800 to 7,400 along and 150 to 1,550 from the front wall, held by angle cleats screwed down at 600 pitch. They clear the shredder by 140 and 135 at the ends, 370 in front, 360 behind and 28 above. The collar sits in the roof hole and the feed hood bolts on top of it, its sill on the roof, with the slot facing the aisle and its lip 1,700 above the floor. Feed pieces must be thinner than the 160 mm slot. Both interlock switches are wired into the shredder's stop circuit by the electrician. The reach from the slot to the cutters assumes the cutters are about 1,100 above the floor; measure them on the machine actually built and tell the safety professional if they are higher.
+The panels bolt together at the corners round the shredder and stand on the floor at 5,800 to 7,400 along and 150 to 1,550 from the front wall, held by angle cleats screwed down at 600 pitch. They clear the shredder by 140 and 135 at the ends, 370 in front, 360 behind and 28 above. The collar sits in the roof hole and the feed hood bolts on top of it, its sill on the roof, with the slot facing the aisle and its lip 1,700 above the floor. Feed pieces must be thinner than the 120 mm slot: crush bottles flat and cut bigger parts at the sorting table. Both interlock switches are wired into the shredder's stop circuit by the electrician. The reach from the slot to the cutters assumes the cutters are about 1,100 above the floor; measure them on the machine actually built and tell the safety professional if they are higher.
 
 **Check before moving on.** Opening the flap, or the door, stops the rotor every time, and the door swings shut by itself when let go (stop S5).
 
@@ -559,23 +563,24 @@ Panels bolted together and cleated down; gates on self-closing hinges on the ais
 
 ## 5. First checks
 
-These are the checks a TRL 4 test report would record; this plan only lists them. Requirement numbers are those of RFE-REQ-001.
+These are the checks a TRL 4 test report would record; this plan only lists them. Requirement numbers are the product requirements of RFE-PRS-001 (PR-005 was R5 in the old requirements, and so on).
 
 *Table 2. First checks.*
 
 | Check | Requirement | How | Pass when |
 | --- | --- | --- | --- |
-| Floor area and aisle | R5 | Tape measure along the aisle and between rows | Clear aisle 1.0 m or more everywhere (1.57 m by design); nothing stands on the painted lines |
-| Headroom over the aisle | R5 | Measure under the tray crossing and the seam beam | 2.0 m or more (2.02 m under the padding by design) |
-| Hot zone clearance | R5 | Measure from the boundary line to the nearest stock | 1.0 m or more |
-| Residual current devices | R12 | Trip test on every circuit, by the electrician | Each trips within its rated time at 30 mA |
-| Heater interlock | R12 | Run the shredder, then try to switch on the press heaters; repeat with the extruder | The press heaters cannot switch on while either motor runs |
-| Shredder interlocks and stop | R12 | Open the feed slot flap, then the door, then press the emergency stop, each with the rotor running empty | The rotor stops each time and does not restart until reset |
-| Hood face velocity | R11 | Vane anemometer across opening 1 (sash over opening 2), opening 2 (sash over opening 1) and the hood B face, fan running, filters new | 0.5 m/s or more averaged over each opening |
-| Sash | R11 | Slide it end to end | It covers each opening with 25 mm or more to spare and cannot leave both open |
-| Shredder noise | R12 | Sound level meter 1 m from the enclosure, shredder running on HDPE | Recorded; the area stays a hearing protection zone until this is known |
-| Energy per shift | R9 | Read the board's energy meter over a full reference shift | Recorded against 42.9 kWh |
-| Passport at the desk | R13, R15 | Issue a passport for a test lot and time it | A valid record and label in 2 min or less |
+| Floor area and aisle | PR-005 | Tape measure along the aisle and between rows | Clear aisle 1.0 m or more everywhere (1.57 m by design); nothing stands on the painted lines |
+| Headroom over the aisle | PR-005 | Measure under the tray crossing and the seam beam | 2.0 m or more (2.02 m under the padding by design) |
+| Hot zone clearance | PR-005 | Measure from the boundary line to the nearest stock | 1.0 m or more |
+| Residual current devices | PR-012 | Trip test on every circuit, by the electrician | Each trips within its rated time at 30 mA |
+| Heater interlock | PR-012 | Run the shredder, then try to switch on the press heaters; repeat with the extruder | The press heaters cannot switch on while either motor runs |
+| Shredder interlocks and stop | PR-012 | Open the feed slot flap, then the door, then press the emergency stop, each with the rotor running empty | The rotor stops each time and does not restart until reset |
+| Hood face velocity | PR-011 | Vane anemometer across opening 1 (sash over opening 2), opening 2 (sash over opening 1) and the hood B face, fan running, filters new | 0.5 m/s or more averaged over each opening |
+| Sash | PR-011 | Slide it end to end | It covers each opening with 25 mm or more to spare and cannot leave both open |
+| Shredder noise | PR-012 | Sound level meter 1 m from the enclosure, shredder running on HDPE | Recorded; the area stays a hearing protection zone until this is known |
+| Energy per shift | PR-009 | Read the board's energy meter over a full reference shift | Recorded against 45.6 kWh |
+| Supply current | PR-017 | Clamp meter on the incoming supply through block A with every load running | At or under the rating of the supply breaker |
+| Passport at the desk | PR-013, PR-015 | Issue a passport for a test lot and time it | A valid record and label in 2 min or less |
 
 ## 6. Safety stops
 

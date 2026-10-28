@@ -3,9 +3,9 @@ doc_id: RFE-DEC-001
 title: ReflowEconomy design decisions register
 project: ReflowEconomy
 doc_type: Design decisions register
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-25'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -21,6 +21,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: 'Approved follow-ups carried into the design: feed hood, self-closing hinges, tray padding; Value engineering restated at USD 25,505'
+- version: "0.4"
+  date: '2026-10-25'
+  author: Amish Chadha
+  change: 'Kit 1.9.1 upgrade: STEM check fixes D2 and D3 recorded as decided under Amish''s standing instruction of 2026-10-23; D1 (supply current) and D4 (concept selection) proposed, awaiting Amish'
 ---
 
 # ReflowEconomy design decisions register
@@ -29,7 +33,10 @@ Every design decision still to be made, and every decision made, in one place. E
 
 ## Open decisions
 
-None. All open decisions were decided on 2026-10-02.
+| # | What is to be decided | Options | Recommendation | What it affects in the build | Source |
+| --- | --- | --- | --- | --- | --- |
+| D1 | How the micro-factory meets its supply limit. Counted as currents, the morning block (shredder, extruder, pump, fans, lights) draws about 55 A running and 72 A at full load from the 230 V, 40 A single-phase supply decided on 2026-09-25 (RFE-STM-001 S14; PR-017 not met) | (a) a 400 V three-phase supply (about 18.5 A a phase; in Maharashtra any supply over 40 A is three-phase); (b) keep single phase and split the morning so the shredder and extruder never run together (largest block 36 A, working day about 10.6 h, about 13 USD a shift more in wages, result about -12.7 USD a shift); (c) keep 8 h and single phase and take less input per shift | (a), with (b) written into the playbook as the single-phase fallback | The electrical board, the drives (three-phase drives under (a)), the heater interlock logic, the shift pattern in the recipes and economics model, and the pitch line "works on a weak grid" | RFE-DDR-005; RFE-CAL-001 section 5 |
+| D4 | Concept selection. The sort-and-bale hub (B) outscores the reference micro-factory (A) in RFE-OPT-001 by more than 10 % | (1) A; (2) B; (3) A with a staged start taken from B (open as a sort-and-bale hub, add the remanufacturing line later) | (3): it keeps the pitch, which B alone gives up, and takes B's low-capital, low-power start | Nothing in A's model, drawing, BOM or build plan under (1) or (3); a new playbook section under (3); a full redesign under (2) | RFE-DDR-004; RFE-OPT-001 |
 
 ## To confirm when parts are bought
 
@@ -42,6 +49,8 @@ None. All open decisions were decided on 2026-10-02.
 | 5 | Both press platens are at the same working height (taken as 950 mm) and a 1 m mould fits the cooling press and the 1.04 m second opening | The transfer bridge and the booth openings are set from them | RFE-DDR-003, P4 |
 | 6 | The fan and filter box size, mass, inlet height (2.05 m) and outlet position | The fan stand and the stack are made to fit it | RFE-DDR-003, P8 |
 | 7 | The board's size fits its 700 x 800 mm place on the backboard | The backboard is cut before the board is chosen | RFE-DDR-003, P6 |
+| 8 | The cutter height of the shredder actually built (taken as 1,100 mm) and that its feed opening takes pieces under 120 mm | The 1,060 mm reach path through the 120 mm slot rests on it (RFE-DEC-001 D3) | RFE-DDR-005 |
+| 9 | The input current of the drives chosen (single-phase input drives draw about 2.4 times their power divided by the voltage) | The supply check (D1) uses datasheet currents of one drive family | RFE-DDR-005 |
 
 ## Value engineering
 
@@ -68,3 +77,5 @@ The target covers equipment items 1 to 12 (requirement R10; a hypothetical contr
 | 2026-10-02 | Shredder enclosure door and cage gates: hinged, opening into the aisle only during locked-off maintenance or loading, with self-closing hinges and the rule in the playbook's safety section; sliding door and gates instead if the open door leaves less than the local code's minimum escape width | Amish: "i approve your recommendations for all 555 open decisions." | RFE-DDR-003, A3 |
 | 2026-10-02 | Aisle headroom: accept 2.04 m, confirmed against the local code by the safety professional, with the tray crossing padded and marked with hazard tape | Amish: "i approve your recommendations for all 555 open decisions." | RFE-DDR-003, A4 |
 | 2026-10-02 | First co-design partner and region: (a), a waste-picker cooperative; first candidate to approach, SWaCH in Pune, India, reached through the WIEGO network (not agreed) | Amish: "i approve your recommendations for all 555 open decisions." | RFE-DDR-001, item 7; RFE-DDR-002 |
+| 2026-10-25 | D2: the energy budget counts motor and drive losses (electrical input = shaft energy / (motor x drive), IE3 efficiencies, 96 % drive); 45.6 kWh per shift, 0.88 kWh/kg | Decided under Amish's standing instruction of 2026-10-23 ("when a STEM check row fails, propose and implement the best fix for the design and its constructability in the same session and record it in DEC as decided under that instruction"); Amish can reverse it | RFE-DDR-005; RFE-STM-001 S13 |
+| 2026-10-25 | D3: the feed slot in the cranked feed hood is 460 x 120 mm (was 160 mm tall) so ISO 13857 Table 4 applies to the 1,060 mm reach path; hood 140 mm tall | Decided under Amish's standing instruction of 2026-10-23; Amish can reverse it | RFE-DDR-005; RFE-STM-001 S17 |

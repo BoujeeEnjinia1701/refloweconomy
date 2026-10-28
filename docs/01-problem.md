@@ -3,9 +3,9 @@ doc_id: RFE-PRB-001
 title: ReflowEconomy problem statement
 project: ReflowEconomy
 doc_type: Problem statement
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-10-02'
+date: '2026-10-25'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,6 +29,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: 'First co-design partner decided by Amish on 2026-10-02: a waste-picker cooperative, first candidate SWaCH through WIEGO'
+- version: "0.6"
+  date: '2026-10-25'
+  author: Amish Chadha
+  change: 'Kit 1.8 pipeline: users-and-needs and stakeholder tables added (source of the user requirements RFE-URS-001); SWaCH figures cited; supply limit in Maharashtra noted'
 ---
 
 # ReflowEconomy problem statement
@@ -57,6 +61,33 @@ Where value is recovered today, it is often recovered unsafely or sent abroad:
 | Municipality or NGO partner | A safe, permittable model for local recovery that creates jobs and reduces open burning | Waste management plans, donor programs, informal-sector integration |
 | Open hardware community | A playbook that links the portfolio's machine repos (WasteWise Scan, WasteWise-ml and planned shredder, foundry and cell tester) into one system | Makerspaces, university labs, NGOs |
 
+## Users and needs
+
+Table 1. Users and needs (kit 1.8). The user requirements in RFE-URS-001 are drawn from this table and the stakeholder table below; all are first-pass needs until the co-design sessions confirm them.
+
+| User type | Goals and needs | Typical use scenario | Pain points and challenges |
+| --- | --- | --- | --- |
+| Waste picker or cooperative member | A better and steadier price per kilogram; safer work than open burning; a route into processing, not only collection | Brings sorted or mixed bags to the intake door, is weighed and paid by weight and grade; may work a shift sorting or washing | Prices set by middlemen; injuries from sharps and glass; no protective equipment; loads refused without explanation |
+| Micro-factory operator (cooperative, social enterprise or small business) | A layout, equipment list, recipes, safety rules and an economics model that work per kilogram and per shift, before money is spent | Runs one 8 h shift of four workers in a rented shed or two containers, about 100 kg of input a shift | Capital in the tens of thousands of USD at most; a weak, often single-phase supply; permits; finding buyers who pay for quality |
+| Line worker (sorter, wash and shredder operator, press operator) | Work that does not harm hearing, lungs or hands; clear rules; loads light enough to lift | Sorts at the table, washes and shreds in the morning, presses sheets in the afternoon | Noise, fumes and hot surfaces near each other in a small room; heavy bags; lithium cells and needles in the input |
+| Local buyer of recycled material or products | Feedstock or products of known polymer, grade, contamination and origin | Buys flake for its own moulding, or sheets and beams for furniture, building and school projects | Recycled material of unknown quality; no record of where it came from; inconsistent supply |
+| Industrial refiner or exporter | Clean, identified, correctly packed lots of what the site must not process: boards, cells, mixed metals | Collects lots from the export cage with their passports | Mixed loads, punctured cells and missing paperwork |
+| Open hardware community | A playbook that links the portfolio's machine repos into one system that anyone can copy | Makerspaces, universities and NGOs adapting the layout and recipes | Single-machine designs with no system view of safety, economics or traceability |
+
+## Stakeholders
+
+Table 2. Stakeholders.
+
+| Stakeholder group | Role or interest | Engagement needed |
+| --- | --- | --- |
+| Waste-picker cooperative (first candidate to approach: SWaCH, Pune, reached through WIEGO; nothing agreed) | Co-design partner; SWaCH's more than 2,100 members collect door to door from over 360,000 homes in Pune ([WIEGO fact sheet](https://wiego.org/wp-content/uploads/2019/09/fact_sheet_cooperative_swach.pdf), checked 2026-10-25) | Co-design sessions on input mix, prices, wages, working day and safety; agreement before any site work |
+| Municipality and its solid waste department | Integrates waste pickers under the Solid Waste Management Rules, 2016; may provide a site | Early briefing; site and permits |
+| State pollution control board (Maharashtra: MPCB) | Registers plastic waste processors and grants consents under the Air and Water Acts | Registration on the CPCB portal and consents before operation (RFE-REG-001) |
+| Electricity distribution company (Maharashtra: MSEDCL) | Supplies single phase up to 40 A and three phase above ([Conditions of Supply, clause 6.4.1](https://www.mahadiscom.in/wp-content/uploads/2018/08/CoS_MSEDCL_2010.pdf), checked 2026-10-25) | Connection type and sanctioned load (RFE-DEC-001 D1) |
+| Qualified safety professional, licensed electrician, structural engineer | Review the layout, supply and the container seam before any site operates | Engaged at P4 to P5 (RFE-PLN-001) |
+| Local buyers and refiners | Take the products, flake and export lots | Interviews on the passport fields and prices they would pay for |
+| Open hardware community and the portfolio's machine repos | Reuse and improve the playbook | Public repository, issues and build reports |
+
 ## Constraints
 
 - ReflowEconomy is a playbook and a data standard, not a single machine. Machines live in their own repos. There is no hardware budget for this repo (`budget_usd` is null on purpose); the reference micro-factory equipment list gives indicative costs only.
@@ -64,7 +95,7 @@ Where value is recovered today, it is often recovered unsafely or sent abroad:
 - Input quality matters: a site can only keep disposal at 20 % or less of input if deliveries carry about 10 % residue or less, so an intake quality rule is part of the playbook (RFE-DDR-002 item 8).
 - Safe by default: no open burning, no acid or cyanide leaching, no heating of PVC, fume extraction on every melt process (see `docs/playbook/safety.md`).
 - Recover and remanufacture locally; export only what needs industrial refining. The feasibility matrix (`docs/playbook/feasibility-matrix.md`) sets that boundary per material.
-- Works on a weak grid: the reference micro-factory runs on a single-phase supply (taken as 230 V, 40 A) with staggered heating, so its maximum demand stays near 9 kW (8.75 kW with the 1.5 kW fume fan) although about 14 kW is connected. Decided by Amish, 2026-09-25 (RFE-DDR-001 item 5; fan size RFE-DDR-002 item 10).
+- Works on a weak grid: the reference micro-factory runs on a single-phase supply (taken as 230 V, 40 A) with staggered heating. Decided by Amish, 2026-09-25 (RFE-DDR-001 item 5; fan size RFE-DDR-002 item 10). The STEM check of 2026-10-25 found that, counted as currents, the morning loads draw about 55 A on paper (RFE-STM-001 S14); how to meet the supply limit is proposed, awaiting Amish (RFE-DEC-001 D1). In Maharashtra a supply above 40 A is given as three-phase.
 - The reference line is plastics only; aluminium remelting is a separate add-on bay with its own safety case. Decided by Amish, 2026-09-25 (RFE-DDR-001 item 1).
 - The material passport must be simple enough to fill in on a phone at the desk and structured enough (JSON Schema) for software to validate.
 - Open: documents and schema are published under the repo licenses so any group can copy, adapt and improve them.
@@ -100,4 +131,4 @@ This design is for communities the author is not part of, so requirements come f
 - [ ] Identify a local partner organization (Helpful Engineering network, NGO or university)
 - [ ] Run co-design sessions with intended users; record who, where and what was learned
 - [ ] Validate load, distance, terrain and cost assumptions in the field
-- [ ] Revise requirements (REQ) from findings before freezing the design
+- [ ] Revise the user and product requirements (RFE-URS-001, RFE-PRS-001) from findings before freezing the design

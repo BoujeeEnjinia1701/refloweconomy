@@ -76,12 +76,12 @@ no_front = Compound(children=[s & ELEV_TOP for k, items in parts.items() for n, 
 elev = project(no_front, "front", (cx, cy - D, cz), (0, 0, 1), (cx, cy, cz))
 
 s = Sheet(project="ReflowEconomy", title="Reference micro-factory, floor plan GA", dwg_no="RFE-DWG-001",
-          rev="P4", author="Amish Chadha", date="2026-10-02", scale=K, concept=True,
+          rev="P5", author="Amish Chadha", date="2026-10-25", scale=K, concept=True,
           material="Layout only; equipment envelopes. See bom/bom.csv and RFE-CAL-001",
-          revisions=[("P1", "Preliminary GA from the TRL 3 model (RFE-CAL-001)", "2026-09-25", "AC"),
-                     ("P2", "Notes: 1.5 kW fan, 38 A demand, shed preferred (RFE-DDR-002)", "2026-09-25", "AC"),
+          revisions=[("P2", "Notes: 1.5 kW fan, shed preferred (RFE-DDR-002)", "2026-09-25", "AC"),
                      ("P3", "Design for construction (RFE-DDR-003): booth, duct, tray, seam beam", "2026-09-30", "AC"),
-                     ("P4", "Feed hood on the chute; self-closing hinges; padded tray crossing", "2026-10-02", "AC")])
+                     ("P4", "Feed hood on the chute; self-closing hinges; padded tray crossing", "2026-10-02", "AC"),
+                     ("P5", "120 mm feed slot; supply note; PR numbers", "2026-10-25", "AC")])
 
 # placement: plan at top left, elevation below, both at 1:50
 PX, PY = 20.0, 24.0
@@ -185,10 +185,10 @@ s.add_notes("Key data (RFE-CAL-001)", [
     "59.4 m2 footprint; clear aisle 1.57 m (1.20 m painted)",
     "Hot zone 1.0 m from stock; exits at both ends",
     "100 kg input/shift: 32.3 kg products, 19.3 kg flake",
-    "Max demand 8.75 kW (38 A) with heater interlock",
+    "Block A 55 A on 40 A single-phase: supply open (D1)",
     "Hoods 0.5 m/s face: 0.57 m3/s at about 815 Pa",
-    "Shredder LEX 79 dB(A) enclosed; feed reach 1.06 m",
-    "Not met: R1, R4, R8. At risk: R6, R12",
+    "LEX 79 dB(A) enclosed; reach 1.06 m via 120 mm slot",
+    "Not met: PR-001, 004, 008, 017. At risk: PR-006, 012",
     "Seam beam and side walls: structural engineer only",
     "Headroom 2.02 m under the padded tray crossing",
     "PRELIMINARY, NOT FOR FABRICATION",

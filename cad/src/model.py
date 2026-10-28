@@ -1,14 +1,31 @@
-"""ReflowEconomy reference micro-factory: parametric floor layout (build123d), TRL 3, constructable.
+"""ReflowEconomy reference micro-factory: parametric model (build123d), TRL 3, stage P3, kit 1.9.
 
 Run from the repo root:
-    python cad/src/model.py            export STEP and STL of the layout, shell and equipment
-    python cad/src/model.py --check    run the constructability checks (overlaps, contacts, headroom)
+    python .kit/cad_check.py --export  fidelity check of every option at D3, STEP per part and per assembly
+    python cad/src/model.py            masses by BOM line and STL of option A (tolerance 0.15 mm)
+    python cad/src/model.py --check    the layout constructability checks (overlaps, contacts, headroom)
 
-Massing-plus level of detail: correct zone footprints, aisle, doors, hoods, duct, cable tray and
-the made fit-out parts (booth, sash, hood B, shredder enclosure, drying rack, cage, brackets and
-stands) at the sizes the build plan RFE-BLD-001 gives. Bought machines are envelopes. Units mm,
-Z up, floor at Z = 0. X runs along the line from the intake end (X = 0) to the product end; Y runs
-from the front wall (Y = 0) to the back wall; material flows in +X.
+Two levels of geometry live here, built from the same PARAMS and ZONES:
+
+* The kit 1.9 interface: OPTIONS, PRINCIPLES, CHOSEN, OPTION_VIEWS, ALLOWED_CONTACTS and
+  components(option), which returns cad_parts.part() dicts at detail level D3 (STANDARDS section 24;
+  Amish, 2026-10-24: "Detail every option"). Option A, the reference micro-factory, is built in
+  cad/src/detail_a.py and option B, the sort-and-bale hub, in cad/src/detail_b.py, both from
+  .kit/cad_parts.py and the shared builders in cad/src/detail_common.py and cad/src/rfe_parts.py:
+  real stock sections, every bolt, nut, washer and screw with its hole, welds as beads, hinges,
+  broken edges, the container frame and corrugated walls, panels with their real lining thickness.
+* The layout envelopes below (layout_components, build_parts, ZONES): one solid per component at the
+  sizes of the build plan RFE-BLD-001. The calculation note (docs/04-calcs/sizing.py), the floor plan
+  sheet (cad/src/sheets.py) and the build plan pictures (cad/src/build_plan_media.py) read them, and
+  --check runs the layout constructability checks on them.
+
+Units mm, Z up, finished floor at Z = 0 (the yard outside the containers is at Z = -160). X runs along
+the line from the intake end (X = 0) to the product end; Y runs from the front wall (Y = 0) to the
+back wall; material flows in +X.
+
+Kit 1.8.1 STEM check fix (RFE-STM-001 S17; RFE-DEC-001 D3, decided under Amish's standing
+instruction of 2026-10-23): the feed slot in the cranked feed hood is 120 mm high (was 160 mm), so
+ISO 13857 Table 4 (openings up to 120 mm, 850 mm to the hazard) applies to the 1,060 mm reach path.
 
 Layout (decided by Amish, 2026-09-25, RFE-DDR-001 items 1, 2 and 5): a plastics line on two
 40 ft container footprints side by side with the adjoining side walls removed, one 1.2 m
@@ -37,7 +54,10 @@ floor area from the same numbers that draw the model.
 import sys
 from pathlib import Path
 
-from build123d import Box, Compound, Cylinder, Pos, Rot, export_step, export_stl
+HERE = Path(__file__).resolve().parent
+sys.path[:0] = [str(HERE), str(HERE.parents[1] / ".kit")]
+
+from build123d import Box, Compound, Cylinder, Pos, Rot, export_step, export_stl  # noqa: E402
 
 # Top-level parameters (mm). Edit these, not the geometry below.
 PARAMS = {
@@ -72,10 +92,10 @@ PARAMS = {
     # hood before it can reach down to the cutters
     "CHUTE_MOUTH_Z": 1700.0,     # mouth bottom lip above the floor
     "CHUTE_MOUTH_Y": 1500.0,     # mouth plane (aisle-side end of the feed hood)
-    "CHUTE_SLOT": (460.0, 160.0),  # mouth clear opening (width, height); 160 mm keeps the head out
+    "CHUTE_SLOT": (460.0, 120.0),  # mouth clear opening (width, height); 120 mm keeps ISO 13857 Table 4 (RFE-DEC-001 D3; was 160)
     "CHUTE_DROP_Y": 1040.0,      # aisle-side inner face of the collar, where the feed drops
     "CUTTER_Z": 1100.0,          # top of the cutting chamber (assumed in the 1512 mm machine envelope)
-    "REACH_SR": 850.0,           # ISO 13857 safety distance, upper limb to the shoulder (opening over 120 mm)
+    "REACH_SR": 850.0,           # ISO 13857 Table 4 safety distance, arm to the shoulder, slot 40 < e <= 120 mm
     # hood openings (m), used by RFE-CAL-001
     "HOOD_A_OPEN": (1.2, 0.6),  # press booth sliding sash, one opening uncovered at a time
     "HOOD_B_OPEN": (0.8, 0.4),  # extruder barrel enclosure, open face on the aisle side
@@ -99,6 +119,32 @@ ZONES = {
     "press":   (6, "Sheet press and cooling press in booth", 7250, 9700, 3200, 4796, 2300, "back"),
     "store1":  (8, "Racking bay 1 (products)", 10750, 12100, 3796, 4796, 2000, "back"),
 }
+
+# ---------------------------------------------------------------- kit 1.9 interface (STANDARDS section 24)
+TITLE = "ReflowEconomy"
+OPTIONS = {"A": "Reference micro-factory (wash, shred, extrude and press)", "B": "Sort-and-bale hub"}
+PRINCIPLES = {
+    "A": "Thermal remanufacture: collected plastics are sorted, washed, shredded, float-sink separated and dried, then HDPE and PP are melted into sheets and beams under enclosing hoods and PET leaves as clean flake.",
+    "B": "Mechanical densification only: collected material is hand-sorted by polymer and colour and pressed into bales in a vertical baler for a regional reprocessor; nothing is washed, cut or melted on site.",
+}
+CHOSEN = "A"      # the existing design (kit 1.8 rule: option A in a repo designed before kit 1.8); choice awaiting Amish (RFE-DEC-001 D4)
+OPTION_VIEWS = {"A": {"el": 30, "az": -62, "ground_z": 0}, "B": {"el": 30, "az": -62, "ground_z": 0}}
+# Parts that touch by design: coach and wood screws in their pilot holes in the container floor, screws in
+# rivet nuts or plugs in the walls and backboard, anchors in the concrete pad
+ALLOWED_CONTACTS = [("coach screw into the floor", "Container floor"), ("wood screw into the floor", "Container floor"),
+                    ("wall screw", "wall"), ("wall screw", "Wall sleeve"), ("board screw", "Backboard"),
+                    ("eyewash screw", "Backboard")]
+
+
+def components(option="A"):
+    """Every part of a concept option at detail level D3, as cad_parts.part() dicts (kit 1.9)."""
+    if option == "A":
+        import detail_a
+        return list(detail_a.build(PARAMS, ZONES))
+    if option == "B":
+        import detail_b
+        return list(detail_b.build(PARAMS, ZONES))
+    raise KeyError(option)
 
 
 def box(x0, x1, y0, y1, z0, z1):
@@ -399,8 +445,8 @@ def tray_padding(p=PARAMS):
 
 
 # ---------------------------------------------------------------- components
-def components(p=PARAMS):
-    """Ordered {key: (bom, name, shape, colour)}. BOM numbers match bom/bom.csv (0 = floor markings)."""
+def layout_components(p=PARAMS):
+    """Layout envelopes: ordered {key: (bom, name, shape, colour)}. BOM numbers match bom/bom.csv (0 = floor markings)."""
     C = {}
 
     def add(key, bom, name, shape, colour):
@@ -508,7 +554,7 @@ def components(p=PARAMS):
 def build_parts(p=PARAMS):
     """Return {bom: [(name, shape, colour)]} for the layout. BOM numbers match bom/bom.csv."""
     out = {}
-    for bom, name, shape, colour in components(p).values():
+    for bom, name, shape, colour in layout_components(p).values():
         out.setdefault(bom, []).append((name, shape, colour))
     return out
 
@@ -577,7 +623,7 @@ CLEAR = [("seam_beam", 2000.0), ("tray", 2000.0), ("tray_pad", 2000.0), ("tray_t
 def check(p=PARAMS, verbose=True):
     """Constructability checks: no two parts overlap; every listed pair touches; every part inside the
     building is under the roof; the aisle keeps its headroom; nothing stands in the painted aisle."""
-    C = components(p)
+    C = layout_components(p)
     keys = list(C)
     fails, n = [], 0
     bbs = {k: C[k][2].bounding_box() for k in keys}
@@ -621,8 +667,8 @@ def check(p=PARAMS, verbose=True):
     if reach_path(p) < p["REACH_SR"]:
         fails.append(f"feed reach path {reach_path(p):.0f} mm is under the ISO 13857 distance {p['REACH_SR']:.0f} mm")
     n += 1
-    if p["CHUTE_SLOT"][1] > 180.0:
-        fails.append("feed slot taller than 180 mm admits the head")
+    if p["CHUTE_SLOT"][1] > 120.0:
+        fails.append("feed slot taller than 120 mm is outside ISO 13857 Table 4 (reaching-over distances would apply)")
     if verbose:
         for f in fails:
             print("FAIL", f)
@@ -633,15 +679,22 @@ def check(p=PARAMS, verbose=True):
 if __name__ == "__main__":
     if "--check" in sys.argv:
         sys.exit(1 if check() else 0)
+    import collections
+    import cad_parts
     root = Path(__file__).resolve().parents[1]
-    (root / "step").mkdir(exist_ok=True)
+    ps = components(CHOSEN)
+    by = collections.defaultdict(float)
+    for q in ps:
+        if q["kind"] != "context":
+            by[q["bom"]] += cad_parts.mass_kg(q)
+    for b in sorted(by, key=lambda v: (v is None, v or 0)):
+        print(f"BOM line {b}: {by[b]:8.1f} kg (model)")
     (root / "stl").mkdir(exist_ok=True)
-    parts = build_parts()
-    asm = assembly(parts)
-    for name, shp in (("refloweconomy-layout", asm), ("refloweconomy-shell", shell()),
-                      ("refloweconomy-equipment", equipment(parts))):
-        export_step(shp, str(root / "step" / f"{name}.step"))
-        export_stl(shp, str(root / "stl" / f"{name}.stl"))
-    bb = asm.bounding_box()
-    print(f"layout bounding box {bb.size.X:.0f} x {bb.size.Y:.0f} x {bb.size.Z:.0f} mm (fan box and stack outside the back wall)")
-    print("wrote cad/step/refloweconomy-{layout,shell,equipment}.step and cad/stl/*.stl")
+    for old in (root / "stl").glob("*.stl"):
+        old.unlink()
+    tol = dict(tolerance=0.15, angular_tolerance=0.35)
+    groups = {"equipment": [q["shape"] for q in ps if q["kind"] != "context" and q["bom"] not in (13,)],
+              "shell": [q["shape"] for q in ps if q["kind"] != "context" and q["bom"] == 13]}
+    for g, shapes in groups.items():
+        export_stl(Compound(shapes), str(root / "stl" / f"refloweconomy-{g}.stl"), **tol)
+    print("wrote cad/stl/refloweconomy-equipment.stl and refloweconomy-shell.stl (option A, tolerance 0.15 mm)")

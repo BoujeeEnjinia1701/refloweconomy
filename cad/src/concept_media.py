@@ -1,60 +1,71 @@
-"""ReflowEconomy reference micro-factory: concept media from the TRL 3 parametric model.
+"""ReflowEconomy reference micro-factory: concept media from the TRL 3 model (kit 1.9, detail level D3).
 
-Run from the repo root:  python cad/src/concept_media.py
-Geometry comes from cad/src/model.py (the floor layout); the material flow values come from
-RFE-CAL-001 (python docs/04-calcs/sizing.py) and are estimates. Not for fabrication.
+Run from the repo root:  python cad/src/concept_media.py [hero|exploded|flow|blueprint|web ...]
+With no argument it draws everything; on a small machine run one picture per process. Geometry is
+components(CHOSEN) from cad/src/model.py (option A, the reference micro-factory, with every fastener and
+weld); the material flow values come from RFE-CAL-001 (python docs/04-calcs/sizing.py) and are estimates.
+Not for fabrication.
 
-The reference micro-factory is a plastics line (PET, HDPE, PP) with sorting-out of metals,
-paper, e-waste and residue, on two 40 ft container footprints side by side (12.19 x 4.88 m).
-Axes: X along the line (intake at X = 0), Y from the front wall (Y = 0) to the back wall,
-Z up. Units mm. Each Part carries the BOM line number used in bom/bom.csv.
+The reference micro-factory is a plastics line (PET, HDPE, PP) with sorting-out of metals, paper,
+e-waste and residue, on two 40 ft container footprints side by side (12.19 x 4.88 m). Axes: X along the
+line (intake at X = 0), Y from the front wall (Y = 0) to the back wall, Z up. Units mm. The front wall
+is left out so the floor shows.
 """
+import csv
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / ".kit"))
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-from concept import Part, render_all, ACCENT, INK
-from model import PARAMS as P, box, build_parts
+sys.path[:0] = [str(ROOT / ".kit"), str(Path(__file__).resolve().parent)]
+import concept as K  # noqa: E402
+from concept import Part, render_all, ACCENT, INK  # noqa: E402
+import model as M  # noqa: E402
 
-import csv
-
-SLAB = box(0, P["FL_X"], 0, P["FL_Y"], -150, 0)
-FRONT_WALL = box(-1, P["FL_X"] + 1, -1, P["WALL_T"] + 0.5, 0, P["WALL_H"] + 1)   # left out of the media so the floor shows
 BOM_NAMES = {int(r["item"].split()[0]): r["item"].split(" ", 1)[1]
              for r in csv.DictReader((ROOT / "bom" / "bom.csv").open())}
+MD = ROOT / "media"
+DATE = "2026-10-25"
 
-import numpy as np
-import matplotlib
+import numpy as np  # noqa: E402
+import matplotlib  # noqa: E402
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt
-from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
+import matplotlib.pyplot as plt  # noqa: E402
+from matplotlib.patches import FancyBboxPatch, FancyArrowPatch  # noqa: E402
 
 EXPLODE = {1: (0, -1300, 0), 2: (0, 0, 1500), 3: (0, -1700, 0), 4: (0, 0, 1300), 5: (0, 1500, 0),
            6: (0, 0, 500), 7: (0, 0, 2600), 8: (1600, 0, 0), 9: (1600, -1600, 0), 10: (0, 1600, 0),
-           11: (0, 1600, 1400), 12: (0, 1500, 0), 13: (0, 0, 0), 0: (0, 0, 0)}
+           11: (0, 1600, 1400), 12: (0, 1500, 0), 13: (0, 0, 0)}
 
 
-def zone_parts(exploded=False):
-    """Parts list from cad/src/model.py. The first shape of each zone carries the BOM callout.
-    The exploded variant drops the walls (so nothing hides behind them) and keeps the slab as item 13."""
-    out = []
-    for bom, items in sorted(build_parts().items(), key=lambda kv: (kv[0] in (0, 13), kv[0])):
-        for j, (name, shape, colour) in enumerate(items):
-            if bom == 13 and j > 0 and exploded:
-                continue                     # seam beam and seam plate: shown in the build plan, not the zone key
-            if bom == 13 and j == 0:
-                shape = SLAB if exploded else shape - FRONT_WALL
-                name = "Building shell (floor slab shown; walls omitted)" if exploded else "Building shell (front wall omitted)"
-            elif j == 0 and bom:
-                name = BOM_NAMES[bom]
-            off = EXPLODE[bom] if exploded else (0, 0, 0)
-            out.append(Part(name, shape, colour, bom if (j == 0 and bom != 0) else None, off))
+def zone_parts(exploded=False, small=True):
+    """Parts from components(CHOSEN). Each BOM line's first part carries its callout. The front wall is left
+    out; the exploded view keeps only the container floors of the shell (item 13) so nothing hides behind
+    walls. small=False drops fasteners and welds (for the sheet views)."""
+    out, seen = [], set()
+    for p in M.components(M.CHOSEN):
+        if p["group"] == "front_wall" or p["kind"] == "context" and exploded:
+            continue
+        if not small and p["kind"] in ("fastener", "weld"):
+            continue
+        b = p["bom"]
+        if exploded and b == 13 and not p["name"].startswith("Container floor"):
+            continue
+        name = p["name"]
+        call = None
+        if b and b not in seen and p["kind"] in ("made", "bought"):
+            seen.add(b); call = b; name = BOM_NAMES.get(b, name)
+        off = EXPLODE.get(b, (0, 0, 0)) if exploded else (0, 0, 0)
+        out.append(Part(name, p["shape"], p["color"], call, off))
     return out
 
 
-parts = zone_parts()
+KEY_FIGURES = ["Footprint 12.19 x 4.88 m, 59.4 m2 (shed or two 40 ft boxes)",
+               "Plastics line: PET flake; HDPE, PP sheets and beams",
+               "100 kg input per shift: 51.6 kg kept local (est.)",
+               "10 kg exported for refining; 28.4 kg to disposal (est.)",
+               "0.88 kWh/kg of output; block A 55 A on paper (supply open)",
+               "Equipment $25,505 indicative (VE target $25,000)",
+               "Passport v0.2 on every lot that leaves (RFE-CAL-001)"]
 
 
 # Material flow, per 100 kg of mixed collected input. All values are ESTIMATES for concept review.
@@ -152,23 +163,32 @@ def tag(ax, x, y, small=False):
             color="#92400E", zorder=6)
 
 
+def hero():
+    return K._render(K.with_scale_figure(zone_parts()), MD / "hero.png", title="ReflowEconomy",
+                     note="Front wall left out; seen from the front right and above, 24 deg elevation. Grey figure: 1.75 m person for scale")
+
+
+def exploded():
+    return K._render(zone_parts(exploded=True), MD / "exploded.png", offsets=True, labels=True, size=(12, 6),
+                     title="ReflowEconomy: exploded view (numbers match bom/bom.csv)")
+
+
+def blueprint():
+    return render_all(zone_parts(small=False), project="ReflowEconomy", title="Reference micro-factory layout", dwg_no="RFE-DWG-010",
+                      key_figures=KEY_FIGURES, cut=False, date=DATE, rev="P3", web_model=False)
+
+
+def web(light=False):
+    ps = zone_parts(small=not light)
+    return K.export_web_model(ps, "media", title="ReflowEconomy: reference micro-factory layout")
+
+
 if __name__ == "__main__":
     import os, shutil
     os.chdir(ROOT)
-    render_all(
-        parts, project="ReflowEconomy", title="Reference micro-factory layout", dwg_no="RFE-DWG-010",
-        key_figures=["Footprint 12.19 x 4.88 m, 59.4 m2 (shed or two 40 ft boxes)",
-                     "Plastics line: PET flake; HDPE, PP sheets and beams",
-                     "100 kg input per shift: 51.6 kg kept local (est.)",
-                     "10 kg exported for refining; 28.4 kg to disposal (est.)",
-                     "0.83 kWh/kg of output; 8.75 kW max demand, 230 V",
-                     "Equipment $25,505 indicative (VE target $25,000)",
-                     "Passport v0.2 on every lot that leaves (RFE-CAL-001)"],
-        cut=False, date="2026-10-02")
-    # Re-render the exploded view on a wider canvas so the legend clears the long floor plan
-    from concept import _render
-    _render(zone_parts(exploded=True), ROOT / "media" / "exploded.png", offsets=True, labels=True, size=(12, 6),
-            title="ReflowEconomy: exploded view (numbers match bom/bom.csv)")
-    flow_png(ROOT / "media" / "flow.png")
-    for d in (ROOT / "media").glob("_views*"):
+    fns = {"hero": hero, "exploded": exploded, "flow": lambda: flow_png(MD / "flow.png"), "blueprint": blueprint,
+           "web": web, "web-light": lambda: web(True)}
+    for w in sys.argv[1:] or ["blueprint", "hero", "exploded", "flow", "web"]:
+        print(w, "->", fns[w]())
+    for d in MD.glob("_views*"):
         shutil.rmtree(d)

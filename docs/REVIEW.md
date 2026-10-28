@@ -323,3 +323,69 @@ Amish to make the photoreal renders on his Mac from the exported scenes, then ru
 ## 2026-10-02: photoreal renders redone on the constructable design
 
 Rendered with Blender Cycles on Amish's Mac from the updated appearance model; captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` regenerated with `.kit/cards.py`. Views: hero, hot-zone. image_qc passes. Appearance deviations are those logged above as proposed, awaiting Amish.
+
+## Session 2026-10-24: kit 1.9.1 upgrade
+
+Authority: the kit 1.9.1 rollout brief, carrying Amish's instructions of 2026-10-24 ("I want detailed TRL3 CAD - and in fact want to ensure the CAD is detailed across all TRLs"; "Detail every option"; "Kit 1.9.1 rollout - proceed to rollout across the other repos") and his standing instruction of 2026-10-23 on STEM check fixes. Work done on 2026-10-25. `trl` and `trl_target` stay 3; `stage: P3`; `budget_usd` stays null. Committed, not pushed.
+
+### What was added
+
+- `/upgrade-1.8` pipeline: STEM check `docs/01b-stem-check.md` (RFE-STM-001) with `docs/04-calcs/stem_check.py` and `stem_results.csv`; concept options `docs/02a-concept-options.md` (RFE-OPT-001) and concept selection record `docs/decisions/0004-concept-selection.md` (RFE-DDR-004); STEM fixes record `docs/decisions/0005-stem-check-fixes.md` (RFE-DDR-005); users-and-needs and stakeholder tables in `docs/01-problem.md` (RFE-PRB-001 v0.6); `docs/03a-user-requirements.md` (RFE-URS-001, 19 URs); `docs/03-requirements.md` migrated from RFE-REQ-001 to RFE-PRS-001 v0.7 (20 PRs, PR-001 to PR-016 were R1 to R16); `docs/03b-traceability.md` (RFE-RTM-001, generated, 0 gaps); `docs/07-regulatory.md`, `08-feasibility.md`, `09-risk.md` (with preliminary hazard analysis and design FMEA), `10-market.md`, `11-plan.md`.
+- `/upgrade-1.9` CAD: `cad/src/model.py` rebuilt to the kit 1.9 interface (`PARAMS`, `OPTIONS`, `PRINCIPLES`, `CHOSEN = "A"`, `OPTION_VIEWS`, `ALLOWED_CONTACTS`, `components(option)`), keeping the layout envelopes (`layout_components`, `ZONES`) that `sizing.py`, `sheets.py` and `build_plan_media.py` read. New `cad/src/detail_a.py` (option A), `detail_b.py` (option B), `detail_common.py` and `rfe_parts.py` (repo helpers on `.kit/cad_parts.py`): corrugated container walls with corner posts and rails, the seam beam on bolted cleats, seam plates with their screws, every machine frame in SHS and angle with foot plates, coach screws and weld beads, 60 mm panels as a 1.5 mm skin plus lining with their screws and floor cleats, the swept 250 mm duct with brackets, straps and wall sleeve, racking, cage with mesh and self-closing hinges, board, tray and padding. `cad/fidelity.json` passes at D3; STEP per made or bought part of A in `cad/step/A/` and `A-assembly.step`, `B-assembly.step`; the old layout STEP files are replaced. STL of option A regenerated at 0.15 mm (`cad/stl/refloweconomy-equipment.stl`, `refloweconomy-shell.stl`).
+- Regenerated: RFE-DWG-001 Rev P5, RFE-DWG-109 Rev P3, build plan overview, joint 10 and step 16; concept media (`media/hero.png`, `exploded.png`, `flow.png`, `concept-blueprint.*`, `model.glb`, `viewer.html`) from the D3 model.
+- `cad/src/product_model.py` rebuilt from `components(CHOSEN)`: site scene in a concrete yard (model lifted 160 mm so the yard is at z = 0; slab, ramp and fan pad reach below ground), three mannequins on the floor and yard, `RENDER_VIEWS` hero, hot-zone and studio.
+- Updated: RFE-CAL-001 v0.6, RFE-PRC-001 v0.8, RFE-BLD-001 v0.4, RFE-DEC-001 v0.4, `bom/bom.csv` (line 3 text), `bom/bom-notes.md`, `docs/playbook/economics_inputs.csv`, `docs/playbook/safety.md`, README (house structure), `project.yaml`.
+
+### STEM verdicts and fixes
+
+28 within known science, 3 plausible (S15 noise, S21 air quality, B1 bale density), 1 fails with a fix proposed (S14), none fails; `stem_check: open`.
+
+- S13 fixed under the standing instruction (RFE-DEC-001 D2): motor energy counted at the electrical input; 42.9 to 45.6 kWh per shift, 0.83 to 0.88 kWh/kg; result per shift +$0.57 to +$0.17; break-even price $2.48 to $2.49/kg.
+- S17 fixed under the standing instruction (D3): feed slot 460 x 160 to 460 x 120 mm, because ISO 13857 Table 4 covers openings only up to 120 mm; reach path 1,060 mm against 850 mm.
+- S14 to Amish (D1): counted as currents, block A draws about 55 A running (72 A at full load) on a 230 V, 40 A single-phase supply; options three-phase (recommended), three blocks on single phase (about 10.6 h day), or less input.
+
+Independent review (2026-10-25, a second agent run headless with only RFE-STM-001, RFE-CAL-001, RFE-PRS-001 and `sizing.py`): it recomputed the mass balance, energy, press, fan, hood, noise, current and reach figures and could not refute them, and confirmed S14 fails. It moved three rows from within known science to plausible (S3 press standing loss is an assumption; S17 the EN 12012 type C standard for size reduction machines takes precedence over ISO 13857 and is not yet checked; S20 25 kg is an ideal-conditions reference mass) and led to restated checks for S4 (heating phase 36.6 min of 55), S10, S11, S22 (fan hours and 30 % water) and S26 (arithmetic only). It also found that meeting PR-008 with cleaner loads raises the shredder load to 4.26 h (PR-006 worse), that the single-phase fallback (b) costs about 13 USD a shift in wages (result about -12.7 USD), that block B runs at 91 % of the supply, that the seam beam deflects about L/290, and that `results.csv` lacked PR-018 to PR-020. All are recorded in RFE-STM-001 (Independent review), RFE-CAL-001, RFE-PRS-001, RFE-REG-001 (G8a), RFE-RSK-001 (F5a, duct wax fire) and RFE-DEC-001 D1. Final counts: 25 within, 6 plausible, 1 fails with a fix proposed.
+
+### Option scores
+
+A, reference micro-factory: 180 of 295; B, sort-and-bale hub: 228. B outscores A by more than 10 %, so the choice goes to Amish; recommendation: keep A as the reference with a staged start taken from B (RFE-DEC-001 D4).
+
+### Part counts and mass per option (`cad/fidelity.json`)
+
+| Option | Parts | Made or bought | Fasteners | Welds | Bare share | Mass (model) |
+| --- | --- | --- | --- | --- | --- | --- |
+| A, reference micro-factory | 1,005 | 543 | 294 | 168 | 0 % | 9,779 kg |
+| B, sort-and-bale hub | 605 | 360 | 153 | 92 | 0 % | 7,685 kg |
+
+Masses include the container shell (about 4.7 t of steel and plywood in the model); bags and bales are drawn as skins so they carry their real mass.
+
+### Requirements not met
+
+PR-001 (feasibility matrix columns), PR-004 (export rules per stream), PR-008 (28.4 % to disposal for the reference input), PR-017 (supply current, D1). At risk: PR-006 (throughput), PR-012 (noise on an assumed sound power). Not verifiable at TRL 3: PR-011, PR-015, PR-020. Over the value-engineering target: PR-010, USD 25,505 against USD 25,000.
+
+### Decisions awaiting Amish
+
+- D1, supply current: three-phase 400 V recommended; single phase in three blocks as the fallback.
+- D4, concept selection: A with a staged start taken from B recommended (B outscores A).
+- Appearance model (Proposed, awaiting Amish): the hero is now a site render in a concrete yard with the front wall and roof left out, the model lifted 160 mm to stand the containers on the yard, a ramp at the doors and three mannequins; plus a studio view of the fit-out alone.
+- Still open from before: none in the register.
+
+### Safety concerns
+
+The supply finding is a safety matter as well as a design one: an undersized supply trips or overheats. The reach check rests on an assumed cutter height (DEC confirm item 8). Air quality and noise need measurements on a running site. The seam beam must have its top flange tied to the roof (STEM S18).
+
+### Kit bugs met
+
+- `.kit/render.py` stops before building the PDFs when `media/options.png` is missing, so `python3 .kit/render.py` built no PDFs this session (the docs/pdf copies are from earlier sessions); the brief reserves `.kit/options.py` for the Mac render.
+- `.kit/concept.py` `export_web_model` fixes the web tessellation; with every fastener and weld the D3 model gave a 35 MB `media/model.glb`. The committed file (`python cad/src/concept_media.py web-light`, fasteners and welds left out, chamfered edges) is 14 MB, under the about 20 MB aim.
+- `.kit/cad_check.py` writes one assembly STEP per option with every fastener and weld. With the kit's chamfered fasteners, rounded weld beads and every edge filleted, option A's assembly was 57 MB, over the 45 MB repo limit. Worked around in this repo, not the kit: fasteners and welds drawn as plain solids at the ISO dimensions of `cad_parts.ISO`, and edges broken by chamfers on the long arrises only (`cad/src/rfe_parts.py`); A is now 40.3 MB and B 28.4 MB. Large scene repos would benefit from a kit option to write the assembly without fasteners, or compressed.
+- `.kit/cad_parts.py` and `.kit/cad_check.py`: no other bug met. Note for other repos: the check passed while some parts sat in the wrong place (a coordinate-order slip in this repo's own cylinder helper put nine small parts metres away); the fidelity check cannot see misplaced parts, only overlaps, so look at the pictures.
+- `docs/04-calcs/sizing.py` needs jsonschema 4 or later for the passport check; the system copy here is 3.2, so the script was run with a newer copy on the path (as in the 2026-10-02 session).
+
+### Checks
+
+Run in order on 2026-10-25: `python3 docs/04-calcs/sizing.py` passes (with jsonschema 4 on the path; fails on the system jsonschema 3.2 at the passport section); `python3 docs/04-calcs/stem_check.py` open (25 within, 6 plausible, 1 fails with a fix proposed); `python3 .kit/trace.py` RFE-RTM-001 v0.3, 0 gaps; `python3 .kit/cad_check.py --export` PASS at D3 (assembly STEP 40.3 MB for A, 28.4 MB for B); `python3 cad/src/model.py --check` 1,745 layout checks, 0 failed; `python3 .kit/render.py` and `python3 .kit/render.py --check` FAIL only on the expected missing `media/options.png` (no other FAIL, no warnings); `python3 -m reuse lint` compliant (788 files); no em or en dashes outside `.kit/` and `LICENSES/`.
+
+### Recommended next step
+
+Amish to decide D1 and D4 and to run `python .kit/options.py` and the photoreal renders on his Mac (`media/render-hero.png`, `render-hot-zone.png`, `card.png` and `social-preview.png` are still the 2026-10-02 renders of the envelope model; the new `RENDER_VIEWS` are hero, hot-zone and studio) (the brief reserves them; `media/options.png` is missing until then, which is the one expected FAIL of `render.py --check`). TRL 4 remains on hold.

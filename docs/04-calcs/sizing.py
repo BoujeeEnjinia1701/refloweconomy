@@ -4,10 +4,15 @@ Run from the repo root:  python docs/04-calcs/sizing.py
 Prints every number quoted in docs/04-calcs/01-sizing.md and writes
 docs/04-calcs/results.csv (one row per requirement).
 
-Sections: A mass balance, B throughput and time budget, C energy, D electrical supply,
+Sections: A mass balance, B throughput and time budget, C energy, D electrical supply (power and current),
 E fume extraction, F noise, G layout checks (from cad/src/model.py), H equipment cost
 (from bom/bom.csv), I economics (docs/playbook/economics_model.py), J material passport.
 All inputs are estimates for a paper proof of concept (TRL 3). Units SI unless noted.
+
+Kit 1.8.1 STEM check fixes (RFE-STM-001, decided under Amish's standing instruction of 2026-10-23,
+RFE-DEC-001 D2 and D3): motor energy is counted at the electrical input (shaft power divided by the
+motor and drive efficiencies), and the feed slot is 120 mm high so ISO 13857 Table 4 applies. The
+supply check now counts motor input currents (section D); its result goes to Amish (RFE-DEC-001 D1).
 """
 import csv
 import json
@@ -77,6 +82,7 @@ r_rule = math.floor(r_max)
 local_at_rule = local * (A["input"] - r_rule) / (A["input"] - c["residue"])
 say(f"  Intake quality rule: disposal is 20 % or less when sampled residue is {r_max:.1f} % or less; rule threshold {r_rule:.0f} %")
 say(f"  At the {r_rule:.0f} % threshold: disposal {disposal_at(r_rule):.1f} %, kept local {local_at_rule:.1f} %; the reference mix ({c['residue']:.0f} % residue) would be refused or charged")
+plastic_at_rule = (c["PET"] + c["HDPE"] + c["PP"]) * (A["input"] - r_rule) / (A["input"] - c["residue"])
 
 # ---------------------------------------------------------------- B throughput and time budget
 B = {
@@ -114,6 +120,12 @@ C = {
     "fan_kw": 0.4, "fan_h": 8.0,
     "light_kw": 0.4, "light_h": 8.0,
     "fume_run_after_h": 0.5,
+    # motor and drive efficiencies (STEM fix RFE-DEC-001 D2): motor ratings are shaft output, so the
+    # electrical input is shaft power / (motor x drive). IE3 4-pole minimum efficiencies, IEC 60034-30-1
+    # (ABB technical note, 2018): 2.2 kW 86.7 %, 1.5 kW 85.3 %; drive 96 % (assumption); the single-phase
+    # pump motor 75 % (assumption, below the IE2 0.75 kW value of 79.6 %); the drying fan's 0.4 kW is
+    # taken as its electrical input rating.
+    "eta_shred": 0.867 * 0.96, "eta_extr_motor": 0.853 * 0.96, "eta_pump": 0.75,
 }
 dT = C["t_press"] - C["t_amb"]
 heatup_kwh = C["platen_kg"] * C["cp_steel"] * dT / 3600
@@ -128,6 +140,8 @@ say("\nB. Throughput and time budget per 8 h shift")
 say(f"  Sorting {A['input']:.0f} kg by {B['sorters']} people at {B['sort_rate']:.0f} kg/h each: {sort_h:.1f} h of block A ({B['block_a']:.0f} h)")
 say(f"  Shredder load {shred_load:.1f} kg (washed plastic {washed:.1f} + trim {trim:.1f}); at {B['shred_rate']:.0f} kg/h: {shred_h:.2f} h of {B['block_a']:.0f} h; at the low end {B['shred_range'][0]} kg/h: {shred_h_lo:.1f} h")
 say(f"  Required shredder rate: {shred_load / B['block_a']:.1f} kg/h")
+shred_load_rule = shred_load * plastic_at_rule / (c["PET"] + c["HDPE"] + c["PP"])
+say(f"  At the {r_rule:.0f} % intake threshold the plastic share rises to {plastic_at_rule:.1f} kg: shredder load {shred_load_rule:.1f} kg = {shred_load_rule / B['shred_rate']:.2f} h of {B['block_a']:.0f} h, so meeting PR-008 this way worsens PR-006 (independent review, 2026-10-25)")
 say(f"  Extruder: beams {beams_gross:.1f} kg gross at {B['extr_rate']:.0f} kg/h = {extr_h:.2f} h + {B['extr_heatup_h']:.2f} h heat-up = {extr_total_h:.2f} h in block A")
 say(f"  Sheet press: {B['sheets']} sheets of {B['sheet_kg']:.1f} kg = {sheets_gross:.1f} kg; heat-up {heatup_h:.2f} h, cycle {B['press_cycle_h'] * 60:.0f} min")
 say(f"  Press capacity in the {press_window:.1f} h heating window: {press_capacity:.2f} sheets (need {B['sheets']}); hot for {press_hot_h:.2f} h")
@@ -136,11 +150,11 @@ say(f"  Drying: {po_flake + pet_flake:.1f} kg flake on {B['tray_area']:.1f} m2 o
 
 # ---------------------------------------------------------------- C energy
 E = {
-    "Shredder": C["shred_kw"] * C["shred_load"] * shred_h,
-    "Washing pump": C["pump_kw"] * C["pump_h"],
+    "Shredder": C["shred_kw"] * C["shred_load"] * shred_h / C["eta_shred"],
+    "Washing pump": C["pump_kw"] * C["pump_h"] / C["eta_pump"],
     "Drying fan": C["fan_kw"] * C["fan_h"],
     "Extruder": C["extr_heater_kw"] * B["extr_heatup_h"] + (C["extr_heater_kw"] * C["extr_heater_duty"]
-                + C["extr_motor_kw"] * C["extr_motor_load"]) * extr_h,
+                + C["extr_motor_kw"] * C["extr_motor_load"] / C["eta_extr_motor"]) * extr_h,
     "Sheet press": C["press_kw"] * heatup_h + B["sheets"] * sheet_kwh + C["press_loss_kw"] * B["sheets"] * B["press_cycle_h"],
 }
 
@@ -175,6 +189,9 @@ makeup_area = Q / 1.5
 E["Fume extraction"] = fan_kw * fume_h
 E["Lighting, desk and small loads"] = C["light_kw"] * C["light_h"]
 e_total = sum(E.values())
+e_shaft_basis = e_total - (E["Shredder"] - C["shred_kw"] * C["shred_load"] * shred_h) \
+    - (E["Washing pump"] - C["pump_kw"] * C["pump_h"]) \
+    - (C["extr_motor_kw"] * C["extr_motor_load"] * extr_h * (1 / C["eta_extr_motor"] - 1))
 e_fixed = (C["press_kw"] * heatup_h + C["extr_heater_kw"] * B["extr_heatup_h"] + E["Fume extraction"]
            + E["Lighting, desk and small loads"] + E["Drying fan"])
 output = local
@@ -183,6 +200,7 @@ say("\nC. Energy per shift (kWh, estimates)")
 for k, v in E.items():
     say(f"  {k:<32} {v:6.1f}")
 say(f"  {'Total':<32} {e_total:6.1f}  = {e_total / output:.2f} kWh/kg of output ({output:.1f} kg); R9 target 1.0")
+say(f"  Motor energy at the electrical input (motor and drive losses counted, RFE-DEC-001 D2); on the old shaft basis {e_shaft_basis:.1f} kWh, {e_shaft_basis / output:.2f} kWh/kg")
 say(f"  Fixed part (heat-up, fume fan, lights, drying fan) {e_fixed:.1f} kWh")
 say(f"  Press heat-up energy {heatup_kwh:.2f} kWh; per sheet {sheet_kwh:.2f} kWh; platens {C['platen_kg']:.0f} kg")
 
@@ -197,8 +215,52 @@ peak = max(peak_a, peak_b)
 supply_kw = D["volts"] * D["amps"] / 1000
 say("\nD. Electrical supply (decided: single-phase with staggered heating)")
 say(f"  Connected load {connected:.2f} kW; block A peak {peak_a:.2f} kW; block B peak {peak_b:.2f} kW")
-say(f"  Maximum demand {peak:.2f} kW = {peak * 1000 / D['volts']:.1f} A at {D['volts']:.0f} V; supply {D['amps']:.0f} A ({supply_kw:.1f} kW); margin {(1 - peak / supply_kw) * 100:.0f} %")
+say(f"  Maximum demand on the power basis {peak:.2f} kW = {peak * 1000 / D['volts']:.1f} A at {D['volts']:.0f} V if every kW drew 1 kW at unity power factor; supply {D['amps']:.0f} A ({supply_kw:.1f} kW). The current check below replaces this figure")
 say(f"  Without the interlock: {connected:.2f} kW = {connected * 1000 / D['volts']:.0f} A")
+
+# Current, not power, sets what a 40 A single-phase supply can carry (STEM check S14, RFE-DEC-001 D1).
+# Rated motor kW is shaft output: a motor draws more (efficiency and power factor), and a drive with a
+# single-phase diode input draws a peaky current. Full-load input currents: Schneider ATV12 drives,
+# 20.2 A (2.2 kW, ATV12HU22M2) and 14.9 A (1.5 kW, ATV12HU15M2) at 240 V, scaled to 230 V at the same
+# power; single-phase motors on line, NEC Table 430.248 at 230 V: 2 hp (1.5 kW) 12.0 A, 1 hp (0.75 kW)
+# 8.0 A, 1/2 hp (0.4 kW) 4.9 A. Running estimate: drive currents and the fume fan in proportion to their
+# load (shredder 70 %, extruder motor 60 %, fume fan 1.00 kW of its 1.5 kW); the pump and drying fan at
+# full load; heaters and lights at rating.
+k230 = 240.0 / D["volts"]
+I_FL = {"Shredder drive (2.2 kW)": 20.2 * k230, "Extruder drive (1.5 kW)": 14.9 * k230,
+        "Extruder heaters (2.0 kW)": C["extr_heater_kw"] * 1000 / D["volts"], "Fume fan (1.5 kW)": 12.0,
+        "Washing pump (0.75 kW)": 8.0, "Drying fan (0.4 kW)": 4.9, "Lighting (0.4 kW)": C["light_kw"] * 1000 / D["volts"],
+        "Sheet press heaters (5.0 kW)": C["press_kw"] * 1000 / D["volts"]}
+I_RUN = dict(I_FL)
+I_RUN["Shredder drive (2.2 kW)"] *= C["shred_load"]
+I_RUN["Extruder drive (1.5 kW)"] *= C["extr_motor_load"]
+I_RUN["Fume fan (1.5 kW)"] *= fan_kw / F["fan_rated_kw"]
+block_a_keys = ["Shredder drive (2.2 kW)", "Extruder drive (1.5 kW)", "Extruder heaters (2.0 kW)", "Fume fan (1.5 kW)",
+                "Washing pump (0.75 kW)", "Drying fan (0.4 kW)", "Lighting (0.4 kW)"]
+block_b_keys = ["Sheet press heaters (5.0 kW)", "Fume fan (1.5 kW)", "Drying fan (0.4 kW)", "Lighting (0.4 kW)"]
+ia_fl, ia_run = sum(I_FL[k] for k in block_a_keys), sum(I_RUN[k] for k in block_a_keys)
+ib_fl, ib_run = sum(I_FL[k] for k in block_b_keys), sum(I_RUN[k] for k in block_b_keys)
+say("  Input current (counts efficiency, power factor and drive input current):")
+for k in block_a_keys:
+    say(f"    block A  {k:<28} full load {I_FL[k]:5.1f} A, running {I_RUN[k]:5.1f} A")
+say(f"  Block A: {ia_run:.1f} A running (estimate), {ia_fl:.1f} A at full load, against the {D['amps']:.0f} A supply: "
+    f"{'within' if ia_run <= D['amps'] else 'OVER by ' + format(ia_run - D['amps'], '.1f') + ' A'}")
+say(f"  Block B: {ib_run:.1f} A running, {ib_fl:.1f} A at full load")
+# the single-phase fallback: three blocks, so the shredder, the extruder and the press never run together
+blk = {"A1 sort, wash, shred": ["Shredder drive (2.2 kW)", "Washing pump (0.75 kW)", "Drying fan (0.4 kW)", "Lighting (0.4 kW)"],
+       "A2 extrude": ["Extruder drive (1.5 kW)", "Extruder heaters (2.0 kW)", "Fume fan (1.5 kW)", "Drying fan (0.4 kW)", "Lighting (0.4 kW)"],
+       "B press": block_b_keys}
+i_three = {b: sum(I_RUN[k] for k in ks) for b, ks in blk.items()}
+day_three = shred_h + extr_total_h + B["block_b"]
+extra_wage = (day_three - 8.0) / 8.0 * 4 * 10.0
+say(f"  Option (b) adds about {day_three - 8:.1f} h a day: about {extra_wage:.1f} USD a shift more in wages at the reference wage")
+say("  Block B runs at 91 % of the supply for about 3.5 h; a common practice limits continuous loads to 80 % of the breaker rating (32 A), to confirm with the electrician")
+say("  Single-phase fallback with three blocks (fume fan only while a heater is on): " +
+    "; ".join(f"{b} {i:.1f} A" for b, i in i_three.items()) + f"; working day about {day_three:.1f} h")
+# three-phase 400 V: the same block A loads spread over three phases (single-phase loads shared, drives on 3 phases)
+ia_3ph = ia_run / 3
+say(f"  Three-phase 400 V alternative: block A about {ia_3ph:.1f} A per phase if the loads are shared over the phases "
+    f"(Maharashtra supplies more than 40 A as three-phase LT, MSEDCL Conditions of Supply clause 6.4.1)")
 
 say("\nE. Fume extraction")
 say(f"  Hood openings {a_open:.2f} m2 at {F['v_face']} m/s + {F['leak'] * 100:.0f} % = {Q:.3f} m3/s ({Q * 3600:.0f} m3/h)")
@@ -236,8 +298,9 @@ say(f"  Largest bare-machine LwA that still meets 85 dB(A) LEX with the enclosur
 slot_w, slot_h = MP["CHUTE_SLOT"]
 drop_straight = MP["CHUTE_MOUTH_Z"] - MP["CUTTER_Z"]
 reach = reach_path(MP)
-reach_ok = reach >= MP["REACH_SR"] and slot_h <= 180
-say(f"  Reach check (ISO 13857): slot {slot_w:.0f} x {slot_h:.0f} mm (over 120 mm: arm to the shoulder; 180 mm or less: head kept out)")
+reach_ok = reach >= MP["REACH_SR"] and slot_h <= 120
+say(f"  Reach check (ISO 13857 Table 4): slot {slot_w:.0f} x {slot_h:.0f} mm; Table 4 covers slots up to e = 120 mm (850 mm for 40 < e <= 120);"
+    f" above 120 mm the reaching-over distances apply instead (RFE-DEC-001 D3: slot lowered from 160 to 120 mm)")
 say(f"    straight collar: {drop_straight:.0f} mm from the 1.70 m mouth down to the cutters, against {MP['REACH_SR']:.0f} mm: {'pass' if drop_straight >= MP['REACH_SR'] else 'FAIL'}")
 say(f"    cranked feed hood: {MP['CHUTE_MOUTH_Y'] - MP['CHUTE_DROP_Y']:.0f} mm along the hood plus {drop_straight:.0f} mm down = {reach:.0f} mm: {'pass' if reach_ok else 'FAIL'} ({reach - MP['REACH_SR']:+.0f} mm)")
 
@@ -347,12 +410,18 @@ R = [
     ("R11", "0.5 m/s face velocity on every melt process; no PVC, PS or unknown; air below OELs",
      f"Hoods sized for 0.5 m/s ({Q:.2f} m3/s, fan {fan_kw:.2f} kW); exposure needs air monitoring", "Not verifiable at TRL 3"),
     ("R12", "Guarded shredder, insulated hot surfaces, RCDs, 85 dB(A) LEX or hearing zones",
-     f"Guarding defined; feed reach {reach:.0f} mm against {MP['REACH_SR']:.0f} mm (ISO 13857, {'passes' if reach_ok else 'fails'}); LEX {lex_bare:.0f} dB(A) bare, {lex_enc:.0f} dB(A) with enclosure (sound power assumed)", "At risk"),
+     f"Guarding defined; feed reach {reach:.0f} mm through a {slot_h:.0f} mm slot against {MP['REACH_SR']:.0f} mm (ISO 13857 Table 4, {'passes' if reach_ok else 'fails'}); LEX {lex_bare:.0f} dB(A) bare, {lex_enc:.0f} dB(A) with enclosure (sound power assumed)", "At risk"),
     ("R13", "Valid passport for every outgoing lot", f"{sum(v2)} of {len(ex)} examples valid against schema v0.2", "Met" if pp_ok else "Not met"),
     ("R14", "Passport lists parent batch IDs and schema version", "v0.2 requires schema_version and parent_batch_ids for every non-intake lot", "Met" if pp_ok else "Not met"),
     ("R15", "Passport filled in 2 min or less", "Needs a form and a timed trial", "Not verifiable at TRL 3"),
     ("R16", "Intake quality rule with a residue threshold that keeps R8 within 20 %",
      f"Threshold {r_rule:.0f} % residue by sampled mass (limit {r_max:.1f} %); loads above it refused or charged", "Met"),
+    ("PR-017", "Run on a 230 V, 40 A single-phase supply with staggered loads",
+     f"Block A {ia_run:.0f} A running ({ia_fl:.0f} A at full load) with motor input currents counted; block B {ib_run:.0f} A; supply decision with Amish (RFE-DEC-001 D1)",
+     "Not met" if ia_run > D["amps"] else "Met"),
+    ("PR-018", "Made parts from standard stock with workshop tools", "Detailed D3 model from standard stock; 11 made components with making sketches (RFE-BLD-001)", "Met by design"),
+    ("PR-019", "Cells out at intake into dry sand; three extinguishers; stock 1.0 m from the hot zone", f"In the model and BOM lines 10 and 12; stock {hot_clear / 1000:.2f} m from the hot zone", "Met by design"),
+    ("PR-020", "Registrations and consents listed with the capacity band", f"About {A['input'] * 250 / 1000:.0f} t a year, under the 200 t a year band (RFE-REG-001)", "Not verifiable at TRL 3"),
 ]
 with (ROOT / "docs/04-calcs/results.csv").open("w", newline="") as f:
     w = csv.writer(f)

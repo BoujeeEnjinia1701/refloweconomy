@@ -1,0 +1,35 @@
+{
+ "level": "D3",
+ "stage": "P3",
+ "hash": "3facda00913da1e7",
+ "options": {
+  "A": {
+   "title": "Reference micro-factory (wash, shred, extrude and press)",
+   "parts": 1005,
+   "made_or_bought": 543,
+   "fasteners": 294,
+   "welds": 168,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 9778.6,
+   "step_files": 543
+  },
+  "B": {
+   "title": "Sort-and-bale hub",
+   "parts": 605,
+   "made_or_bought": 360,
+   "fasteners": 153,
+   "welds": 92,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 7685.0,
+   "step_files": 0
+  }
+ },
+ "failures": [],
+ "warnings": [],
+ "passed": true,
+ "seconds": 132.1
+}

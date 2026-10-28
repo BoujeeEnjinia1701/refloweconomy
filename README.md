@@ -1,14 +1,14 @@
 # ReflowEconomy
 
-![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![DOI](https://zenodo.org/badge/397347118.svg)](https://zenodo.org/badge/latestdoi/397347118) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/refloweconomy/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/refloweconomy/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/refloweconomy/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/refloweconomy)
+![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Stage P3](https://img.shields.io/badge/stage-P3%20design%20outputs-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![DOI](https://zenodo.org/badge/397347118.svg)](https://zenodo.org/badge/latestdoi/397347118) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/refloweconomy/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/refloweconomy/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/refloweconomy/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/refloweconomy)
 
-**Area:** Circular Materials · **TRL:** 3 of 9 (proof of concept on paper; TRL 4 on hold by Amish's instruction)
+**Area:** Circular Materials · **TRL:** 3 of 9 (proof of concept on paper; TRL 4 on hold by Amish's instruction) · **Stage:** P3 · **Value-engineering target:** USD 25,000 for the equipment (playbook repo, no hardware budget) · **Difficulty:** 2 of 5
 
 Open playbook for local micro-factories that recover and remanufacture materials safely at small scale: a feasibility matrix by material, process recipes, a micro-factory economics model, safety rules, and a material passport data standard so buyers can trust recycled feedstock. Machines live in their own repos. The guiding principle is to recover and remanufacture locally and export only what needs industrial refining.
 
 ![ReflowEconomy: local micro-factory for recovered plastics, photoreal render](media/render-hero.png)
 
-[Interactive 3D model](media/viewer.html) · [Floor plan GA (PDF)](cad/drawings/RFE-DWG-001.pdf) · [Calculation note](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Material flow](media/flow.png) · [Review note](docs/REVIEW.md)
+[Interactive 3D model](media/viewer.html) · [Floor plan GA (PDF)](cad/drawings/RFE-DWG-001.pdf) · [STEM check](docs/01b-stem-check.md) · [Concept options](docs/02a-concept-options.md) · [User requirements](docs/03a-user-requirements.md) · [Product requirements](docs/03-requirements.md) · [Traceability](docs/03b-traceability.md) · [Calculation note](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Design decisions](docs/06-design-decisions.md) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Material flow](media/flow.png) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
@@ -55,11 +55,21 @@ Smaller and lower-income countries export scrap and import finished goods, losin
 
 ## Concept
 
-The playbook is built around one reference design: a plastics micro-factory on 59.4 m² (a rented shed, or two 40 ft container footprints where no shed is available) with a central aisle, intake and sorting, washing and float-sink, an enclosed shredder, drying, a hot zone with an extruder and a sheet press under enclosing hoods, a product store, a passport desk and a safety station. Per 100 kg of collected input, the calculation note (RFE-CAL-001) gives on paper 32.3 kg of HDPE and PP products and 19.3 kg of clean PET flake kept local (51.6 %), 10 kg exported for industrial refining (metals, circuit boards, cells), 10 kg of paper sold locally and 28.4 kg to licensed disposal, using 0.83 kWh per kilogram of output with a maximum demand of 8.75 kW on a single-phase supply. The equipment costs $25,505 (indicative, outside any hardware budget; $505 over the $25,000 value-engineering target), and the site only breaks even at the assumed prices. Keeping disposal at 20 % needs deliveries with about 10 % residue or less, so the playbook adds an intake quality rule. A material passport (schema v0.2) opens at intake and travels with every lot that leaves.
+The playbook is built around one reference design: a plastics micro-factory on 59.4 m² (a rented shed, or two 40 ft container footprints where no shed is available) with a central aisle, intake and sorting, washing and float-sink, an enclosed shredder, drying, a hot zone with an extruder and a sheet press under enclosing hoods, a product store, a passport desk and a safety station. Per 100 kg of collected input, the calculation note (RFE-CAL-001) gives on paper 32.3 kg of HDPE and PP products and 19.3 kg of clean PET flake kept local (51.6 %), 10 kg exported for industrial refining (metals, circuit boards, cells), 10 kg of paper sold locally and 28.4 kg to licensed disposal, using 0.88 kWh per kilogram of output. The equipment costs $25,505 (indicative, outside any hardware budget; $505 over the $25,000 value-engineering target), and the site only breaks even at the assumed prices (+$0.17 per shift before rent). Counted as currents, its morning loads draw about 55 A from the 40 A single-phase supply it was designed for, so how a site gets its power is with Amish (three-phase recommended). Keeping disposal at 20 % needs deliveries with about 10 % residue or less, so the playbook adds an intake quality rule. A material passport (schema v0.2) opens at intake and travels with every lot that leaves.
 
 ![Material flow](media/flow.png)
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
+
+## STEM check
+
+Every physical, chemical, biological and mathematical claim the micro-factory makes was checked against known science, and a second, independent reviewer tried to refute each verdict ([RFE-STM-001](docs/01b-stem-check.md)). Nothing fails outright. Two details were fixed in the design under Amish's standing instruction: motor energy is now counted at the electrical input (0.88 kWh/kg instead of 0.83), and the shredder's feed slot is 120 mm high so the ISO 13857 reach distance applies to it. One finding goes to Amish: counted as currents rather than kilowatts, the morning loads need more than a 40 A single-phase supply. Air quality and noise can only be confirmed by measurements on a running site.
+
+## Concept options
+
+![Two concept options side by side at one scale](media/options.png)
+
+Two working principles were compared against the user requirements ([RFE-OPT-001](docs/02a-concept-options.md)): A, the reference micro-factory that washes, shreds and melts HDPE and PP into sheets and beams, and B, a sort-and-bale hub that sorts and bales for a regional reprocessor. B scores higher on power, capital and safety; A is the only one that keeps remanufacturing, and its value, local. The recommendation, awaiting Amish, is to keep A as the reference and let a site start as a sort-and-bale hub before it adds the melt line. Both options are modelled in detail in `cad/src/model.py`.
 
 ## Key components
 
@@ -67,7 +77,7 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md)
 - Process recipes for PET flake, HDPE, PP and aluminium (add-on bay): [docs/playbook/recipes/](docs/playbook/recipes/README.md)
 - Operator-editable economics model per kg and per shift: [docs/playbook/economics_model.py](docs/playbook/economics_model.py) with [economics_inputs.csv](docs/playbook/economics_inputs.csv)
 - Safety and environmental rules: [docs/playbook/safety.md](docs/playbook/safety.md)
-- Reference micro-factory: parametric layout [cad/src/model.py](cad/src/model.py), floor plan [RFE-DWG-001](cad/drawings/RFE-DWG-001.pdf), sizing [RFE-CAL-001](docs/04-calcs/01-sizing.md) and equipment list [bom/bom.csv](bom/bom.csv)
+- Reference micro-factory: detailed model [cad/src/model.py](cad/src/model.py) (container shell and seam fit-out, every machine, panel, rack, fastener and weld; 1,005 parts in option A), floor plan [RFE-DWG-001](cad/drawings/RFE-DWG-001.pdf), sizing [RFE-CAL-001](docs/04-calcs/01-sizing.md) and equipment list [bom/bom.csv](bom/bom.csv)
 - Material passport schema v0.2 (JSON): [standards/material-passport-v0.2.schema.json](standards/material-passport-v0.2.schema.json), with [example records](standards/examples/); v0.1 kept at [standards/material-passport.schema.json](standards/material-passport.schema.json)
 - Links to machine repos (WasteWise Scan, WasteWise-ml, planned shredder, foundry and cell tester)
 
@@ -87,12 +97,12 @@ A micro-factory has moving machinery (shredder), hot surfaces (extruder and pres
 
 | Folder | Contents |
 | --- | --- |
-| `docs/` | Problem, concept, requirements, calculation note (`04-calcs/`) and design decisions |
+| `docs/` | Problem, STEM check, concept and concept options, user and product requirements, traceability, calculation note (`04-calcs/`), build plan, design decisions, regulatory, feasibility, risk, market and plan |
 | `docs/playbook/` | Feasibility matrix, process recipes, economics model, safety |
 | `standards/` | Material passport schema and examples |
 | `bom/` | Reference micro-factory equipment list with indicative costs |
-| `cad/src/` | Parametric layout (`model.py`), drawing sheet (`sheets.py`) and media script (`concept_media.py`) |
-| `cad/step/`, `cad/stl/` | STEP and STL exports of the layout |
+| `cad/src/` | build123d source of all geometry: `model.py` (parameters, layout envelopes, the kit 1.9 interface), `detail_a.py` and `detail_b.py` (both concept options at D3), `detail_common.py` and `rfe_parts.py` (shared builders), drawing sheet (`sheets.py`), build plan pictures, media and product render scripts |
+| `cad/step/`, `cad/stl/` | STEP per made or bought part of option A (`cad/step/A/`) and an assembly STEP per option; STL of option A (equipment and shell) |
 | `cad/drawings/` | Floor plan general arrangement RFE-DWG-001 |
 | `media/` | Concept renders, blueprint, 3D viewer, exploded view and material flow |
 | `build-log/` | Dated notes |
@@ -105,7 +115,26 @@ A micro-factory has moving machinery (shredder), hot surfaces (extruder and pres
 
 ## Documentation
 
-Controlled documents follow the portfolio [documentation standard](.kit/STANDARDS.md). Each carries a document ID (RFE-PRC-001 for the precis), a version and a revision history. Branded PDFs are built with `python .kit/render.py` and attached to GitHub Releases when a document is tagged, for example `RFE-PRC-001/v1.0`.
+| Document | ID |
+| --- | --- |
+| [Problem statement](docs/01-problem.md) | RFE-PRB-001 |
+| [STEM check](docs/01b-stem-check.md) | RFE-STM-001 |
+| [Design precis](docs/02-concept.md) | RFE-PRC-001 |
+| [Concept options](docs/02a-concept-options.md) | RFE-OPT-001 |
+| [User requirements](docs/03a-user-requirements.md) | RFE-URS-001 |
+| [Product requirements and specifications](docs/03-requirements.md) | RFE-PRS-001 |
+| [Traceability matrix](docs/03b-traceability.md) | RFE-RTM-001 |
+| [Calculation note](docs/04-calcs/01-sizing.md) | RFE-CAL-001 |
+| [Prototype build plan](docs/05-build-plan.md) | RFE-BLD-001 |
+| [Design decisions register](docs/06-design-decisions.md) | RFE-DEC-001 |
+| [Regulatory and standards register](docs/07-regulatory.md) | RFE-REG-001 |
+| [Feasibility](docs/08-feasibility.md) | RFE-FEA-001 |
+| [Risk register, hazard analysis and design FMEA](docs/09-risk.md) | RFE-RSK-001 |
+| [Market and viability](docs/10-market.md) | RFE-MKT-001 |
+| [Project plan](docs/11-plan.md) | RFE-PLN-001 |
+| [Decision records](docs/decisions/) | RFE-DDR-001 to 005 |
+
+Pipeline stage: P3 of P0 to P6 (the portfolio cap). Controlled documents follow the portfolio [documentation standard](.kit/STANDARDS.md). Each carries a document ID, a version and a revision history. Branded PDFs are built with `python .kit/render.py`; run `python .kit/render.py --check` to validate them.
 
 ## Credits
 

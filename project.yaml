@@ -6,32 +6,58 @@ area: Circular Materials
 trl: 3                   # Technology Readiness Level, see .kit/STANDARDS.md section 9
 design_state: constructable   # STANDARDS section 18; RFE-DDR-003
 trl_target: 3            # TRL 4 is on hold by Amish's instruction (2026-09-25)
+stage: P3                # pipeline stage, STANDARDS section 19; P3 set at the kit 1.9.1 upgrade on 2026-10-25
+stem_check: open         # RFE-STM-001: S14 supply current (Fails, fix proposed; to Amish as RFE-DEC-001 D1); S3, S15, S17, S20, S21 plausible after the independent review
+concept_options: [A, B]  # RFE-OPT-001: A reference micro-factory, B sort-and-bale hub
+concept_chosen: A (proposed)   # A is the existing design; the choice is awaiting Amish (RFE-DEC-001 D4, RFE-DDR-004)
 trl_evidence:
   - docs/01-problem.md
+  - docs/01b-stem-check.md
   - docs/02-concept.md
+  - docs/02a-concept-options.md
+  - docs/03a-user-requirements.md
   - docs/03-requirements.md
+  - docs/03b-traceability.md
   - docs/decisions/0001-trl2-review-decisions.md
   - docs/decisions/0002-recommendations-accepted.md
   - docs/decisions/0003-design-for-construction.md
+  - docs/decisions/0004-concept-selection.md
+  - docs/decisions/0005-stem-check-fixes.md
   - docs/04-calcs/01-sizing.md
   - docs/04-calcs/sizing.py
   - docs/04-calcs/results.csv
+  - docs/04-calcs/stem_check.py
+  - docs/04-calcs/stem_results.csv
   - docs/playbook/economics_model.py
   - docs/playbook/economics_inputs.csv
   - docs/playbook/recipes/README.md
   - standards/material-passport-v0.2.schema.json
   - cad/src/model.py
-  - cad/step/refloweconomy-layout.step
-  - cad/step/refloweconomy-shell.step
-  - cad/step/refloweconomy-equipment.step
-  - cad/stl/refloweconomy-layout.stl
+  - cad/src/detail_a.py
+  - cad/src/detail_b.py
+  - cad/src/detail_common.py
+  - cad/src/rfe_parts.py
+  - cad/src/product_model.py
+  - cad/fidelity.json
+  - cad/step/A-assembly.step
+  - cad/step/B-assembly.step
+  - cad/stl/refloweconomy-equipment.stl
+  - cad/stl/refloweconomy-shell.stl
   - cad/src/sheets.py
   - cad/drawings/RFE-DWG-001.svg
   - cad/drawings/RFE-DWG-001.pdf
   - bom/bom.csv
   - bom/bom-notes.md
   - docs/05-build-plan.md
+  - docs/05-build-plan/overview.png
   - docs/06-design-decisions.md
+  - docs/07-regulatory.md
+  - docs/08-feasibility.md
+  - docs/09-risk.md
+  - docs/10-market.md
+  - docs/11-plan.md
+  - media/hero.png
+  - media/concept-blueprint.png
 shortlisted: false
 pitch: >-
   Open playbook for local micro-factories that recover and remanufacture materials safely at small scale: a feasibility matrix by material, process recipes, a micro-factory economics model, safety rules, and a material passport data standard so buyers can trust recycled feedstock. Machines live in their own repos. The guiding principle is to recover and remanufacture locally and export only what needs industrial refining.

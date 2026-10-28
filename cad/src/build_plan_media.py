@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(ROOT / ".kit"), str(ROOT / "cad" / "src")]
 import build_views as bv  # noqa: E402
 from build_views import Part  # noqa: E402
-from model import PARAMS as P, box, components  # noqa: E402
+from model import PARAMS as P, box, layout_components as components  # noqa: E402
 
 OUT = ROOT / "docs" / "05-build-plan"
 DWG = ROOT / "cad" / "drawings"
@@ -276,17 +276,19 @@ def sheets(only=None):
                 "  hinges at the washing-end edge, rubber seal, interlock switch.",
                 "Roof: hole 500 x 410, 550 from the washing end and 500 from the",
                 "  wall face; chute collar 500 x 410 x 160 of lined 2 mm sheet.",
-                "Feed hood on the collar: 500 wide x 850 long x 180 tall, closed",
-                "  top, lined sill 100 tall on the roof; feed slot 460 x 160 in",
+                "Feed hood on the collar: 500 wide x 850 long x 140 tall, closed",
+                "  top, lined sill 100 tall on the roof; feed slot 460 x 120 in",
                 "  its aisle end, lip 1700 mm up; interlocked flap over the slot.",
-                "Reach from the slot to the cutters 1060 mm (850 mm needed).",
+                "Reach from the slot to the cutters 1060 mm (850 mm needed for",
+                "  a slot of 120 mm or less, ISO 13857 Table 4).",
                 "Clear of the shredder: 140 and 135 at the ends, 370 in front,",
                 "  360 behind, 28 above (rubber skirt from chute to hopper).",
                 "Fit: angle cleats screwed to the floor at 600 pitch.",
                 "Check: flap or door open stops the rotor; the door shuts itself."],
-         date="2026-10-02", rev="P2",
+         date="2026-10-25", rev="P3",
          revisions=[("P1", "First issue (RFE-BLD-001 v0.1)", "2026-09-30", "AC"),
-                    ("P2", "Feed hood for the reach check; self-closing door hinges", "2026-10-02", "AC")])
+                    ("P2", "Feed hood for the reach check; self-closing door hinges", "2026-10-02", "AC"),
+                    ("P3", "Feed slot 120 mm high (ISO 13857 Table 4, RFE-DEC-001 D3)", "2026-10-25", "AC")])
 
     # 110 drying rack and fan stand
     make(110, part("Drying rack and fan stand", sh("rack_dry", "dry_stand"), col("rack_dry")),
